@@ -14,22 +14,33 @@
 #include<ctype.h>
 #include<arpa/inet.h>
 #include<sys/socket.h>
+#include"./opt_do.h"
+#include"./order.h"
+
+
+extern order orders;
+
 
 int main(int argc,char **argv){
 
     int sockfd;
     struct sockaddr_in servaddr;
-    if(argc != 2){
+    /*if(argc != 2){
         printf("tcp : ip \n");
         return -1;
-    }
-    sockfd = socket(AF_INET,SOCK_STREAM,0);
-    bzero(&servaddr,sizeof(servaddr));
-    servaddr.sin_family = AF_INET;
-    servaddr.sin_port = htons(9001);
-    inet_pton(AF_INET,argv[1],&servaddr.sin_addr);
-    connect(sockfd,(struct sockaddr*)&servaddr,sizeof(servaddr));
-    write(sockfd,"hello",20);
+    }*/
+
+    char * ip = "127.0.0.1";
+
+    //sockfd = socket(AF_INET,SOCK_STREAM,0);
+    //bzero(&servaddr,sizeof(servaddr));
+    //servaddr.sin_family = AF_INET;
+    //servaddr.sin_port = htons(9001);
+    //inet_pton(AF_INET,ip,&servaddr.sin_addr);
+    //connect(sockfd,(struct sockaddr*)&servaddr,sizeof(servaddr));
+    init_cilent();
+    opt(NULL,NULL,0);
+    //write(sockfd,"hello",20);
     exit(0);
 
 }
