@@ -118,7 +118,9 @@ int do_send(int fd){
     memcpy(message.buff_val,buf_val,VALLEN);
     
 
+    
     printf("OK,%s %s %s\n",message.buff_mo,message.buff_key,message.buff_val);
     return 1;
 
 }
+

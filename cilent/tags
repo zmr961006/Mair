@@ -1,0 +1,59 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+BUFFEXP	read_pro.h	16;"	d
+BUFFLEN	opt_do.h	17;"	d
+KEYLEN	opt_do.h	19;"	d
+LOAD	read_pro.h	17;"	d
+ODER	opt_do.h	18;"	d
+VALLEN	opt_do.h	20;"	d
+_CILENT_SOCK_H	cilent_sock.h	9;"	d
+_MESSAGE_H	message.h	9;"	d
+_OPT_DO_H	opt_do.h	9;"	d
+_ORDER_H	order.h	9;"	d
+_READ_PRO_H	read_pro.h	9;"	d
+_init_info	read_pro.c	/^int _init_info(){$/;"	f
+buf_in	opt_do.c	/^char buf_in[BUFFLEN];     \/*指令缓冲*\/$/;"	v
+buf_key	opt_do.c	/^char buf_key[KEYLEN];     \/*KEY 缓冲*\/$/;"	v
+buf_oder	opt_do.c	/^char buf_oder[ODER];      \/*命令缓冲*\/$/;"	v
+buf_val	opt_do.c	/^char buf_val[VALLEN];     \/*VAL缓冲*\/$/;"	v
+buff_key	message.h	/^    char buff_key[KEYLEN];$/;"	m	struct:message
+buff_mo	message.h	/^    char buff_mo[ODER];$/;"	m	struct:message
+buff_val	message.h	/^    char buff_val[VALLEN];$/;"	m	struct:message
+chunk	opt_do.c	/^int chunk(char * temp1){$/;"	f
+do_send	opt_do.c	/^int do_send(int fd){$/;"	f
+explex	read_pro.c	/^int explex(char ** infoex,int temp){$/;"	f
+flag	message.h	/^    int  flag ;$/;"	m	struct:message
+get_socket	cilent_sock.c	/^int get_socket(int fd,int temp){$/;"	f
+hash_end	read_pro.h	/^    int hash_end;$/;"	m	struct:netinfo
+hash_start	read_pro.h	/^    int hash_start;$/;"	m	struct:netinfo
+info	read_pro.c	/^char **info;         \/*暂时存储配置信息*\/$/;"	v
+init_cilent	opt_do.c	/^int init_cilent(){$/;"	f
+init_info	read_pro.c	/^int init_info(char * temp1,int temp){$/;"	f
+ip_char	read_pro.h	/^    char *ip_char;$/;"	m	struct:netinfo
+ip_int	read_pro.h	/^    int ip_int;$/;"	m	struct:netinfo
+main	cilent.c	/^int main(int argc,char **argv){$/;"	f
+message	message.h	/^typedef struct message{$/;"	s
+message	message.h	/^}message;$/;"	t	typeref:struct:message
+netinfo	read_pro.h	/^typedef struct netinfo{$/;"	s
+netinfo	read_pro.h	/^}netinfo;$/;"	t	typeref:struct:netinfo
+netmap	read_pro.h	/^typedef struct netmap {$/;"	s
+netmap	read_pro.h	/^}netmap;$/;"	t	typeref:struct:netmap
+networkmap	read_pro.h	/^    netinfo *networkmap;   $/;"	m	struct:netmap
+next	read_pro.h	/^    struct netinfo *next;$/;"	m	struct:netinfo	typeref:struct:netinfo::netinfo
+node_info_num	read_pro.c	/^int  node_info_num;  \/*标记有多少个IP节点*\/$/;"	v
+node_num	read_pro.h	/^    int node_num;$/;"	m	struct:netmap
+num	order.h	/^    int num;$/;"	m	struct:order
+opt	opt_do.c	/^int opt(char * temp1,char *temp2,int argc){$/;"	f
+order	order.h	/^typedef struct order {$/;"	s
+order	order.h	/^}order;$/;"	t	typeref:struct:order
+orders	opt_do.c	/^order orders;$/;"	v
+orders	order.h	/^    char *orders[6];$/;"	m	struct:order
+port_char	read_pro.h	/^    char *port_char;$/;"	m	struct:netinfo
+port_int	read_pro.h	/^    int port_int;$/;"	m	struct:netinfo
+read_server	read_pro.c	/^int read_server(int temp1,char *temp2){$/;"	f
+status	read_pro.h	/^    int status;$/;"	m	struct:netinfo
+write_server	read_pro.c	/^int write_server(int temp1,char *temp2){}$/;"	f
