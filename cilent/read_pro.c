@@ -14,6 +14,27 @@ int  node_info_num;  /*标记有多少个IP节点*/
 netmap NetMap;       /*客户端路由表存储结构*/
 
 
+
+int test_net(){
+
+    netinfo * temp;
+    temp = NetMap.networkmap;
+    int i  = 0;
+    for(i = 0;i < NetMap.node_num;i++){
+        printf("ip :%s\n",temp->ip_char);
+        printf("port :%s\n",temp->port_char);
+        printf("port :%d\n",temp->port_int);
+        printf("start :%d\n",temp->hash_start);
+        printf("end :%d\n",temp->hash_end);
+        temp = temp->next;
+    }
+
+
+}
+
+
+
+
 int explex(char ** infoex,int temp){
     
     char buf_exp[BUFFEXP];
@@ -24,15 +45,7 @@ int explex(char ** infoex,int temp){
         flag = 0;
         for(j = 0;j < 50;j++){
 
-            /*if(info[index][j] == '['){
-                flag = 1;
-                j++;
-            }
             
-            if(info[index][j] == ']'){
-                flag = 0;
-                
-            }*/
 
             if(flag == 0){
                 buf_exp[i] = info[index][j];
@@ -182,18 +195,22 @@ int _add_nodeinmap(char * buf,netinfo * tem){
                 }
                 case 1:{
                     memcpy(tem->ip_char,buff,IPLEN);
+                    //printf("ip: %s\n",tem->ip_char);
                     break;
                 }
                 case 2:{
                     memcpy(tem->port_char,buff,PORTLEN);
+                    //printf("port:%s\n",tem->port_char);
                     break;
                 }
                 case 3:{
                     tem->hash_start = atoi(buff);
+                    //printf("start:%d\n",tem->hash_start);
                     break;
                 }
                 case 4:{
                     tem->hash_end   = atoi(buff);
+                    //printf("end:%d\n",tem->hash_end);
                     break;
                 }
                 

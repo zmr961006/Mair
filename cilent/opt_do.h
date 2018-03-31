@@ -12,12 +12,7 @@
 #include<stdlib.h>
 #include<strings.h>
 #include<string.h>
-
-
-#define BUFFLEN  1024
-#define ODER     30
-#define KEYLEN   512
-#define VALLEN   512
+#include"./message.h"
 
 
 int opt(char * temp1,char *temp2,int argc);
@@ -30,5 +25,13 @@ int init_cilent();
 
 
 int send_to(int fd);
+
+int _send_to(int fd,Message mess);
+
+
+int get_hash(char *data,int len);
+
+
+int get_server(int hash);
 
 #endif

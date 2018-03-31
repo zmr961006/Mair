@@ -6,19 +6,28 @@
  ************************************************************************/
 
 #include"./cilent_sock.h"
+#include"./read_pro.h"
 
+extern netmap NetMap;
 
 int get_socket(int fd,int temp){
 
     int sockfd;
+    int i = 0;
     struct sockaddr_in servaddr;
 
-    char *ip = "127.0.0.1";
+    netinfo * tem;
+    tem = NetMap.networkmap;
+    for(i = 0;i < fd;i++){                    /*选择一个合适的服务器转发*/
+        tem = NetMap.networkmap->next;
+    }
+
+
     sockfd = socket(AF_INET,SOCK_STREAM,0);
     bzero(&servaddr,sizeof(servaddr));
     servaddr.sin_family = AF_INET;
-    servaddr.sin_port   = htons(9001);
-    //inet_pton(AF_INET,ip,&servaddr.sin_addr);
+    servaddr.sin_port   = htons(tem->port_int);
+    inet_pton(AF_INET,tem->ip_char,&servaddr.sin_addr);
     connect(sockfd,(struct sockaddr*)&servaddr,sizeof(servaddr));
     return sockfd;
     

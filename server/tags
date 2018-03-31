@@ -1,0 +1,16 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+BUFSIZE	server_start.h	22;"	d
+OPEN_MAX	server_start.h	24;"	d
+PORT	server_start.h	25;"	d
+SERV_PORT	server_start.h	23;"	d
+_SERVER_H	server.h	9;"	d
+_SERVER_START_H	server_start.h	9;"	d
+_SERVER_TO_H	server_to.h	9;"	d
+main	server.c	/^int main(int argc ,char **argv){$/;"	f
+server_start	server_start.c	/^int server_start()$/;"	f
+server_to_server	server_to.c	/^int server_to_server(int cmp,char *temp){$/;"	f

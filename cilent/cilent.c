@@ -18,7 +18,7 @@
 #include"./opt_do.h"
 #include"./order.h"
 #include"./read_pro.h"
-
+#include"./message.h"
 extern order orders;
 
 
@@ -39,9 +39,10 @@ int main(int argc,char **argv){
     //servaddr.sin_port = htons(9001);
     //inet_pton(AF_INET,ip,&servaddr.sin_addr);
     //connect(sockfd,(struct sockaddr*)&servaddr,sizeof(servaddr));
-    //init_cilent();  /*init order list*/
-    read_server(0,NULL);
-    //opt(NULL,NULL,0);  /*chunk and send message*/
+    init_cilent();  /*初始化命令列表*/
+    read_server(0,NULL);   /*读取配置文件建立完整路由表*/
+    //test_net();          /*测试路由表的建立*/
+    opt(NULL,NULL,0);    /*检查输入的信息进行分析和发送*/
     //write(sockfd,"hello",20);
     exit(0);
 

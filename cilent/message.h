@@ -11,14 +11,25 @@
 #include"./order.h"
 #include"./opt_do.h"
 
+
+#define  BUFFLEN 1024
+#define  ODER    30
+#define  KEYLEN  512
+#define  VALLEN  512
+
+
+
 typedef struct message{
 
     char buff_mo[ODER];
     char buff_key[KEYLEN];
     char buff_val[VALLEN];
     int  flag ;
+    int  hash ;
+    char now_time[1];
+    char out_time[1];
     
-}message;
+}Message;
 
 
 

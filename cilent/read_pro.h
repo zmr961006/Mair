@@ -58,5 +58,8 @@ int _init_info();
 int add_nodeinmap(char * buffer,int temp1);
 int _add_nodeinmap(char * buf,netinfo * tem);
 int proc_profile();
+int test_net();
+
+
 
 #endif

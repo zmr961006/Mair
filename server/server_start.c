@@ -5,24 +5,12 @@
 	> Created Time: 2018年03月21日 星期三 11时36分02秒
  ************************************************************************/
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <sys/epoll.h>
-#include <errno.h>
-#include <unistd.h>
-#include <ctype.h>
 
 
-#define BUFSIZE 666
-#define SERV_PORT 8000
-#define OPEN_MAX 1024
-#define PORT    9002
+#include"./server_start.h"
 
 
-int main()
+int server_start()
 {
     int i, j, maxi, listenfd, connfd, sockfd;
     int nready, efd, res;
@@ -40,6 +28,7 @@ int main()
     servaddr.sin_family = AF_INET;
     servaddr.sin_addr.s_addr = htonl(INADDR_ANY);     /*设置服务端IP*/
     servaddr.sin_port = htons(PORT);
+    //servaddr.sin_addr.s_addr = inet_addr("192.168.3.0");     /*设置服务端IP*/
     /*将listenfd绑定服务端地址*/
     bind(listenfd, (struct sockaddr*)&servaddr, sizeof(servaddr));
 
@@ -78,8 +67,7 @@ int main()
                 /*接受请求，分配新文件描述符connfd进行通信*/
                 connfd = accept(listenfd, (struct sockaddr*)&cliaddr, &clilen);
                 printf("received from %s at PORT %d\n", (char*)inet_ntop(AF_INET, &cliaddr.sin_addr, str, sizeof(str)), ntohs(cliaddr.sin_port));
-
-                printf("分布式转发\n");
+                //server_to_server(1024,"hello");
                 /*若将此新客户端添加至客户端集中*/
                 for(j = 0; j < OPEN_MAX; j++)
                     if(client[j] < 0){
@@ -100,6 +88,7 @@ int main()
             }else{/*处理efd中监听的客户端请求*/
                 sockfd = ep[i].data.fd;
                 n = read(sockfd, buf, BUFSIZE);
+                printf("get %s\n",buf); /*打印接受到内容*/
                 if(n == 0){ /*读取若为空*/
                     for(j = 0; j <= maxi; j++){
                         if(client[j] == sockfd){
