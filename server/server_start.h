@@ -17,14 +17,20 @@
 #include <unistd.h>
 #include <ctype.h>
 #include "./server_to.h"
+#include "./server_mess.h"
 
+#define BUFSIZE    2048
+#define SERV_PORT  8000
+#define OPEN_MAX   1024
+#define PORT       9001
+#define RECEVLEN   1480
 
-#define BUFSIZE 2048
-#define SERV_PORT 8000
-#define OPEN_MAX 1024
-#define PORT    9001
 
 int server_start();
+
+int mess_exl(char *buf,int len);
+
+int test_mess(Message mess);
 
 
 #endif

@@ -136,10 +136,13 @@ int do_send(int fd){        /*根据哈希值发送数据*/
     //get_time();
     server_num = get_server(hash);
     message.hash = hash;
-    printf("%d\n",server_num);
+    message.flag = ALIVE;
+    //printf("%d\n",server_num);
     sfd = get_socket(server_num,hash);
-    write(sfd,(char *)&message,sizeof(message));
-    sleep(1);    /*给服务器一个时间*/
+    //write(sfd,(char *)&message,sizeof(message));
+    printf("server : %d\n",server_num);
+        /*给服务器一个时间*/
+    //sleep(1);
     close(sfd);
     //printf("OK,%s %s %s\n",message.buff_mo,message.buff_key,message.buff_val);
     return 1;

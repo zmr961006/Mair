@@ -1,16 +1,12 @@
 /*************************************************************************
-	> File Name: message.h
+	> File Name: server_mess.h
 	> Author: 
 	> Mail: 
-	> Created Time: 2018年03月23日 星期五 17时03分28秒
+	> Created Time: 2018年04月03日 星期二 22时30分21秒
  ************************************************************************/
 
-#ifndef _MESSAGE_H
-#define _MESSAGE_H
-
-#include"./order.h"
-#include"./opt_do.h"
-
+#ifndef _SERVER_MESS_H
+#define _SERVER_MESS_H
 
 #define  BUFFLEN 1024
 #define  ODER    30
@@ -18,8 +14,6 @@
 #define  VALLEN  512
 
 #define  ALIVE   1
-
-
 
 typedef struct message{
 
@@ -32,7 +26,6 @@ typedef struct message{
     char out_time[1];
     
 }Message;
-
 
 
 #endif

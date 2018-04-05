@@ -8,6 +8,14 @@
 
 
 #include"./server_start.h"
+#include"./server_init.h"
+
+
+extern int this_server_port;
+
+char buffer[RECEVLEN];  /*接受数据处理缓冲区*/
+
+
 
 
 int server_start()
@@ -27,14 +35,14 @@ int server_start()
     bzero(&servaddr, sizeof(servaddr));
     servaddr.sin_family = AF_INET;
     servaddr.sin_addr.s_addr = htonl(INADDR_ANY);     /*设置服务端IP*/
-    servaddr.sin_port = htons(PORT);
-    //servaddr.sin_addr.s_addr = inet_addr("192.168.3.0");     /*设置服务端IP*/
+    servaddr.sin_port = htons(this_server_port);
+    //printf("this_server_port :%d\n",this_server_port)；
     /*将listenfd绑定服务端地址*/
     bind(listenfd, (struct sockaddr*)&servaddr, sizeof(servaddr));
 
     /*监听请求*/
     listen(listenfd, 20);
-    /*将客户端标识初始化为-1*/
+    /*将客户端标识初始化为-1,最大链接1024个,OPEN_MAX = 1024*/
     for(i = 0; i < OPEN_MAX; i++){
         client[i] = -1;
     }
@@ -49,8 +57,8 @@ int server_start()
     tep.events = EPOLLIN;/*监听文件描述符的可读事件*/
     tep.data.fd = listenfd;/*设置为监听的文件描述符*/
     /*控制epoll监控的文件描述符上的事件*/
-    res = epoll_ctl(efd, EPOLL_CTL_ADD/*注册新的fd到efd*/, listenfd, &tep);
-
+    res = epoll_ctl(efd, EPOLL_CTL_ADD, listenfd, &tep);
+    /*注册新的fd到efd*/
     if(res == -1)
         perror("epoll_ctl");
 
@@ -87,8 +95,11 @@ int server_start()
                     perror("epoll_ctl");
             }else{/*处理efd中监听的客户端请求*/
                 sockfd = ep[i].data.fd;
-                n = read(sockfd, buf, BUFSIZE);
-                printf("get %s\n",buf); /*打印接受到内容*/
+                //n = read(sockfd, buf, BUFSIZE);
+                printf("rece one\n");
+/*数据处理环节*/
+                n = read(sockfd,buffer,RECEVLEN);
+                //printf("get %s\n",buf); /*打印接受到内容*/
                 if(n == 0){ /*读取若为空*/
                     for(j = 0; j <= maxi; j++){
                         if(client[j] == sockfd){
@@ -103,10 +114,13 @@ int server_start()
                     close(sockfd);
                     printf("client[%d] closed connection\n", j);
                 }else{/*非空则处理客户端信息*/
-                    for(j = 0; j<n; j++)
-                        buf[j] = toupper(buf[j]);
+                    //n = read(sockfd,buffer,RECEVLEN);
+                    mess_exl(buffer,RECEVLEN);
+                    memset(buffer,0,RECEVLEN);
+                    /*for(j = 0; j<n; j++)
+                        buf[j] = toupper(buf[j]);*/
                     /*写入与客户端通信的文件描述符sockfd*/
-                    write(sockfd, buf, n);
+                    //write(sockfd, buf, n);
                 }
             }
         }
@@ -116,3 +130,25 @@ int server_start()
     close(efd);
     return 0;
 }
+
+
+
+int mess_exl(char * buf,int len){
+
+    Message mess;
+    memcpy((char *)&mess,buf,sizeof(mess));
+
+    test_mess(mess);
+    printf("call one\n");
+}
+
+
+int test_mess(Message mess){
+ 
+    if(mess.flag == ALIVE){  
+        printf("%s\n%s\n%s\n%d\n%d\n",mess.buff_mo,mess.buff_key,mess.buff_val,mess.flag,mess.hash);
+    }else{
+        printf("close some thing\n");
+    }
+}
+

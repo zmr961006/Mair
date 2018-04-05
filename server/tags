@@ -4,13 +4,67 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
+BUFFEXP	server_init.h	16;"	d
+BUFFLEN	server_mess.h	11;"	d
 BUFSIZE	server_start.h	22;"	d
+ENDLEN	server_init.h	22;"	d
+IPLEN	server_init.h	19;"	d
+KEYLEN	server_mess.h	13;"	d
+LOAD	server_init.h	17;"	d
+Message	server_mess.h	/^}Message;$/;"	t	typeref:struct:message
+NetMap	server_init.c	/^netmap NetMap;       \/*客户端路由表存储结构*\/$/;"	v
+ODER	server_mess.h	12;"	d
 OPEN_MAX	server_start.h	24;"	d
 PORT	server_start.h	25;"	d
+PORTLEN	server_init.h	20;"	d
+RECEVLEN	server_start.h	26;"	d
 SERV_PORT	server_start.h	23;"	d
+STARTLEN	server_init.h	21;"	d
+VALLEN	server_mess.h	14;"	d
 _SERVER_H	server.h	9;"	d
+_SERVER_INIT_H	server_init.h	9;"	d
+_SERVER_MESS_H	server_mess.h	9;"	d
 _SERVER_START_H	server_start.h	9;"	d
 _SERVER_TO_H	server_to.h	9;"	d
+_add_nodeinmap	server_init.c	/^int _add_nodeinmap(char * buf,netinfo * tem){$/;"	f
+_init_info	server_init.c	/^int _init_info(){$/;"	f
+add_nodeinmap	server_init.c	/^int add_nodeinmap(char *buffer,int temp1){$/;"	f
+buff_key	server_mess.h	/^    char buff_key[KEYLEN];$/;"	m	struct:message
+buff_mo	server_mess.h	/^    char buff_mo[ODER];$/;"	m	struct:message
+buff_val	server_mess.h	/^    char buff_val[VALLEN];$/;"	m	struct:message
+buffer	server_start.c	/^char buffer[RECEVLEN];  \/*接受数据处理缓冲区*\/$/;"	v
+explex	server_init.c	/^int explex(char ** infoex,int temp){$/;"	f
+flag	server_mess.h	/^    int  flag ;$/;"	m	struct:message
+hash	server_mess.h	/^    int  hash ;$/;"	m	struct:message
+hash_end	server_init.h	/^    int hash_end;$/;"	m	struct:netinfo
+hash_start	server_init.h	/^    int hash_start;$/;"	m	struct:netinfo
+info	server_init.c	/^char **info;         \/*暂时存储配置信息*\/$/;"	v
+init_info	server_init.c	/^int init_info(char * temp1,int temp){$/;"	f
+ip_char	server_init.h	/^    char *ip_char;$/;"	m	struct:netinfo
+ip_int	server_init.h	/^    int ip_int;$/;"	m	struct:netinfo
 main	server.c	/^int main(int argc ,char **argv){$/;"	f
+mess_exl	server_start.c	/^int mess_exl(char * buf,int len){$/;"	f
+message	server_mess.h	/^typedef struct message{$/;"	s
+netinfo	server_init.h	/^typedef struct netinfo{$/;"	s
+netinfo	server_init.h	/^}netinfo;$/;"	t	typeref:struct:netinfo
+netmap	server_init.h	/^typedef struct netmap {$/;"	s
+netmap	server_init.h	/^}netmap;$/;"	t	typeref:struct:netmap
+networkmap	server_init.h	/^    netinfo *networkmap;$/;"	m	struct:netmap
+next	server_init.h	/^    struct netinfo *next;$/;"	m	struct:netinfo	typeref:struct:netinfo::netinfo
+node_info_num	server_init.c	/^int  node_info_num;  \/*标记有多少个IP节点*\/$/;"	v
+node_num	server_init.h	/^    int node_num;$/;"	m	struct:netmap
+now_time	server_mess.h	/^    char now_time[1];$/;"	m	struct:message
+out_time	server_mess.h	/^    char out_time[1];$/;"	m	struct:message
+port_char	server_init.h	/^    char *port_char;$/;"	m	struct:netinfo
+port_int	server_init.h	/^    int port_int;$/;"	m	struct:netinfo
+proc_profile	server_init.c	/^int proc_profile(){$/;"	f
+read_server	server_init.c	/^int read_server(int temp1,char *temp2){$/;"	f
+server_init	server_init.c	/^int server_init(int server_port){$/;"	f
 server_start	server_start.c	/^int server_start()$/;"	f
 server_to_server	server_to.c	/^int server_to_server(int cmp,char *temp){$/;"	f
+status	server_init.h	/^    int status;$/;"	m	struct:netinfo
+tail	server_init.h	/^    netinfo *tail;$/;"	m	struct:netmap
+test_mess	server_start.c	/^int test_mess(Message mess){$/;"	f
+test_net	server_init.c	/^int test_net(){$/;"	f
+this_server_port	server_init.c	/^int  this_server_port;  \/*本机的端口*\/$/;"	v
+write_server	server_init.c	/^int write_server(int temp1,char *temp2){}$/;"	f
