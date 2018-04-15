@@ -230,10 +230,11 @@ int _add_nodeinmap(char * buf,netinfo * tem){
 
 int proc_profile(){
     
+    printf("------------------------------------------------------------------\n");
     printf("profile :\n");
     printf("firstline: [node_info_num]\n");
     printf("otherline:[sever][ip][port][start][end]\n");
-
+    printf("------------------------------------------------------------------\n");
     
 }
 

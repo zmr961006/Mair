@@ -18,6 +18,7 @@
 #include <ctype.h>
 #include "./server_to.h"
 #include "./server_mess.h"
+#include "./server_watch.h"
 
 #define BUFSIZE    2048
 #define SERV_PORT  8000

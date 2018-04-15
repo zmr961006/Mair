@@ -7,13 +7,12 @@
 ALIVE	server_mess.h	16;"	d
 BUFFEXP	server_init.h	16;"	d
 BUFFLEN	server_mess.h	11;"	d
-BUFSIZE	server_start.h	22;"	d
+BUFSIZE	server_start.h	23;"	d
 Code	server_DB.h	/^    int  Code;$/;"	m	struct:KeyVal
 DB	server_DB.h	/^    KeyVal **DB;    $/;"	m	struct:DataBase
 DB_numbers	server_DB.h	/^    int DB_numbers;$/;"	m	struct:Mair_DB
 DataBase	server_DB.h	/^typedef struct DataBase{                \/*用户数据库*\/$/;"	s
 DataBase	server_DB.h	/^}DataBase;$/;"	t	typeref:struct:DataBase
-Database	server_DB.h	/^    Database[10];$/;"	m	struct:Mair_DB
 ENDLEN	server_init.h	22;"	d
 HASH	server_DB.h	18;"	d
 INT	server_DB.h	16;"	d
@@ -29,16 +28,20 @@ Mair_DB	server_DB.h	/^}Mair_DB;$/;"	t	typeref:struct:Mair_DB
 Message	server_mess.h	/^}Message;$/;"	t	typeref:struct:message
 NetMap	server_init.c	/^netmap NetMap;       \/*客户端路由表存储结构*\/$/;"	v
 ODER	server_mess.h	12;"	d
-OPEN_MAX	server_start.h	24;"	d
-PORT	server_start.h	25;"	d
+OPEN_MAX	server_start.h	25;"	d
+PORT	server_start.h	26;"	d
 PORTLEN	server_init.h	20;"	d
-RECEVLEN	server_start.h	26;"	d
-SERV_PORT	server_start.h	23;"	d
+RECEVLEN	server_start.h	27;"	d
+SERVER	server_DB.h	20;"	d
+SERV_PORT	server_start.h	24;"	d
 STARTLEN	server_init.h	21;"	d
 STRING	server_DB.h	15;"	d
+ServerDB	server_DB.h	/^    DataBase  ServerDB[10];$/;"	m	struct:Mair_DB
 Type	server_DB.h	/^    int  Type;$/;"	m	struct:KeyVal
+Type	server_mess.h	/^    int  Type ;                \/*接受类型*\/$/;"	m	struct:message
 VALLEN	server_mess.h	14;"	d
 Val	server_DB.h	/^    void *Val;$/;"	m	struct:KeyVal
+WATCH	server_DB.h	21;"	d
 ZLIST	server_DB.h	19;"	d
 _DYSTR_H	dystr.h	9;"	d
 _ORDER_H	order.h	9;"	d
@@ -48,6 +51,7 @@ _SERVER_INIT_H	server_init.h	9;"	d
 _SERVER_MESS_H	server_mess.h	9;"	d
 _SERVER_START_H	server_start.h	9;"	d
 _SERVER_TO_H	server_to.h	9;"	d
+_SERVER_WATCH_H	server_watch.h	9;"	d
 _add_nodeinmap	server_init.c	/^int _add_nodeinmap(char * buf,netinfo * tem){$/;"	f
 _init_info	server_init.c	/^int _init_info(){$/;"	f
 add_nodeinmap	server_init.c	/^int add_nodeinmap(char *buffer,int temp1){$/;"	f
@@ -57,6 +61,7 @@ buff_mo	server_mess.h	/^    char buff_mo[ODER];$/;"	m	struct:message
 buff_val	server_mess.h	/^    char buff_val[VALLEN];$/;"	m	struct:message
 buffer	server_start.c	/^char buffer[RECEVLEN];  \/*接受数据处理缓冲区*\/$/;"	v
 ctime	server_DB.h	/^    char ctime[1];$/;"	m	struct:KeyVal
+database_choice	server_DB.c	/^int database_choice(char * order,int hash){$/;"	f
 db_numbers	server_DB.h	/^    int db_numbers;$/;"	m	struct:DataBase
 dtime	server_DB.h	/^    char dtime[1];$/;"	m	struct:KeyVal
 dystr	dystr.h	/^typedef struct dystr{$/;"	s
@@ -102,6 +107,7 @@ out_time	server_mess.h	/^    char out_time[1];$/;"	m	struct:message
 plen	dystr.h	/^    int   plen;         \/*预计长度*\/$/;"	m	struct:dystr
 port_char	server_init.h	/^    char *port_char;$/;"	m	struct:netinfo
 port_int	server_init.h	/^    int port_int;$/;"	m	struct:netinfo
+print_mess	server_watch.c	/^int print_mess(Message mess){$/;"	f
 proc_profile	server_init.c	/^int proc_profile(){$/;"	f
 read_server	server_init.c	/^int read_server(int temp1,char *temp2){$/;"	f
 server_DB	server_DB.c	/^Mair_DB server_DB;    \/*全局数据存储系统*\/$/;"	v

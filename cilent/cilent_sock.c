@@ -18,9 +18,9 @@ int get_socket(int fd,int temp){
 
     netinfo * tem;
     tem = NetMap.networkmap;
-    for(i = 0;i < fd;i++){                    /*选择一个合适的服务器转发*/
-        tem = NetMap.networkmap->next;
-    }
+    //for(i = 0;i < fd;i++){                   // 选择一个合适的服务器转发,暂时关闭分布转发
+    //    tem = NetMap.networkmap->next;
+    //}
 
 
     sockfd = socket(AF_INET,SOCK_STREAM,0);

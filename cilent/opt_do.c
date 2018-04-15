@@ -126,20 +126,25 @@ int do_send(int fd){        /*根据哈希值发送数据*/
     Message message;
     int hash = 0;
     int len  = strlen(buf_key);
+    int vlen = strlen(buf_val);
     int sfd;
     int server_num = 0;
     memcpy(message.buff_mo,buf_oder,ODER);
     memcpy(message.buff_key,buf_key,KEYLEN);
     memcpy(message.buff_val,buf_val,VALLEN);
+    message.buff_val[vlen-1] = '\0';
+    //printf("val %s",message.buff_val);
+    //printf("lalalalal\n");
     hash = get_hash(buf_key,len);
     //printf("%d\n",hash);
     //get_time();
     server_num = get_server(hash);
     message.hash = hash;
     message.flag = ALIVE;
+    message.Type = get_ordernum(buf_oder);    /*获取命令类型*/
     //printf("%d\n",server_num);
     sfd = get_socket(server_num,hash);
-    //write(sfd,(char *)&message,sizeof(message));
+    write(sfd,(char *)&message,sizeof(message));
     printf("server : %d\n",server_num);
         /*给服务器一个时间*/
     //sleep(1);
@@ -203,6 +208,21 @@ int get_server(int hash){
     
 
     return (hash % NetMap.node_num);
+
+}
+
+
+int get_ordernum(char * order){
+    
+    if((strcmp(order,"SET") == 0) || (strcmp(order,"set") == 0)){
+
+        return STRING;
+
+    }else{
+
+        return -1;
+    }
+    
 
 }
 

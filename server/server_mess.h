@@ -22,6 +22,7 @@ typedef struct message{
     char buff_val[VALLEN];
     int  flag ;
     int  hash ;
+    int  Type ;                /*接受类型*/
     char now_time[1];
     char out_time[1];
     

@@ -19,6 +19,20 @@
 
 #define  ALIVE   1
 
+/********************************************命令类型*******************************/
+
+#define  STRING  1 
+#define  INT     2
+#define  LIST    3
+#define  HASH    4
+#define  ZLIST   5
+#define  SERVER  6
+#define  WATCH   7
+
+/***********************************************************************************/
+
+
+
 
 
 typedef struct message{
@@ -28,6 +42,7 @@ typedef struct message{
     char buff_val[VALLEN];
     int  flag ;
     int  hash ;
+    int  Type ;          /*命令类型*/
     char now_time[1];
     char out_time[1];
     

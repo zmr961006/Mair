@@ -8,6 +8,7 @@
 #include<stdio.h>
 #include"./server_to.h"
 
+/*分布式转发模块*/
 
 int server_to_server(int cmp,char *temp){
 

@@ -31,6 +31,7 @@ int _send_to(int fd,Message mess);
 
 int get_hash(char *data,int len);
 
+int get_ordernum(char * order);    /*获取命令类型*/
 
 int get_server(int hash);
 

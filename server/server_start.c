@@ -9,7 +9,7 @@
 
 #include"./server_start.h"
 #include"./server_init.h"
-
+#include"./server_DB.h"
 
 extern int this_server_port;
 
@@ -96,7 +96,7 @@ int server_start()
             }else{/*处理efd中监听的客户端请求*/
                 sockfd = ep[i].data.fd;
                 //n = read(sockfd, buf, BUFSIZE);
-                printf("rece one\n");
+                //printf("rece one\n");
 /*数据处理环节*/
                 n = read(sockfd,buffer,RECEVLEN);
                 //printf("get %s\n",buf); /*打印接受到内容*/
@@ -137,16 +137,16 @@ int mess_exl(char * buf,int len){
 
     Message mess;
     memcpy((char *)&mess,buf,sizeof(mess));
-
-    test_mess(mess);
-    printf("call one\n");
+    database_choice(mess,NULL,0);             /*选择操作命令,并作出相应处理*/
+    print_mess(mess);
+    
 }
 
 
 int test_mess(Message mess){
  
     if(mess.flag == ALIVE){  
-        printf("%s\n%s\n%s\n%d\n%d\n",mess.buff_mo,mess.buff_key,mess.buff_val,mess.flag,mess.hash);
+        printf("%s\n%s\n%s\n%d\n%d\n%d\n",mess.buff_mo,mess.buff_key,mess.buff_val,mess.flag,mess.hash,mess.Type);
     }else{
         printf("close some thing\n");
     }
