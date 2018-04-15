@@ -23,6 +23,7 @@ typedef struct message{
     int  flag ;
     int  hash ;
     int  Type ;                /*接受类型*/
+    int  server_hash;
     char now_time[1];
     char out_time[1];
     

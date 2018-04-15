@@ -56,7 +56,7 @@ typedef struct DataBase{                /*用户数据库*/
     int db_numbers;    /*默认一个数据库100条存储表*/
     int flag;
     int sum_numbers;   /*每个数据库总数*/
-    
+    int *sum_index;    /*每个数据库现在存储多少*/ 
 
 }DataBase;
 

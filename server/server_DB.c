@@ -20,6 +20,8 @@ int init_database(){     /*初始数据库10个,每个数据库100条存储表*/
     }
     for(int j = 0;j < 10;j++){                               
         server_DB.ServerDB[j].DB = (KeyVal **)malloc(sizeof(KeyVal *)*100);
+        server_DB.ServerDB[j].sum_numbers = 0 ;                 
+        server_DB.ServerDB[j].sum_index = (int *)malloc(sizeof(int) * 100);     /*当前每一个链存储0个KV,使用数组存储每条链表的情况*/
     }
     
     for(int t = 0;t < 10;t++ ){                          /*初始化存储链表的头节点*/
@@ -28,6 +30,8 @@ int init_database(){     /*初始数据库10个,每个数据库100条存储表*/
             server_DB.ServerDB[t].DB[k]->status = HEADNODE;
         }
     }
+    
+    
 
     return 0;
 }
@@ -40,8 +44,11 @@ int database_choice(Message mess,char * order,int hash){
         if((strcmp(mess.buff_mo,"SET") == 0) || (strcmp(mess.buff_mo,"set") == 0)){
             SET(mess,0);
             return STRING;
+        }else if((strcmp(mess.buff_mo,"EXIST") == 0) || (strcmp(mess.buff_mo,"exist") == 0)){
+            EXIST(mess,0);
+        }else{
+            //pass
         }
-
     }else if(Flag == INT){
 
     }else if(Flag == LIST){

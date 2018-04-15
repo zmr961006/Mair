@@ -13,9 +13,15 @@
 #include"./server_DB.h"
 
 
+#define NOTEXIST  0
+#define KEXIST     1
+
+
 /*SET 指令；字符串设置*/
 
 int SET(Message mess,int argc);
+
+int EXIST(Message mess,int argc);
 
 
 #endif
