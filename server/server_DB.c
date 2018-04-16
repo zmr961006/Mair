@@ -48,8 +48,12 @@ int database_choice(Message mess,char * order,int hash){
             return STRING;
         }else if((strcmp(mess.buff_mo,"EXIST") == 0) || (strcmp(mess.buff_mo,"exist") == 0)){
             EXIST(mess,0);
+        }else if((strcmp(mess.buff_mo,"GET") == 0) || (strcmp(mess.buff_mo,"get") == 0)){
+            GET(mess,0);
+        }else if((strcmp(mess.buff_mo,"DEL") == 0) || (strcmp(mess.buff_mo,"del") == 0)){
+            DEL(mess,0);
         }else{
-            //pass
+            //pass;
         }
     }else if(Flag == INT){
 

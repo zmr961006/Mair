@@ -66,8 +66,8 @@ int dystr_create3(dystr * temp,char * data,int len){
     len = strlen(data);
     temp->dystr_data = (char *)malloc(sizeof(char) * len * 2);
     strcmp(temp->dystr_data,data);
-    temp.len = len;
-    temp.plen = 2 * len;
+    temp->len = len;
+    temp->plen = 2 * len;
 
 }
 

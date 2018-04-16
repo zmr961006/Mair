@@ -24,7 +24,7 @@ typedef struct dystr{
 
 
 int dystr_create2(dystr temp,char *data,int len);
-int dystr_create3(dystr temp,char *data,int len);
+int dystr_create3(dystr *temp,char *data,int len);
 
 dystr * dystr_create(char * data,int len);
 int dystr_free(dystr * temp);
