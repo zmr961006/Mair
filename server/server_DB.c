@@ -27,7 +27,9 @@ int init_database(){     /*初始数据库10个,每个数据库100条存储表*/
     for(int t = 0;t < 10;t++ ){                          /*初始化存储链表的头节点*/
         for(int k  = 0;k < 100;k++){
             server_DB.ServerDB[t].DB[k] = (KeyVal *)malloc(sizeof(KeyVal));   
-            server_DB.ServerDB[t].DB[k]->status = HEADNODE;
+            server_DB.ServerDB[t].DB[k]->status = HEADNODE;                   /*存储链表的头结点标志*/
+            server_DB.ServerDB[t].DB[k]->next = NULL;                         /*初始化next;head;tail 指针*/
+            server_DB.ServerDB[t].DB[k]->head = server_DB.ServerDB[t].DB[k]->tail = server_DB.ServerDB[t].DB[k];
         }
     }
     

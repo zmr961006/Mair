@@ -17,13 +17,13 @@
 
 typedef struct message{
 
-    char buff_mo[ODER];
-    char buff_key[KEYLEN];
-    char buff_val[VALLEN];
+    char buff_mo[ODER];        /*命令存储*/
+    char buff_key[KEYLEN];     /*KEY存储*/
+    char buff_val[VALLEN];     /*VALUE存储*/
     int  flag ;
-    int  hash ;
+    int  hash ;                /*哈希值*/
     int  Type ;                /*接受类型*/
-    int  server_hash;
+    int  server_hash;          /*数据库ID*/
     char now_time[1];
     char out_time[1];
     
