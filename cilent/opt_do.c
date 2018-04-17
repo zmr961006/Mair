@@ -36,11 +36,15 @@ int init_cilent(){
     orders.orders[5] = "set";
     orders.orders[6] = "EXIST";
     orders.orders[7] = "exist";
-    orders.num = 8;
+    orders.orders[8] = "ADDNODE";
+    orders.orders[9] = "addnode";
+    orders.orders[10]= "DELNODE";
+    orders.orders[11]= "delnode";
+    orders.num = 12;
 
 }
 
-int opt(char * temp1,char *temp2,int argc){
+int opt(char * temp1,char *temp2,int argc){    /*客户端数据处理流程*/
 
     int start = 1;
     int flag  = 1;
@@ -54,7 +58,7 @@ int opt(char * temp1,char *temp2,int argc){
         printf(">>");
         fgets(buf_in,BUFFLEN,stdin);
         buf_in[BUFFLEN-1] = '\0';
-        //printf("yaun: %s\n",buf_in);
+    
         flag = chunk(buf_in);
         if(flag == 0){
             printf("erro styn\n");
@@ -68,7 +72,7 @@ int opt(char * temp1,char *temp2,int argc){
 
 }
 
-int chunk(char * temp1){
+int chunk(char * temp1){          /*检查命令是否合理*/
     
    
     memset(buf_oder,0,ODER);
@@ -154,8 +158,9 @@ int do_send(int fd){        /*根据哈希值发送数据*/
     message.hash = hash;
     message.flag = ALIVE;
     message.Type = get_ordernum(buf_oder);    /*获取命令类型*/
-    message.server_hash = server_id;
+    message.server_hash = server_id;          /*默认在0号数据库*/
     //printf("%d\n",server_num);
+    do_local(message.Type,message);                   /*与服务器操作相关的预处理操作*/  
     sfd = get_socket(server_num,hash);
     write(sfd,(char *)&message,sizeof(message));
     printf("server : %d\n",server_num);
@@ -174,6 +179,8 @@ int _send_to(int fd,Message mess){
 
 
 }
+
+/*Murrem2 哈希算法*/
 
 int get_hash(char *data,int len){
 
@@ -243,10 +250,64 @@ int get_ordernum(char * order){
         
         return STRING;
 
+    }else if((strcmp(order,"ADDNODE") == 0) || (strcmp(order,"addnode") == 0)){
+    
+        return SERVER;
+
+    }else if((strcmp(order,"DELNODE") == 0) || (strcmp(order,"delnode") == 0)){
+    
+        return SERVER;
+
     }else{
-        //pass;
+        //passs
     }
     
+
+}
+
+
+/*本地网络转发预处理*/
+int do_local(int Type,Message message){
+    
+    if(Type == SERVER){
+        if(strcmp(message.buff_mo,"ADDNODE") == 0 || strcmp(message.buff_mo,"addnode") == 0){
+
+            ADDNODE(message,0);
+            return 0;
+
+        }else if(strcmp(message.buff_mo,"DELNODE") == 0 || strcmp(message.buff_mo,"delnode") == 0){
+            
+            DELNODE(message,0);
+            return 0;
+
+        }else{
+            
+            //pass
+        }    
+        
+    }else{
+        //pass
+    }
+        
+}
+
+
+int ADDNODE(Message mess,int flag){
+ 
+    test_net();
+    printf("ADDNODE : %s : %s\n",mess.buff_key,mess.buff_val);
+    appendnode(mess,flag);
+    test_net();
+
+}
+
+
+int DELNODE(Message mess,int flag){
+    
+    test_net();
+    printf("DELNODE : %s: %s\n",mess.buff_key,mess.buff_val);
+    delnode(mess,flag);
+    test_net();
 
 }
 

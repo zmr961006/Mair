@@ -10,7 +10,7 @@
 
 
 char **info;         /*暂时存储配置信息*/
-int  node_info_num;  /*标记有多少个IP节点*/
+int  node_info_num;  /*标记有多少个IP节点,读取配置文件时加载*/
 netmap NetMap;       /*客户端路由表存储结构*/
 
 
@@ -237,3 +237,54 @@ int proc_profile(){
     
 }
 
+
+int appendnode(Message mess,int flag){
+    
+    if(NetMap.node_num    == 0){
+        netinfo * temp    = (netinfo*)malloc(sizeof(netinfo));
+        temp->next        = NULL;
+        NetMap.node_num   = 1;
+        NetMap.networkmap = temp;
+        NetMap.tail       = temp;
+        _app_nodeinmap(mess,temp);
+
+    }else{
+        netinfo * temp    = (netinfo*)malloc(sizeof(netinfo));
+        NetMap.node_num   += 1;
+        NetMap.tail->next = temp;
+        NetMap.tail       = temp;
+        temp->next = NULL;
+        _app_nodeinmap(mess,temp);
+    }
+
+}
+
+
+int _app_nodeinmap(Message mess,netinfo * temp){
+    
+    char buff[3][10];
+    int llen = strlen(mess.buff_val);
+    int len = strlen(mess.buff_key);
+    temp->ip_char = (char *)malloc(sizeof(char) * len);
+    memcpy(temp->ip_char,mess.buff_key,len);
+
+    for(int i = 0;i < llen;i++){   //解析命令
+        
+        if(mess.buff_val[i] != ':'){
+
+
+        }
+
+    }
+    
+    
+}
+
+
+
+
+
+int delnode(Message mess,int flag){
+    
+    
+}

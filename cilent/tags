@@ -4,9 +4,11 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
+ADDNODE	opt_do.c	/^int ADDNODE(Message mess,int flag){$/;"	f
 ALIVE	message.h	20;"	d
 BUFFEXP	read_pro.h	16;"	d
 BUFFLEN	message.h	15;"	d
+DELNODE	opt_do.c	/^int DELNODE(Message mess,int flag){$/;"	f
 ENDLEN	read_pro.h	22;"	d
 HASH	message.h	27;"	d
 INT	message.h	25;"	d
@@ -41,7 +43,8 @@ buf_val	opt_do.c	/^char buf_val[VALLEN];     \/*VAL缓冲*\/$/;"	v
 buff_key	message.h	/^    char buff_key[KEYLEN];  \/*KEY 存储*\/$/;"	m	struct:message
 buff_mo	message.h	/^    char buff_mo[ODER];     \/*命令存储*\/$/;"	m	struct:message
 buff_val	message.h	/^    char buff_val[VALLEN];  \/*VAL 存储*\/$/;"	m	struct:message
-chunk	opt_do.c	/^int chunk(char * temp1){$/;"	f
+chunk	opt_do.c	/^int chunk(char * temp1){          \/*检查命令是否合理*\/$/;"	f
+do_local	opt_do.c	/^int do_local(int Type,Message message){$/;"	f
 do_send	opt_do.c	/^int do_send(int fd){        \/*根据哈希值发送数据*\/$/;"	f
 explex	read_pro.c	/^int explex(char ** infoex,int temp){$/;"	f
 flag	message.h	/^    int  flag ;             \/*标志*\/$/;"	m	struct:message
@@ -69,7 +72,7 @@ node_info_num	read_pro.c	/^int  node_info_num;  \/*标记有多少个IP节点*\/
 node_num	read_pro.h	/^    int node_num;$/;"	m	struct:netmap
 now_time	message.h	/^    char now_time[1];       \/*设置时间*\/$/;"	m	struct:message
 num	order.h	/^    int num;$/;"	m	struct:order
-opt	opt_do.c	/^int opt(char * temp1,char *temp2,int argc){$/;"	f
+opt	opt_do.c	/^int opt(char * temp1,char *temp2,int argc){    \/*客户端数据处理流程*\/$/;"	f
 order	order.h	/^typedef struct order {$/;"	s
 order	order.h	/^}order;$/;"	t	typeref:struct:order
 orders	opt_do.c	/^order orders;$/;"	v

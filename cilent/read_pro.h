@@ -12,6 +12,8 @@
 #include <stdlib.h>
 #include <strings.h>
 #include <string.h>
+#include "./message.h"
+
 
 #define BUFFEXP  50
 #define LOAD     10    /*默认三个节点*/
@@ -61,5 +63,11 @@ int proc_profile();
 int test_net();
 
 
+/**********************服务器节点增加***********************/
+int appendnode(Message mess,int flag);
+
+int delnode(Message mess,int flag);
+
+int _app_nodeinmap(Message mess,netinfo * temp);
 
 #endif

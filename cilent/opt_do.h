@@ -23,16 +23,21 @@ int do_send();
 
 int init_cilent();
 
-
 int send_to(int fd);
 
 int _send_to(int fd,Message mess);
-
 
 int get_hash(char *data,int len);
 
 int get_ordernum(char * order);    /*获取命令类型*/
 
 int get_server(int hash);
+
+int do_local(int Type,Message message);            /*与服务器相关的预处理*/  
+
+int ADDNODE(Message mess,int flag);                /*增加服务器节点*/ 
+
+int DELNODE(Message mess,int flag);                /*删除服务器节点*/
+
 
 #endif
