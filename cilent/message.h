@@ -37,14 +37,15 @@
 
 typedef struct message{
 
-    char buff_mo[ODER];
-    char buff_key[KEYLEN];
-    char buff_val[VALLEN];
-    int  flag ;
-    int  hash ;
-    int  Type ;          /*命令类型*/
-    char now_time[1];
-    char out_time[1];
+    char buff_mo[ODER];     /*命令存储*/
+    char buff_key[KEYLEN];  /*KEY 存储*/
+    char buff_val[VALLEN];  /*VAL 存储*/
+    int  flag ;             /*标志*/
+    int  hash ;             /*哈希值*/
+    int  Type ;             /*命令类型*/
+    int  server_hash;       /*数据库ID*/
+    char now_time[1];       /*设置时间*/
+    char out_time[1];       /*过期时间*/
     
 }Message;
 

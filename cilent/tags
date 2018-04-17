@@ -4,18 +4,27 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
+ALIVE	message.h	20;"	d
 BUFFEXP	read_pro.h	16;"	d
 BUFFLEN	message.h	15;"	d
 ENDLEN	read_pro.h	22;"	d
+HASH	message.h	27;"	d
+INT	message.h	25;"	d
 IPLEN	read_pro.h	19;"	d
 KEYLEN	message.h	17;"	d
+LIST	message.h	26;"	d
 LOAD	read_pro.h	17;"	d
 Message	message.h	/^}Message;$/;"	t	typeref:struct:message
 NetMap	read_pro.c	/^netmap NetMap;       \/*客户端路由表存储结构*\/$/;"	v
 ODER	message.h	16;"	d
 PORTLEN	read_pro.h	20;"	d
+SERVER	message.h	29;"	d
 STARTLEN	read_pro.h	21;"	d
+STRING	message.h	24;"	d
+Type	message.h	/^    int  Type ;             \/*命令类型*\/$/;"	m	struct:message
 VALLEN	message.h	18;"	d
+WATCH	message.h	30;"	d
+ZLIST	message.h	28;"	d
 _CILENT_SOCK_H	cilent_sock.h	9;"	d
 _MESSAGE_H	message.h	9;"	d
 _OPT_DO_H	opt_do.h	9;"	d
@@ -29,17 +38,18 @@ buf_in	opt_do.c	/^char buf_in[BUFFLEN];     \/*指令缓冲*\/$/;"	v
 buf_key	opt_do.c	/^char buf_key[KEYLEN];     \/*KEY 缓冲*\/$/;"	v
 buf_oder	opt_do.c	/^char buf_oder[ODER];      \/*命令缓冲*\/$/;"	v
 buf_val	opt_do.c	/^char buf_val[VALLEN];     \/*VAL缓冲*\/$/;"	v
-buff_key	message.h	/^    char buff_key[KEYLEN];$/;"	m	struct:message
-buff_mo	message.h	/^    char buff_mo[ODER];$/;"	m	struct:message
-buff_val	message.h	/^    char buff_val[VALLEN];$/;"	m	struct:message
+buff_key	message.h	/^    char buff_key[KEYLEN];  \/*KEY 存储*\/$/;"	m	struct:message
+buff_mo	message.h	/^    char buff_mo[ODER];     \/*命令存储*\/$/;"	m	struct:message
+buff_val	message.h	/^    char buff_val[VALLEN];  \/*VAL 存储*\/$/;"	m	struct:message
 chunk	opt_do.c	/^int chunk(char * temp1){$/;"	f
 do_send	opt_do.c	/^int do_send(int fd){        \/*根据哈希值发送数据*\/$/;"	f
 explex	read_pro.c	/^int explex(char ** infoex,int temp){$/;"	f
-flag	message.h	/^    int  flag ;$/;"	m	struct:message
+flag	message.h	/^    int  flag ;             \/*标志*\/$/;"	m	struct:message
 get_hash	opt_do.c	/^int get_hash(char *data,int len){$/;"	f
+get_ordernum	opt_do.c	/^int get_ordernum(char * order){$/;"	f
 get_server	opt_do.c	/^int get_server(int hash){$/;"	f
 get_socket	cilent_sock.c	/^int get_socket(int fd,int temp){$/;"	f
-hash	message.h	/^    int  hash ;$/;"	m	struct:message
+hash	message.h	/^    int  hash ;             \/*哈希值*\/$/;"	m	struct:message
 hash_end	read_pro.h	/^    int hash_end;$/;"	m	struct:netinfo
 hash_start	read_pro.h	/^    int hash_start;$/;"	m	struct:netinfo
 info	read_pro.c	/^char **info;         \/*暂时存储配置信息*\/$/;"	v
@@ -57,18 +67,20 @@ networkmap	read_pro.h	/^    netinfo *networkmap;$/;"	m	struct:netmap
 next	read_pro.h	/^    struct netinfo *next;$/;"	m	struct:netinfo	typeref:struct:netinfo::netinfo
 node_info_num	read_pro.c	/^int  node_info_num;  \/*标记有多少个IP节点*\/$/;"	v
 node_num	read_pro.h	/^    int node_num;$/;"	m	struct:netmap
-now_time	message.h	/^    char now_time[1];$/;"	m	struct:message
+now_time	message.h	/^    char now_time[1];       \/*设置时间*\/$/;"	m	struct:message
 num	order.h	/^    int num;$/;"	m	struct:order
 opt	opt_do.c	/^int opt(char * temp1,char *temp2,int argc){$/;"	f
 order	order.h	/^typedef struct order {$/;"	s
 order	order.h	/^}order;$/;"	t	typeref:struct:order
 orders	opt_do.c	/^order orders;$/;"	v
-orders	order.h	/^    char *orders[6];$/;"	m	struct:order
-out_time	message.h	/^    char out_time[1];$/;"	m	struct:message
+orders	order.h	/^    char *orders[50];$/;"	m	struct:order
+out_time	message.h	/^    char out_time[1];       \/*过期时间*\/$/;"	m	struct:message
 port_char	read_pro.h	/^    char *port_char;$/;"	m	struct:netinfo
 port_int	read_pro.h	/^    int port_int;$/;"	m	struct:netinfo
 proc_profile	read_pro.c	/^int proc_profile(){$/;"	f
 read_server	read_pro.c	/^int read_server(int temp1,char *temp2){$/;"	f
+server_hash	message.h	/^    int  server_hash;       \/*数据库ID*\/$/;"	m	struct:message
+server_id	opt_do.c	/^int  server_id = 0 ;      \/*数据库默认ID 为0号*\/$/;"	v
 status	read_pro.h	/^    int status;$/;"	m	struct:netinfo
 tail	read_pro.h	/^    netinfo *tail;$/;"	m	struct:netmap
 test_net	read_pro.c	/^int test_net(){$/;"	f

@@ -8,41 +8,50 @@ ALIVE	server_mess.h	16;"	d
 BUFFEXP	server_init.h	16;"	d
 BUFFLEN	server_mess.h	11;"	d
 BUFSIZE	server_start.h	23;"	d
-Code	server_DB.h	/^    int  Code;$/;"	m	struct:KeyVal
+Code	server_DB.h	/^    int  Code;                   \/*存储编码类型*\/$/;"	m	struct:KeyVal
 DB	server_DB.h	/^    KeyVal **DB;    $/;"	m	struct:DataBase
 DB_numbers	server_DB.h	/^    int DB_numbers;$/;"	m	struct:Mair_DB
+DEAD	server_str.h	19;"	d
+DEL	server_str.c	/^int DEL(Message mess,int argc){$/;"	f
 DataBase	server_DB.h	/^typedef struct DataBase{                \/*用户数据库*\/$/;"	s
 DataBase	server_DB.h	/^}DataBase;$/;"	t	typeref:struct:DataBase
 ENDLEN	server_init.h	22;"	d
-HASH	server_DB.h	18;"	d
-INT	server_DB.h	16;"	d
+EXIST	server_str.c	/^int EXIST(Message mess,int argc){$/;"	f
+FINDALL	server_str.c	/^KeyVal * FINDALL(){$/;"	f
+GET	server_str.c	/^KeyVal* GET(Message mess,int argc){$/;"	f
+HASH	server_DB.h	19;"	d
+HEADNODE	server_DB.h	27;"	d
+INT	server_DB.h	17;"	d
 IPLEN	server_init.h	19;"	d
+KEXIST	server_str.h	18;"	d
 KEYLEN	server_mess.h	13;"	d
-Key	server_DB.h	/^    dystr Key;$/;"	m	struct:KeyVal
+Key	server_DB.h	/^    dystr Key;                   \/*动态字符存储KEY*\/$/;"	m	struct:KeyVal
 KeyVal	server_DB.h	/^typedef struct KeyVal{           \/*KV实例*\/$/;"	s
 KeyVal	server_DB.h	/^}KeyVal;$/;"	t	typeref:struct:KeyVal
-LIST	server_DB.h	17;"	d
+LIST	server_DB.h	18;"	d
 LOAD	server_init.h	17;"	d
 Mair_DB	server_DB.h	/^typedef struct Mair_DB{          \/*数据库大类*\/$/;"	s
 Mair_DB	server_DB.h	/^}Mair_DB;$/;"	t	typeref:struct:Mair_DB
 Message	server_mess.h	/^}Message;$/;"	t	typeref:struct:message
+NOTEXIST	server_str.h	17;"	d
 NetMap	server_init.c	/^netmap NetMap;       \/*客户端路由表存储结构*\/$/;"	v
 ODER	server_mess.h	12;"	d
 OPEN_MAX	server_start.h	25;"	d
 PORT	server_start.h	26;"	d
 PORTLEN	server_init.h	20;"	d
 RECEVLEN	server_start.h	27;"	d
-SERVER	server_DB.h	20;"	d
+SERVER	server_DB.h	21;"	d
 SERV_PORT	server_start.h	24;"	d
+SET	server_str.c	/^int SET(Message mess,int argc){$/;"	f
 STARTLEN	server_init.h	21;"	d
-STRING	server_DB.h	15;"	d
-ServerDB	server_DB.h	/^    DataBase  ServerDB[10];$/;"	m	struct:Mair_DB
-Type	server_DB.h	/^    int  Type;$/;"	m	struct:KeyVal
+STRING	server_DB.h	16;"	d
+ServerDB	server_DB.h	/^    DataBase  ServerDB[10];      \/*数据库10个实例*\/$/;"	m	struct:Mair_DB
+Type	server_DB.h	/^    int  Type;                   \/*指令类型*\/$/;"	m	struct:KeyVal
 Type	server_mess.h	/^    int  Type ;                \/*接受类型*\/$/;"	m	struct:message
 VALLEN	server_mess.h	14;"	d
-Val	server_DB.h	/^    void *Val;$/;"	m	struct:KeyVal
-WATCH	server_DB.h	21;"	d
-ZLIST	server_DB.h	19;"	d
+Val	server_DB.h	/^    void *Val;                   \/*无类型存储VAL*\/$/;"	m	struct:KeyVal
+WATCH	server_DB.h	22;"	d
+ZLIST	server_DB.h	20;"	d
 _DYSTR_H	dystr.h	9;"	d
 _ORDER_H	order.h	9;"	d
 _SERVER_DB_H	server_DB.h	9;"	d
@@ -50,36 +59,41 @@ _SERVER_H	server.h	9;"	d
 _SERVER_INIT_H	server_init.h	9;"	d
 _SERVER_MESS_H	server_mess.h	9;"	d
 _SERVER_START_H	server_start.h	9;"	d
+_SERVER_STR_H	server_str.h	9;"	d
 _SERVER_TO_H	server_to.h	9;"	d
 _SERVER_WATCH_H	server_watch.h	9;"	d
 _add_nodeinmap	server_init.c	/^int _add_nodeinmap(char * buf,netinfo * tem){$/;"	f
 _init_info	server_init.c	/^int _init_info(){$/;"	f
+add_KV_DB	server_str.c	/^int add_KV_DB(KeyVal * temp,int flag){$/;"	f
 add_nodeinmap	server_init.c	/^int add_nodeinmap(char *buffer,int temp1){$/;"	f
 bix	dystr.h	/^    int   bix;           \/*编码类型*\/$/;"	m	struct:dystr
-buff_key	server_mess.h	/^    char buff_key[KEYLEN];$/;"	m	struct:message
-buff_mo	server_mess.h	/^    char buff_mo[ODER];$/;"	m	struct:message
-buff_val	server_mess.h	/^    char buff_val[VALLEN];$/;"	m	struct:message
+buff_key	server_mess.h	/^    char buff_key[KEYLEN];     \/*KEY存储*\/$/;"	m	struct:message
+buff_mo	server_mess.h	/^    char buff_mo[ODER];        \/*命令存储*\/$/;"	m	struct:message
+buff_val	server_mess.h	/^    char buff_val[VALLEN];     \/*VALUE存储*\/$/;"	m	struct:message
 buffer	server_start.c	/^char buffer[RECEVLEN];  \/*接受数据处理缓冲区*\/$/;"	v
-ctime	server_DB.h	/^    char ctime[1];$/;"	m	struct:KeyVal
-database_choice	server_DB.c	/^int database_choice(char * order,int hash){$/;"	f
-db_numbers	server_DB.h	/^    int db_numbers;$/;"	m	struct:DataBase
-dtime	server_DB.h	/^    char dtime[1];$/;"	m	struct:KeyVal
+ctime	server_DB.h	/^    char ctime[1];               \/*存在时间*\/$/;"	m	struct:KeyVal
+database_choice	server_DB.c	/^int database_choice(Message mess,char * order,int hash){$/;"	f
+db_id	server_DB.h	/^    short db_id;                 \/*存储表ID*\/$/;"	m	struct:KeyVal
+db_numbers	server_DB.h	/^    int db_numbers;    \/*默认一个数据库100条存储表*\/$/;"	m	struct:DataBase
+dtime	server_DB.h	/^    char dtime[1];               \/*删除时间*\/$/;"	m	struct:KeyVal
 dystr	dystr.h	/^typedef struct dystr{$/;"	s
 dystr	dystr.h	/^}dystr;$/;"	t	typeref:struct:dystr
 dystr_create	dystr.c	/^dystr * dystr_create(char * data,int len){  \/*预先分配字符两倍的存储量*\/$/;"	f
 dystr_create2	dystr.c	/^int dystr_create2(dystr temp,char *data,int len){$/;"	f
+dystr_create3	dystr.c	/^int dystr_create3(dystr * temp,char * data,int len){$/;"	f
 dystr_data	dystr.h	/^    char  * dystr_data;  \/*内容*\/$/;"	m	struct:dystr
 dystr_free	dystr.c	/^int dystr_free(dystr *temp){$/;"	f
 dystr_mod	dystr.c	/^int dystr_mod(dystr * temp,char * data,int len){$/;"	f
 explex	server_init.c	/^int explex(char ** infoex,int temp){$/;"	f
 flag	server_DB.h	/^    int flag;$/;"	m	struct:DataBase
 flag	server_mess.h	/^    int  flag ;$/;"	m	struct:message
-hash	server_DB.h	/^    int  hash;$/;"	m	struct:KeyVal
-hash	server_mess.h	/^    int  hash ;$/;"	m	struct:message
+hash	server_DB.h	/^    int  hash;                   \/*哈希值*\/$/;"	m	struct:KeyVal
+hash	server_mess.h	/^    int  hash ;                \/*哈希值*\/$/;"	m	struct:message
 hash_end	server_init.h	/^    int hash_end;$/;"	m	struct:netinfo
 hash_start	server_init.h	/^    int hash_start;$/;"	m	struct:netinfo
+head	server_DB.h	/^    struct KeyVal * head;    \/*本条存储链的头节点*\/$/;"	m	struct:KeyVal	typeref:struct:KeyVal::KeyVal
 info	server_init.c	/^char **info;         \/*暂时存储配置信息*\/$/;"	v
-init_database	server_DB.c	/^int init_database(){     \/*初始数据库10个*\/$/;"	f
+init_database	server_DB.c	/^int init_database(){     \/*初始数据库10个,每个数据库100条存储表*\/$/;"	f
 init_info	server_init.c	/^int init_info(char * temp1,int temp){$/;"	f
 init_order	server_order.c	/^int init_order(){$/;"	f
 ip_char	server_init.h	/^    char *ip_char;$/;"	m	struct:netinfo
@@ -87,13 +101,14 @@ ip_int	server_init.h	/^    int ip_int;$/;"	m	struct:netinfo
 len	dystr.h	/^    int   len;           \/*数据长度*\/$/;"	m	struct:dystr
 main	server.c	/^int main(int argc ,char **argv){$/;"	f
 mess_exl	server_start.c	/^int mess_exl(char * buf,int len){$/;"	f
+mess_to_kv	server_str.c	/^KeyVal * mess_to_kv(Message mess,int flag,int len){$/;"	f
 message	server_mess.h	/^typedef struct message{$/;"	s
 netinfo	server_init.h	/^typedef struct netinfo{$/;"	s
 netinfo	server_init.h	/^}netinfo;$/;"	t	typeref:struct:netinfo
 netmap	server_init.h	/^typedef struct netmap {$/;"	s
 netmap	server_init.h	/^}netmap;$/;"	t	typeref:struct:netmap
 networkmap	server_init.h	/^    netinfo *networkmap;$/;"	m	struct:netmap
-next	server_DB.h	/^    struct KeyVal * next;$/;"	m	struct:KeyVal	typeref:struct:KeyVal::KeyVal
+next	server_DB.h	/^    struct KeyVal * next;    \/*本节点的下一个节点*\/$/;"	m	struct:KeyVal	typeref:struct:KeyVal::KeyVal
 next	server_init.h	/^    struct netinfo *next;$/;"	m	struct:netinfo	typeref:struct:netinfo::netinfo
 node_info_num	server_init.c	/^int  node_info_num;  \/*标记有多少个IP节点*\/$/;"	v
 node_num	server_init.h	/^    int node_num;$/;"	m	struct:netmap
@@ -107,16 +122,23 @@ out_time	server_mess.h	/^    char out_time[1];$/;"	m	struct:message
 plen	dystr.h	/^    int   plen;         \/*预计长度*\/$/;"	m	struct:dystr
 port_char	server_init.h	/^    char *port_char;$/;"	m	struct:netinfo
 port_int	server_init.h	/^    int port_int;$/;"	m	struct:netinfo
+print_dbnum	server_watch.c	/^int print_dbnum(){$/;"	f
+print_kv	server_watch.c	/^int print_kv(KeyVal * temp){$/;"	f
 print_mess	server_watch.c	/^int print_mess(Message mess){$/;"	f
 proc_profile	server_init.c	/^int proc_profile(){$/;"	f
 read_server	server_init.c	/^int read_server(int temp1,char *temp2){$/;"	f
 server_DB	server_DB.c	/^Mair_DB server_DB;    \/*全局数据存储系统*\/$/;"	v
-server_hash	server_DB.h	/^    int  server_hash;$/;"	m	struct:KeyVal
+server_hash	server_DB.h	/^    int  server_hash;            \/*数据库ID*\/$/;"	m	struct:KeyVal
+server_hash	server_mess.h	/^    int  server_hash;          \/*数据库ID*\/$/;"	m	struct:message
 server_init	server_init.c	/^int server_init(int server_port){$/;"	f
 server_start	server_start.c	/^int server_start()$/;"	f
 server_to_server	server_to.c	/^int server_to_server(int cmp,char *temp){$/;"	f
+status	server_DB.h	/^    short status;                \/*指示头尾*\/$/;"	m	struct:KeyVal
 status	server_init.h	/^    int status;$/;"	m	struct:netinfo
-sum_numbers	server_DB.h	/^    int sum_numbers;   \/*每个数据库总数*\/$/;"	m	struct:DataBase
+sum_index	server_DB.h	/^    int *sum_index;    \/*每个数据库现在存储计数*\/ $/;"	m	struct:DataBase
+sum_numbers	server_DB.h	/^    int sum_numbers;   \/*此数据库总数*\/$/;"	m	struct:DataBase
+table_id	server_DB.h	/^    short table_id;              \/*数据库ID*\/$/;"	m	struct:KeyVal
+tail	server_DB.h	/^    struct KeyVal * tail;    \/*本条存储链的尾节点*\/$/;"	m	struct:KeyVal	typeref:struct:KeyVal::KeyVal
 tail	server_init.h	/^    netinfo *tail;$/;"	m	struct:netmap
 test_mess	server_start.c	/^int test_mess(Message mess){$/;"	f
 test_net	server_init.c	/^int test_net(){$/;"	f

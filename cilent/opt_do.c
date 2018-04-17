@@ -14,6 +14,7 @@
 #include<unistd.h>
 
 extern netmap NetMap;
+extern int    server_id;
 order orders;
 
 
@@ -22,6 +23,7 @@ char buf_oder[ODER];      /*命令缓冲*/
 char buf_key[KEYLEN];     /*KEY 缓冲*/
 char buf_val[VALLEN];     /*VAL缓冲*/
 
+int  server_id = 0 ;      /*数据库默认ID 为0号*/
 
 
 int init_cilent(){
@@ -32,7 +34,9 @@ int init_cilent(){
     orders.orders[3] = "del";
     orders.orders[4] = "get";
     orders.orders[5] = "set";
-    orders.num = 6;
+    orders.orders[6] = "EXIST";
+    orders.orders[7] = "exist";
+    orders.num = 8;
 
 }
 
@@ -129,19 +133,28 @@ int do_send(int fd){        /*根据哈希值发送数据*/
     int vlen = strlen(buf_val);
     int sfd;
     int server_num = 0;
+    //hash = get_hash(buf_key,len);
     memcpy(message.buff_mo,buf_oder,ODER);
     memcpy(message.buff_key,buf_key,KEYLEN);
     memcpy(message.buff_val,buf_val,VALLEN);
-    message.buff_val[vlen-1] = '\0';
-    //printf("val %s",message.buff_val);
-    //printf("lalalalal\n");
-    hash = get_hash(buf_key,len);
-    //printf("%d\n",hash);
+    if(vlen == 0){
+        message.buff_val[vlen]   = '\0';   
+        message.buff_key[len-1] = '\0';
+    }else{  
+        message.buff_val[vlen-1] = '\0';
+        
+    }
+    printf("val %s len %d\n",message.buff_val,vlen);
+    int klen = strlen(message.buff_key);
+    hash = get_hash(message.buff_key,klen);
+    //hash = get_hash(buf_key,len);
+    printf("%d\n",hash);
     //get_time();
     server_num = get_server(hash);
     message.hash = hash;
     message.flag = ALIVE;
     message.Type = get_ordernum(buf_oder);    /*获取命令类型*/
+    message.server_hash = server_id;
     //printf("%d\n",server_num);
     sfd = get_socket(server_num,hash);
     write(sfd,(char *)&message,sizeof(message));
@@ -218,9 +231,20 @@ int get_ordernum(char * order){
 
         return STRING;
 
-    }else{
+    }else if((strcmp(order,"EXIST") == 0) || (strcmp(order,"exist") == 0)){
 
-        return -1;
+        return STRING;
+
+    }else if((strcmp(order,"DEL") == 0) || (strcmp(order,"del") == 0)){
+    
+        return STRING;
+
+    }else if((strcmp(order,"GET") == 0) || (strcmp(order,"get") == 0)){
+        
+        return STRING;
+
+    }else{
+        //pass;
     }
     
 

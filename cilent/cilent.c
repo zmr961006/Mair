@@ -39,7 +39,7 @@ int main(int argc,char **argv){
     //servaddr.sin_port = htons(9001);
     //inet_pton(AF_INET,ip,&servaddr.sin_addr);
     //connect(sockfd,(struct sockaddr*)&servaddr,sizeof(servaddr));
-    printf("已关闭分布式转发功能");
+    printf("已关闭分布式转发功能\n");
     init_cilent();  /*初始化命令列表*/
     read_server(0,NULL);   /*读取配置文件建立完整路由表*/
     //test_net();          /*测试路由表的建立*/

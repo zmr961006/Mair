@@ -138,7 +138,7 @@ int mess_exl(char * buf,int len){
     Message mess;
     memcpy((char *)&mess,buf,sizeof(mess));
     database_choice(mess,NULL,0);             /*选择操作命令,并作出相应处理*/
-    print_mess(mess);
+    //print_mess(mess);
     
 }
 

@@ -54,18 +54,21 @@ int dystr_mod(dystr * temp,char * data,int len){
 int dystr_create2(dystr temp,char *data,int len){
     
     len = strlen(data);
+    //printf("in len :%d\n",len);
     temp.dystr_data = (char *)malloc(sizeof(char) * len * 2);
-    strcmp(temp.dystr_data,data);
+    //strcpy(temp.dystr_data,data);
+    memcpy(temp.dystr_data,data,len);
+    printf("temp.dystr_data:%s\n",temp.dystr_data);
     temp.len = len;
     temp.plen = 2 * len;
-    
+    return 0;   
 }
 
 int dystr_create3(dystr * temp,char * data,int len){
     
     len = strlen(data);
     temp->dystr_data = (char *)malloc(sizeof(char) * len * 2);
-    strcmp(temp->dystr_data,data);
+    strcpy(temp->dystr_data,data);
     temp->len = len;
     temp->plen = 2 * len;
 

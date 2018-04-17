@@ -13,7 +13,7 @@
 #define  KEYLEN  512
 #define  VALLEN  512
 
-#define  ALIVE   1
+
 
 typedef struct message{
 

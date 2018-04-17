@@ -14,7 +14,8 @@ extern Mair_DB server_DB;
 /*打印MESS*/
 
 int print_mess(Message mess){
-
+    
+    printf("P_MS\n");
     printf("|order|Key|Vale|Type|Hash|\n");
     printf("|%s|%s|%s|%d|%d|\n",mess.buff_mo,mess.buff_key,mess.buff_val,mess.Type,mess.hash);
     return 0;
@@ -25,9 +26,10 @@ int print_mess(Message mess){
 
 int print_kv(KeyVal * temp){
     
-    printf("|key|val|hash|db_index|tab_index|\n");
-    printf("|%s|%s|%d|%d|%d|",temp->Key.dystr_data,temp->Val,temp->hash,temp->db_id,temp->table_id);
-
+    printf("P_KV\n");
+    printf("|key|val|hash|db_index|tab_index|online|\n");
+    printf("|%s|%s|%d|%d|%d|%d|\n",temp->Key.dystr_data,temp->Val,temp->hash,temp->db_id,temp->table_id,temp->status);
+    return 0;
 
 }
 

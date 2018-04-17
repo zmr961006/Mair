@@ -12,7 +12,7 @@
 typedef struct order {
 
 
-    char *orders[6];
+    char *orders[50];
     int num;
 
 }order;

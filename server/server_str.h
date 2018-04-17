@@ -11,11 +11,13 @@
 #include<stdio.h>
 #include"./server_mess.h"
 #include"./server_DB.h"
+#include"./server_watch.h"
 
 
 #define NOTEXIST   0       /*KV不存在*/
 #define KEXIST     1       /*KV存在*/
 #define DEAD       (-1)    /*KV暂时性死亡*/
+#define ALIVE      1       /*KV存活*/
 
 /*SET 指令；字符串设置*/
 
@@ -36,7 +38,8 @@ KeyVal* GET(Message mess,int argc);
 /*删除某个KV */
 int DEL(Message mess,int argc);
 
-KeyVal * FIND(Message mess,char *temp,int len);
+/*打印所有的KV*/
+KeyVal * FINDALL();
 
 
 

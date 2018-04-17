@@ -20,8 +20,9 @@ int init_database(){     /*初始数据库10个,每个数据库100条存储表*/
     }
     for(int j = 0;j < 10;j++){                               
         server_DB.ServerDB[j].DB = (KeyVal **)malloc(sizeof(KeyVal *)*100);
-        server_DB.ServerDB[j].sum_numbers = 0 ;                 
-        server_DB.ServerDB[j].sum_index = (int *)malloc(sizeof(int) * 100);     /*当前每一个链存储0个KV,使用数组存储每条链表的情况*/
+        server_DB.ServerDB[j].sum_numbers = 0 ;          /*每个数据存储链的计数初始化0*/
+        server_DB.ServerDB[j].sum_index = (int *)malloc(sizeof(int) * 100); 
+        /*当前每一个链存储0个KV,使用数组存储每条链表的情况*/
     }
     
     for(int t = 0;t < 10;t++ ){                          /*初始化存储链表的头节点*/
@@ -30,6 +31,7 @@ int init_database(){     /*初始数据库10个,每个数据库100条存储表*/
             server_DB.ServerDB[t].DB[k]->status = HEADNODE;                   /*存储链表的头结点标志*/
             server_DB.ServerDB[t].DB[k]->next = NULL;                         /*初始化next;head;tail 指针*/
             server_DB.ServerDB[t].DB[k]->head = server_DB.ServerDB[t].DB[k]->tail = server_DB.ServerDB[t].DB[k];
+                                                                              /*head = tail =  self ;next = NULL'*/
         }
     }
     
@@ -48,10 +50,13 @@ int database_choice(Message mess,char * order,int hash){
             return STRING;
         }else if((strcmp(mess.buff_mo,"EXIST") == 0) || (strcmp(mess.buff_mo,"exist") == 0)){
             EXIST(mess,0);
+            return STRING;
         }else if((strcmp(mess.buff_mo,"GET") == 0) || (strcmp(mess.buff_mo,"get") == 0)){
             GET(mess,0);
+	    return STRING;
         }else if((strcmp(mess.buff_mo,"DEL") == 0) || (strcmp(mess.buff_mo,"del") == 0)){
             DEL(mess,0);
+	    return STRING;
         }else{
             //pass;
         }
