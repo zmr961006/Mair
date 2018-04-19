@@ -293,11 +293,12 @@ int do_local(int Type,Message message){
 
 
 int ADDNODE(Message mess,int flag){
- 
+    printf("---------------------------------------------\n");
     test_net();
     printf("ADDNODE : %s : %s\n",mess.buff_key,mess.buff_val);
     appendnode(mess,flag);
     test_net();
+    printf("---------------------------------------------\n");
 
 }
 

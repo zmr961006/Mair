@@ -1,5 +1,5 @@
 all:
-	gcc *.c -o cilent -g
+	gcc *.c  -o cilent -g
 
 clean:
 	rm cilent

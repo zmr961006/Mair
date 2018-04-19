@@ -12,6 +12,7 @@
 #include<stdlib.h>
 #include<strings.h>
 #include<string.h>
+
 #include"./message.h"
 
 
@@ -25,7 +26,7 @@ int init_cilent();
 
 int send_to(int fd);
 
-int _send_to(int fd,Message mess);
+//int _send_to(int fd,Message mess);
 
 int get_hash(char *data,int len);
 

@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <strings.h>
 #include <string.h>
+
 #include "./message.h"
 
 
@@ -25,28 +26,29 @@
 
 
 
-
+/*路由转发表结构*/
 
 typedef struct netinfo{
 
-    char *ip_char;
-    char *port_char;
-    int ip_int;
-    int port_int;
-    int hash_start;
-    int hash_end;
-    int status;
-    struct netinfo *next;
+    char *ip_char;          /*IP字符存储*/
+    char *port_char;        /*端口字符存储*/
+    int ip_int;             /*IP整形存储*/
+    int port_int;           /*端口整形存储*/
+    int hash_start;         /*哈希开始*/
+    int hash_end;           /*哈希结束*/
+    int status;             /*节点状态*/
+    struct netinfo *next;   /*链表*/
 
 }netinfo;
 
 
 
+/*路由转发表内存结构*/
 typedef struct netmap {
 
-    netinfo *networkmap;
-    netinfo *tail;
-    int node_num;
+    netinfo *networkmap;    /*路由转发表*/
+    netinfo *tail;          /*表尾*/
+    int node_num;           /*路由个数*/
 
 }netmap;
 
@@ -69,5 +71,17 @@ int appendnode(Message mess,int flag);
 int delnode(Message mess,int flag);
 
 int _app_nodeinmap(Message mess,netinfo * temp);
+
+int find_servernode(Message mess,int flag);
+
+/***********************************************************/
+
+
+/*********************服务器节点删除************************/
+
+
+int delserver(int flag);         /*删除服务器路由节点*/
+
+/**********************************************************/
 
 #endif

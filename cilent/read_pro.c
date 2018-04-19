@@ -260,31 +260,149 @@ int appendnode(Message mess,int flag){
 }
 
 
+
+/*示例化netinfo 网络转发节点*/
+
 int _app_nodeinmap(Message mess,netinfo * temp){
     
-    char buff[3][10];
-    int llen = strlen(mess.buff_val);
-    int len = strlen(mess.buff_key);
-    temp->ip_char = (char *)malloc(sizeof(char) * len);
-    memcpy(temp->ip_char,mess.buff_key,len);
+    char buff[3][20];
 
-    for(int i = 0;i < llen;i++){   //解析命令
-        
-        if(mess.buff_val[i] != ':'){
+    int llen = strlen(mess.buff_val);                //获取端口和范围
+    int len = strlen(mess.buff_key);                 //获取IP 
 
+    temp->ip_char = (char *)malloc(sizeof(char) * len);  //直接拷贝IP 内容
+    memcpy(temp->ip_char,mess.buff_key,len);             
 
-        }
-
-    }
     
+    int j ,k = 0;
+    for(int i = 0;i < llen ; i++){
+        if(mess.buff_val[i] == ':'){
+            j++;
+            k = 0;
+        }else{
+            
+            buff[j][k] = mess.buff_val[i];
+            k++;
+        }
+    }
+
+    int plen = strlen(buff[0]);
+    temp->port_char = (char *)malloc(sizeof(char) * plen);
+    memcpy(temp->port_char,buff[0],plen);
+
+    temp->port_int   =  atoi(buff[0]); 
+    temp->hash_start =  atoi(buff[1]);
+    temp->hash_end   =  atoi(buff[2]);
+    temp->status     =  1;
+    NetMap.node_num++;        /*计数加一*/
+
+    return 0;    
     
 }
-
 
 
 
 
 int delnode(Message mess,int flag){
+ 
+    /*if(NetMap.node_num    == 0){
+        netinfo * temp    = (netinfo*)malloc(sizeof(netinfo));
+        temp->next        = NULL;
+        NetMap.node_num   = 1;
+        NetMap.networkmap = temp;
+        NetMap.tail       = temp;
+        _app_nodeinmap(mess,temp);
+
+    }*/
+    int Flag = find_servernode(mess,flag);
+    if(Flag > 0){
     
+        delserver(Flag);    
+    
+    }else{
+        
+        printf("DEL SERVER IS NOT EXIST\n");    
+
+    }
+
     
 }
+
+
+/*查找服务器节点在链表中的位置，然后返回是第几个节点*/
+int find_servernode(Message mess,int flag){
+    
+    char buff[3][20];
+    netinfo * temp  = NetMap.networkmap;
+    int llen = strlen(mess.buff_val);
+    int j ,k = 0;
+    int number = 0;
+    for(int i = 0;i < llen ; i++){
+        if(mess.buff_val[i] == ':'){
+            j++;
+            k = 0;
+        }else{
+            
+            buff[j][k] = mess.buff_val[i];
+            k++;
+        }
+    }  
+
+    
+    while(temp != NULL){
+        
+        //printf("temp->ip_char : %s mess.buff_key: %s\n",temp->ip_char,mess.buff_key);
+        //printf("temp->port_char: %s buff[0]: %s\n",temp->port_char,buff[0]);
+        int iplen = strlen(temp->ip_char);
+        int portlen = strlen(temp->port_char);
+        int mplen   = strlen(mess.buff_key);
+        int mpplen  = strlen(buff[0]);
+        //printf("len : %d %d\n len:%d %d\n",iplen,mplen,portlen,mpplen);
+        number++;
+        if((strncmp(temp->ip_char,mess.buff_key,iplen) == 0) && (strncmp(temp->port_char,buff[0],portlen) == 0)){
+                printf("I find this server : %d\n",number);
+                return number;    
+        }else{
+                //printf("Can not find this server\n");
+        }
+        temp = temp->next;
+        
+    }
+
+    return number;        /*0 为没找到， >0 即为存在*/
+
+}
+
+
+
+int delserver(int flag){
+    
+    int index = flag;
+    netinfo * temp = NetMap.networkmap;
+
+    if(flag == 1){
+        NetMap.networkmap = temp->next;
+        free(temp->ip_char);
+        free(temp->port_char);
+        free(temp);
+        NetMap.node_num--;
+
+    }else{
+        flag -= 1;
+        for(int i = 1;i < flag;i++){
+            temp = temp->next;    
+        }
+        netinfo * node = temp->next;
+        temp->next = temp->next->next;
+        free(node->ip_char);
+        free(node->port_char);
+        NetMap.node_num--;
+    }
+    
+    return 0;
+
+
+}
+
+
+

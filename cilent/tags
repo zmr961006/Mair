@@ -6,22 +6,22 @@
 !_TAG_PROGRAM_VERSION	5.8	//
 ADDNODE	opt_do.c	/^int ADDNODE(Message mess,int flag){$/;"	f
 ALIVE	message.h	20;"	d
-BUFFEXP	read_pro.h	16;"	d
+BUFFEXP	read_pro.h	19;"	d
 BUFFLEN	message.h	15;"	d
 DELNODE	opt_do.c	/^int DELNODE(Message mess,int flag){$/;"	f
-ENDLEN	read_pro.h	22;"	d
+ENDLEN	read_pro.h	25;"	d
 HASH	message.h	27;"	d
 INT	message.h	25;"	d
-IPLEN	read_pro.h	19;"	d
+IPLEN	read_pro.h	22;"	d
 KEYLEN	message.h	17;"	d
 LIST	message.h	26;"	d
-LOAD	read_pro.h	17;"	d
+LOAD	read_pro.h	20;"	d
 Message	message.h	/^}Message;$/;"	t	typeref:struct:message
 NetMap	read_pro.c	/^netmap NetMap;       \/*客户端路由表存储结构*\/$/;"	v
 ODER	message.h	16;"	d
-PORTLEN	read_pro.h	20;"	d
+PORTLEN	read_pro.h	23;"	d
 SERVER	message.h	29;"	d
-STARTLEN	read_pro.h	21;"	d
+STARTLEN	read_pro.h	24;"	d
 STRING	message.h	24;"	d
 Type	message.h	/^    int  Type ;             \/*命令类型*\/$/;"	m	struct:message
 VALLEN	message.h	18;"	d
@@ -33,9 +33,11 @@ _OPT_DO_H	opt_do.h	9;"	d
 _ORDER_H	order.h	9;"	d
 _READ_PRO_H	read_pro.h	9;"	d
 _add_nodeinmap	read_pro.c	/^int _add_nodeinmap(char * buf,netinfo * tem){$/;"	f
+_app_nodeinmap	read_pro.c	/^int _app_nodeinmap(Message mess,netinfo * temp){$/;"	f
 _init_info	read_pro.c	/^int _init_info(){$/;"	f
 _send_to	opt_do.c	/^int _send_to(int fd,Message mess){$/;"	f
 add_nodeinmap	read_pro.c	/^int add_nodeinmap(char *buffer,int temp1){$/;"	f
+appendnode	read_pro.c	/^int appendnode(Message mess,int flag){$/;"	f
 buf_in	opt_do.c	/^char buf_in[BUFFLEN];     \/*指令缓冲*\/$/;"	v
 buf_key	opt_do.c	/^char buf_key[KEYLEN];     \/*KEY 缓冲*\/$/;"	v
 buf_oder	opt_do.c	/^char buf_oder[ODER];      \/*命令缓冲*\/$/;"	v
@@ -44,6 +46,7 @@ buff_key	message.h	/^    char buff_key[KEYLEN];  \/*KEY 存储*\/$/;"	m	struct:m
 buff_mo	message.h	/^    char buff_mo[ODER];     \/*命令存储*\/$/;"	m	struct:message
 buff_val	message.h	/^    char buff_val[VALLEN];  \/*VAL 存储*\/$/;"	m	struct:message
 chunk	opt_do.c	/^int chunk(char * temp1){          \/*检查命令是否合理*\/$/;"	f
+delnode	read_pro.c	/^int delnode(Message mess,int flag){$/;"	f
 do_local	opt_do.c	/^int do_local(int Type,Message message){$/;"	f
 do_send	opt_do.c	/^int do_send(int fd){        \/*根据哈希值发送数据*\/$/;"	f
 explex	read_pro.c	/^int explex(char ** infoex,int temp){$/;"	f
@@ -68,7 +71,7 @@ netmap	read_pro.h	/^typedef struct netmap {$/;"	s
 netmap	read_pro.h	/^}netmap;$/;"	t	typeref:struct:netmap
 networkmap	read_pro.h	/^    netinfo *networkmap;$/;"	m	struct:netmap
 next	read_pro.h	/^    struct netinfo *next;$/;"	m	struct:netinfo	typeref:struct:netinfo::netinfo
-node_info_num	read_pro.c	/^int  node_info_num;  \/*标记有多少个IP节点*\/$/;"	v
+node_info_num	read_pro.c	/^int  node_info_num;  \/*标记有多少个IP节点,读取配置文件时加载*\/$/;"	v
 node_num	read_pro.h	/^    int node_num;$/;"	m	struct:netmap
 now_time	message.h	/^    char now_time[1];       \/*设置时间*\/$/;"	m	struct:message
 num	order.h	/^    int num;$/;"	m	struct:order
