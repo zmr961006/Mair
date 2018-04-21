@@ -21,7 +21,7 @@ int get_socket(int fd,int temp){
     //for(i = 0;i < fd;i++){                   // 选择一个合适的服务器转发,暂时关闭分布转发
     //    tem = NetMap.networkmap->next;
     //}
-
+    //tem = find_send_node(hash);              /*寻找合适的转发节点*/
 
     sockfd = socket(AF_INET,SOCK_STREAM,0);
     bzero(&servaddr,sizeof(servaddr));
