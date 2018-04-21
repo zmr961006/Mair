@@ -26,6 +26,14 @@
 
 
 
+/****************************配置文件*************************/
+/*
+ * [server][ip][port][hash_start][hash_end][status][virtual]
+*/                                                           
+/*************************************************************/
+
+
+
 /*路由转发表结构*/
 
 typedef struct netinfo{
@@ -36,7 +44,8 @@ typedef struct netinfo{
     int port_int;           /*端口整形存储*/
     int hash_start;         /*哈希开始*/
     int hash_end;           /*哈希结束*/
-    int status;             /*节点状态*/
+    int status;             /*节点状态,是否是虚拟节点*/
+    int virtual_server;     /*虚拟节点对应真实节点的指向*/
     struct netinfo *next;   /*链表*/
 
 }netinfo;
@@ -83,5 +92,17 @@ int find_servernode(Message mess,int flag);
 int delserver(int flag);         /*删除服务器路由节点*/
 
 /**********************************************************/
+
+
+/********************服务器节点重写***********************/
+
+int rewritefile();
+
+/*********************************************************/
+
+
+
+
+
 
 #endif

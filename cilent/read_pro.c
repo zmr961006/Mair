@@ -1,6 +1,6 @@
 /*************************************************************************
 	> File Name: read_pro.c
-	> Author: 
+    > Author: 
 	> Mail: 
 	> Created Time: 2018年03月26日 星期一 10时33分30秒
  ************************************************************************/
@@ -20,12 +20,15 @@ int test_net(){
     netinfo * temp;
     temp = NetMap.networkmap;
     int i  = 0;
-    for(i = 0;i < NetMap.node_num;i++){
-        printf("ip :%s\n",temp->ip_char);
+    while(temp != NULL){
+        printf("server info:\n");
+        printf("ip   :%s\n",temp->ip_char);
         printf("port :%s\n",temp->port_char);
         printf("port :%d\n",temp->port_int);
         printf("start :%d\n",temp->hash_start);
-        printf("end :%d\n",temp->hash_end);
+        printf("end   :%d\n",temp->hash_end);
+        printf("status : %d\n",temp->status);
+        printf("virtual_server: %d\n\n",temp->virtual_server);
         temp = temp->next;
     }
 
@@ -67,7 +70,7 @@ int read_server(int temp1,char *temp2){
     FILE *fp;
     char buf[10];
     init_info(NULL,0);
-    fp = fopen("profile","at+");
+    fp = fopen("profile","at+");        /*正式:profile  测试：test*/
     fgets(buf,50,fp);
     for(int i = 0;i < node_info_num;i++){
         fgets(info[i],50,fp);
@@ -213,6 +216,14 @@ int _add_nodeinmap(char * buf,netinfo * tem){
                     //printf("end:%d\n",tem->hash_end);
                     break;
                 }
+                case 5:{
+                    tem->status = atoi(buff);
+                    break;
+                }
+                case 6:{
+                    tem->virtual_server = atoi(buff);
+                    break;
+                }
                 
             }
             flag++;
@@ -265,7 +276,7 @@ int appendnode(Message mess,int flag){
 
 int _app_nodeinmap(Message mess,netinfo * temp){
     
-    char buff[3][20];
+    char buff[5][30];
 
     int llen = strlen(mess.buff_val);                //获取端口和范围
     int len = strlen(mess.buff_key);                 //获取IP 
@@ -290,10 +301,13 @@ int _app_nodeinmap(Message mess,netinfo * temp){
     temp->port_char = (char *)malloc(sizeof(char) * plen);
     memcpy(temp->port_char,buff[0],plen);
 
-    temp->port_int   =  atoi(buff[0]); 
-    temp->hash_start =  atoi(buff[1]);
-    temp->hash_end   =  atoi(buff[2]);
-    temp->status     =  1;
+    temp->port_int       =  atoi(buff[0]); 
+    temp->hash_start     =  atoi(buff[1]);
+    temp->hash_end       =  atoi(buff[2]);
+    temp->status         =  atoi(buff[3]);
+    temp->virtual_server =  atoi(buff[4]);
+
+    printf("NODE: %d %d %d %d %d\n",temp->port_int,temp->hash_start,temp->hash_end,temp->status,temp->virtual_server);
     NetMap.node_num++;        /*计数加一*/
 
     return 0;    
@@ -332,7 +346,7 @@ int delnode(Message mess,int flag){
 /*查找服务器节点在链表中的位置，然后返回是第几个节点*/
 int find_servernode(Message mess,int flag){
     
-    char buff[3][20];
+    char buff[5][20];
     netinfo * temp  = NetMap.networkmap;
     int llen = strlen(mess.buff_val);
     int j ,k = 0;
@@ -405,4 +419,87 @@ int delserver(int flag){
 }
 
 
+int rewritefile(){
+    
+    char buff[100];
+    memset(buff,0,100);
+
+    FILE * fp;
+    fp = fopen("profile","w");
+    
+    netinfo * temp;
+    temp = NetMap.networkmap;
+    int i  = 0;
+    char  server_start[8] = "[server]";
+    int len_one = strlen(server_start);
+    int index = 0;
+
+    char h_start[10];
+    char h_end[10];
+    char s_status[10];
+    char s_virtual[10];
+    int node_num ;
+    node_num = NetMap.node_num;
+    char num[2];
+    sprintf(num,"%d",node_num);
+    int len_nu = strlen(num);
+    strncat(buff,"[",1);
+    strncat(buff,num,len_nu);
+    strncat(buff,"]",1);
+    fprintf(fp,"%s\n",buff);
+    memset(buff,0,100);
+
+    while(temp != NULL){
+        
+        index = 0;
+        int len_ip = strlen(temp->ip_char);
+        int len_port = strlen(temp->port_char);
+        strncat(buff,server_start,8);  
+        strncat(buff,"[",1);
+        strncat(buff,temp->ip_char,len_ip);
+        strncat(buff,"]",1);
+    
+        strncat(buff,"[",1);
+        strncat(buff,temp->port_char,len_port);
+        strncat(buff,"]",1);
+
+
+        sprintf(h_start,"%d",temp->hash_start);
+        sprintf(h_end,"%d",temp->hash_end);
+        sprintf(s_status,"%d",temp->status);
+        sprintf(s_virtual,"%d",temp->virtual_server);
+        
+        int len_hs = strlen(h_start);
+        int len_he = strlen(h_end);
+        int len_st = strlen(s_status);
+        int len_sv = strlen(s_virtual);
+
+
+        strncat(buff,"[",1);
+        strncat(buff,h_start,len_hs);
+        strncat(buff,"]",1);
+
+        strncat(buff,"[",1);
+        strncat(buff,h_end,len_he);
+        strncat(buff,"]",1);
+
+        strncat(buff,"[",1);
+        strncat(buff,s_status,len_st);
+        strncat(buff,"]",1);
+
+        strncat(buff,"[",1);
+        strncat(buff,s_virtual,len_sv);
+        strncat(buff,"]",1);
+
+        fprintf(fp,"%s\n",buff);
+
+        //printf("%s %s %s %s\n",h_start,h_end,s_virtual,s_status);
+        printf("%s\n",buff);
+        memset(buff,0,100);
+        temp = temp->next;
+    }
+    fclose(fp);
+
+
+}
 

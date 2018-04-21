@@ -161,12 +161,12 @@ int do_send(int fd){        /*根据哈希值发送数据*/
     message.server_hash = server_id;          /*默认在0号数据库*/
     //printf("%d\n",server_num);
     do_local(message.Type,message);                   /*与服务器操作相关的预处理操作*/  
-    sfd = get_socket(server_num,hash);
-    write(sfd,(char *)&message,sizeof(message));
+    //sfd = get_socket(server_num,hash);
+    //write(sfd,(char *)&message,sizeof(message));
     printf("server : %d\n",server_num);
         /*给服务器一个时间*/
     //sleep(1);
-    close(sfd);
+    //close(sfd);
     //printf("OK,%s %s %s\n",message.buff_mo,message.buff_key,message.buff_val);
     return 1;
 
@@ -273,11 +273,13 @@ int do_local(int Type,Message message){
         if(strcmp(message.buff_mo,"ADDNODE") == 0 || strcmp(message.buff_mo,"addnode") == 0){
 
             ADDNODE(message,0);
+            REWRITEFILE();
             return 0;
 
         }else if(strcmp(message.buff_mo,"DELNODE") == 0 || strcmp(message.buff_mo,"delnode") == 0){
             
             DELNODE(message,0);
+            REWRITEFILE();
             return 0;
 
         }else{
@@ -310,6 +312,14 @@ int DELNODE(Message mess,int flag){
     delnode(mess,flag);
     test_net();
 
+}
+
+int REWRITEFILE(){
+    
+    int number;
+    number = rewritefile();
+
+    return number;
 }
 
 
