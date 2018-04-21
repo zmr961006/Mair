@@ -13,6 +13,8 @@
 #include <strings.h>
 #include <string.h>
 
+#include "./server_mess.h"
+
 #define BUFFEXP  50
 #define LOAD     10    /*默认三个节点*/
 
@@ -24,7 +26,7 @@
 
 
 
-
+/*路由转发表*/
 typedef struct netinfo{
 
     char *ip_char;
@@ -34,6 +36,7 @@ typedef struct netinfo{
     int hash_start;
     int hash_end;
     int status;
+    int virtual_server;
     struct netinfo *next;
 
 }netinfo;
@@ -59,5 +62,35 @@ int proc_profile();
 int test_net();
 int server_init(int server_init);
 int read_server(int temp1,char *temp2);
+
+
+
+
+/**********************服务器节点增加***********************/
+int appendnode(Message mess,int flag);
+
+int delnode(Message mess,int flag);
+
+int _app_nodeinmap(Message mess,netinfo * temp);
+
+int find_servernode(Message mess,int flag);
+
+/***********************************************************/
+
+
+/*********************服务器节点删除************************/
+
+
+int delserver(int flag);         /*删除服务器路由节点*/
+
+/**********************************************************/
+
+
+/********************服务器节点重写***********************/
+
+int rewritefile();
+
+/*********************************************************/
+
 
 #endif

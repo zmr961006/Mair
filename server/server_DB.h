@@ -11,6 +11,7 @@
 #include<stdio.h>
 #include"./dystr.h"
 #include"./server_mess.h"
+#include"./server_ser.h"
 
 /*************************************数据类型*************************************/
 #define STRING  1

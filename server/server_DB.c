@@ -67,7 +67,18 @@ int database_choice(Message mess,char * order,int hash){
     }else if(Flag == ZLIST){
 
     }else if(Flag == SERVER){
-
+        
+	    if((strcmp(mess.buff_mo,"ADDNODE") == 0) || (strcmp(mess.buff_mo,"addnode") == 0)){
+                ADDNODE(mess,0);
+                REWRITEFILE();
+                return SERVER;
+        }else if((strcmp(mess.buff_mo,"DELNODE") == 0) || (strcmp(mess.buff_mo,"delnode") == 0)){
+                DELNODE(mess,0);
+                REWRITEFILE();
+            return SERVER;
+        }else{
+            //pass
+        }
     }else if(Flag == WATCH){
         
     }else{

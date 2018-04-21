@@ -308,7 +308,7 @@ int _app_nodeinmap(Message mess,netinfo * temp){
     temp->virtual_server =  atoi(buff[4]);
 
     printf("NODE: %d %d %d %d %d\n",temp->port_int,temp->hash_start,temp->hash_end,temp->status,temp->virtual_server);
-    NetMap.node_num++;        /*计数加一*/
+
 
     return 0;    
     
