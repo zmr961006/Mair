@@ -14,6 +14,7 @@
 #include <sys/socket.h>
 #include <stdio.h>
 #include <string.h>
+#include "./distribute.h"
 
 
 int get_socket(int fd,int temp);

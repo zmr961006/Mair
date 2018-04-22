@@ -325,7 +325,7 @@ int _app_nodeinmap(Message mess,netinfo * temp){
 
 int delnode(Message mess,int flag){
  
-    /*if(NetMap.node_num    == 0){
+  /*if(NetMap.node_num    == 0){
         netinfo * temp    = (netinfo*)malloc(sizeof(netinfo));
         temp->next        = NULL;
         NetMap.node_num   = 1;
@@ -334,25 +334,42 @@ int delnode(Message mess,int flag){
         _app_nodeinmap(mess,temp);
 
     }*/
-    int Flag = find_servernode(mess,flag);
-    if(Flag > 0){
-    
-        delserver(Flag);    
-    
-    }else{
-        
-        printf("DEL SERVER IS NOT EXIST\n");    
-
+    int Flag_index[50];
+    int Flag = find_servernode(mess,flag,Flag_index);
+    if(Flag == 0){
+        printf("can not find del this server\n ");
+        return 0;
     }
+    printf("we need del %d server\n",Flag);
+    for(int i  = 0;i < Flag;i++){
+        printf("Flag_index[%d]=%d\n",i,Flag_index[i]);
+    }
+    printf("\n");
+    
+    
+
+    for(int i = 0;i < Flag;i++){
+    
+        //delserver(Flag_index[i]);    
+        setdelserver(Flag_index[i]);  //设置删除标志，等待最后删除
+    
+    }
+    printf("we just have %d server\n",NetMap.node_num);
+    //delserver(0);                     //删除所有节点
+
+
+    printf("del finsh\n");
+    return 0;
 
     
 }
 
 
 /*查找服务器节点在链表中的位置，然后返回是第几个节点*/
-int find_servernode(Message mess,int flag){
+int find_servernode(Message mess,int flag,int index[]){
     
     char buff[5][20];
+    int sum = 0;
     netinfo * temp  = NetMap.networkmap;
     int llen = strlen(mess.buff_val);
     int j ,k = 0;
@@ -381,7 +398,8 @@ int find_servernode(Message mess,int flag){
         number++;
         if((strncmp(temp->ip_char,mess.buff_key,iplen) == 0) && (strncmp(temp->port_char,buff[0],portlen) == 0)){
                 printf("I find this server : %d\n",number);
-                return number;    
+                index[sum] = number;
+                sum++;    
         }else{
                 //printf("Can not find this server\n");
         }
@@ -389,7 +407,7 @@ int find_servernode(Message mess,int flag){
         
     }
 
-    return number;        /*0 为没找到， >0 即为存在*/
+    return sum;        /*0 为没找到， >0 即为存在*/
 
 }
 
@@ -497,7 +515,9 @@ int rewritefile(){
         strncat(buff,s_virtual,len_sv);
         strncat(buff,"]",1);
 
-        fprintf(fp,"%s\n",buff);
+        if(temp->status != -1){  
+            fprintf(fp,"%s\n",buff);
+        }
 
         //printf("%s %s %s %s\n",h_start,h_end,s_virtual,s_status);
         printf("%s\n",buff);
@@ -508,5 +528,78 @@ int rewritefile(){
 
 
 }
+int virtual_off = 0;    /*默认关闭虚拟节点1:on ; 0:off*/
 
+int add_virtual_node(){}
+
+int del_virtual_node(){}
+
+int init_virtual(){}
+
+
+/*如果开启了虚拟节点则先找虚拟节点，否则直接在真实节点中查找*/
+
+netinfo * find_send_node(int servernumber,int hash){
+
+    netinfo * temp = NULL;
+    int re_hash = hash % LIMIT;
+    if(virtual_off == 0){
+        temp = find_real_node(re_hash);
+        return temp;
+    }else if(virtual_off == 1){
+        temp = find_virtual_node(re_hash);
+        if(temp == NULL){
+            temp = find_real_node(re_hash);
+        }
+        return temp;
+    }else{
+        //pass
+    }
+
+
+}
+
+netinfo * find_real_node(int hash){
+
+    netinfo * index = NetMap.networkmap;
+    while(index != NULL){
+    
+        if(hash >= index->hash_start && hash <= index->hash_end){
+            
+            return index;
+        }    
+        index = index->next;
+    }
+    return index;
+}
+
+netinfo * find_virtual_node(int hash){
+    
+    netinfo * index = NetMap.networkmap;
+    while(index != NULL){
+        
+        if(hash >= index->hash_start && hash <= index->hash_end){
+            
+            return index;
+        }
+        index = index->next;
+    }
+    return index;
+
+
+}
+
+
+
+int setdelserver(int index){
+
+    netinfo * temp = NetMap.networkmap;
+    for(int i = 1;i < index;i++){
+        temp= temp->next;
+    }
+    temp->status = -1;
+    NetMap.node_num--;
+    return 0;
+
+}
 

@@ -81,7 +81,7 @@ int delnode(Message mess,int flag);
 
 int _app_nodeinmap(Message mess,netinfo * temp);
 
-int find_servernode(Message mess,int flag);
+int find_servernode(Message mess,int flag,int index[]);   /*删除所有节点包括虚拟节点*/
 
 /***********************************************************/
 
@@ -90,6 +90,9 @@ int find_servernode(Message mess,int flag);
 
 
 int delserver(int flag);         /*删除服务器路由节点*/
+
+int setdelserver(int index);
+
 
 /**********************************************************/
 

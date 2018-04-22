@@ -21,14 +21,16 @@ int test_net(){
     temp = NetMap.networkmap;
     int i  = 0;
     while(temp != NULL){
-        printf("server info:\n");
-        printf("ip   :%s\n",temp->ip_char);
-        printf("port :%s\n",temp->port_char);
-        printf("port :%d\n",temp->port_int);
-        printf("start :%d\n",temp->hash_start);
-        printf("end   :%d\n",temp->hash_end);
-        printf("status : %d\n",temp->status);
-        printf("virtual_server: %d\n\n",temp->virtual_server);
+        if(temp->status != -1){
+            printf("server info:\n");
+            printf("ip   :%s\n",temp->ip_char);
+            printf("port :%s\n",temp->port_char);
+            printf("port :%d\n",temp->port_int);
+            printf("start :%d\n",temp->hash_start);
+            printf("end   :%d\n",temp->hash_end);
+            printf("status : %d\n",temp->status);
+            printf("virtual_server: %d\n\n",temp->virtual_server);
+        }
         temp = temp->next;
     }
 
@@ -328,25 +330,40 @@ int delnode(Message mess,int flag){
         _app_nodeinmap(mess,temp);
 
     }*/
-    int Flag = find_servernode(mess,flag);
-    if(Flag > 0){
-    
-        delserver(Flag);    
-    
-    }else{
-        
-        printf("DEL SERVER IS NOT EXIST\n");    
-
+    int Flag_index[50];
+    int Flag = find_servernode(mess,flag,Flag_index);
+    if(Flag == 0){
+        printf("can not find del this server\n ");
+        return 0;
     }
-
+    printf("we need del %d server\n",Flag);
+    for(int i  = 0;i < Flag;i++){
+        printf("Flag_index[%d]=%d\n",i,Flag_index[i]);
+    }
+    printf("\n");
     
+    
+
+    for(int i = 0;i < Flag;i++){
+    
+        //delserver(Flag_index[i]);    
+        setdelserver(Flag_index[i]);  //设置删除标志，等待最后删除
+    
+    }
+    printf("we just have %d server\n",NetMap.node_num);
+    //delserver(0);                     //删除所有节点
+
+
+    printf("del finsh\n");
+    return 0;
 }
 
 
 /*查找服务器节点在链表中的位置，然后返回是第几个节点*/
-int find_servernode(Message mess,int flag){
+int find_servernode(Message mess,int flag,int index[]){
     
     char buff[5][20];
+    int sum = 0;
     netinfo * temp  = NetMap.networkmap;
     int llen = strlen(mess.buff_val);
     int j ,k = 0;
@@ -375,7 +392,8 @@ int find_servernode(Message mess,int flag){
         number++;
         if((strncmp(temp->ip_char,mess.buff_key,iplen) == 0) && (strncmp(temp->port_char,buff[0],portlen) == 0)){
                 printf("I find this server : %d\n",number);
-                return number;    
+                index[sum] = number;
+                sum++;    
         }else{
                 //printf("Can not find this server\n");
         }
@@ -383,7 +401,7 @@ int find_servernode(Message mess,int flag){
         
     }
 
-    return number;        /*0 为没找到， >0 即为存在*/
+    return sum;        /*0 为没找到， >0 即为存在*/
 
 }
 
@@ -391,26 +409,24 @@ int find_servernode(Message mess,int flag){
 
 int delserver(int flag){
     
-    int index = flag;
+    int index = 0;
     netinfo * temp = NetMap.networkmap;
-
-    if(flag == 1){
-        NetMap.networkmap = temp->next;
-        free(temp->ip_char);
-        free(temp->port_char);
-        free(temp);
-        NetMap.node_num--;
-
-    }else{
-        flag -= 1;
-        for(int i = 1;i < flag;i++){
-            temp = temp->next;    
+    netinfo * head = NetMap.networkmap;
+    netinfo * tail = NetMap.networkmap;
+    netinfo * node = NetMap.networkmap;
+    while(temp != NULL){  
+        
+        if(temp->status == -1){
+         
+            node = temp;
+            free(node->ip_char);
+            free(node->port_char);
+            free(node);
+            NetMap.node_num--;
+            
         }
-        netinfo * node = temp->next;
-        temp->next = temp->next->next;
-        free(node->ip_char);
-        free(node->port_char);
-        NetMap.node_num--;
+        
+        
     }
     
     return 0;
@@ -491,15 +507,30 @@ int rewritefile(){
         strncat(buff,s_virtual,len_sv);
         strncat(buff,"]",1);
 
-        fprintf(fp,"%s\n",buff);
+        if(temp->status != -1){  
+            fprintf(fp,"%s\n",buff);
+        }
 
         //printf("%s %s %s %s\n",h_start,h_end,s_virtual,s_status);
-        printf("%s\n",buff);
+        //printf("%s\n",buff);
         memset(buff,0,100);
         temp = temp->next;
     }
     fclose(fp);
 
+
+}
+
+
+int setdelserver(int index){
+
+    netinfo * temp = NetMap.networkmap;
+    for(int i = 1;i < index;i++){
+        temp= temp->next;
+    }
+    temp->status = -1;
+    NetMap.node_num--;
+    return 0;
 
 }
 

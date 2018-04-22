@@ -12,6 +12,7 @@
 #include"./opt_do.h"
 
 
+#define  LIMIT  100000         /*第一次哈希的散列区间*/
 
 /*分布式转发核心算法*/
 
@@ -22,7 +23,7 @@ int add_virtual_node();
 
 int del_virtual_node();
 
-netinfo * find_send_node(int hash);
+netinfo * find_send_node(int servernumber,int hash);
 
 netinfo * find_real_node(int hash);
 

@@ -45,6 +45,7 @@ int main(int argc,char **argv){
     test_net();          /*测试路由表的建立*/
     //REWRITEFILE();
     opt(NULL,NULL,0);    /*检查输入的信息进行分析和发送*/
+    test_net();
     //write(sockfd,"hello",20);
     exit(0);
 

@@ -24,7 +24,7 @@
 #define ENDLEN   8
 
 
-
+#define  LIMIT  100000         /*第一次哈希的散列区间*/
 
 /*路由转发表*/
 typedef struct netinfo{
@@ -73,7 +73,7 @@ int delnode(Message mess,int flag);
 
 int _app_nodeinmap(Message mess,netinfo * temp);
 
-int find_servernode(Message mess,int flag);
+int find_servernode(Message mess,int flag,int index[]);
 
 /***********************************************************/
 
@@ -83,6 +83,7 @@ int find_servernode(Message mess,int flag);
 
 int delserver(int flag);         /*删除服务器路由节点*/
 
+int setdelserver(int index);
 /**********************************************************/
 
 
@@ -91,6 +92,27 @@ int delserver(int flag);         /*删除服务器路由节点*/
 int rewritefile();
 
 /*********************************************************/
+
+
+
+/*******************虚拟服务器相关***************************/
+
+
+/*分布式转发核心算法*/
+
+/*初始化虚拟节点核心算法*/
+int init_virtual();
+
+int add_virtual_node();
+
+int del_virtual_node();
+
+netinfo * find_send_node(int servernumber,int hash);
+
+netinfo * find_real_node(int hash);
+
+netinfo * find_virtual_node(int hash);
+
 
 
 #endif
