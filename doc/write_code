@@ -1,0 +1,42 @@
+目标：实现基本redis数据库操作指令，分布式转发，一致性哈希算法/虚拟节点，持久化部分；
+
+分层设计：
+第一部分：分布式转发模块，包括虚拟节点的增删与转发；
+第二部分：客户端模块
+第三部分：数据存储模块
+第四部分：数据库恢复模块，日志模块
+
+
+机制部分：
+          文件恢复机制
+          数据迁移机制
+        
+    文件恢复机制：RDB 机制将内存镜像DUMP出来，然后读取文件重建数据库。
+    数据迁移机制：当有节点上线和下线后，都会触发数据迁移机制，每个数据库会遍历将所有相关的数据转发出去。
+
+指令部分：
+    
+列表：(完成)
+LIST: 设置列表                           LIST    key llen
+LSET: 将key下标为index的元素设置为value  LSET    key index value
+LINSERT:将value插入到KEY中，位于尾部     LINSERT key BEFORE|AFTER pivot value 
+RPOP:返回并移除表尾的元素
+LINDEX:返回列表KEY 中下标为index的元素   LINDEX key index
+LPUSH:将一个或多个值加入表头             LPUSH  key [value...]
+LPOP:移除并返回key头元素
+
+
+连接：
+PING： 向其中一个服务器发送消息，测试否是接通   PING IP:PORT
+QUIT： 关闭客户端
+
+
+SERVER_LIST: 返回服务器列表
+CLIENT_LIST: 返回客户端列表
+
+BDSIZE：     返回服务器KEY的数量
+BGSAVE：     保存数据库的内容
+
+TIME：       返回当前服务器时间
+
+

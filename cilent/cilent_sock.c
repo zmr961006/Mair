@@ -19,15 +19,16 @@ int get_socket(int fd,int temp){
     netinfo * tem;
     netinfo * cn;
     cn = NetMap.networkmap;
+    tem = cn;
     //for(i = 0;i < fd;i++){                   // 选择一个合适的服务器转发,暂时关闭分布转发
     //    tem = NetMap.networkmap->next;
     //}
-    tem = find_send_node(fd,temp);              /*寻找合适的转发节点fd:服务器个数总数，temp:哈希值*/
-    if(tem == NULL){
+   // tem = find_send_node(fd,temp);              /*寻找合适的转发节点fd:服务器个数总数，temp:哈希值*/
+    /*if(tem == NULL){
         printf("can not find node %d\n",__LINE__);
         printf("tem = head\n");
         tem = cn;
-    }
+    }*/
 
     sockfd = socket(AF_INET,SOCK_STREAM,0);
     bzero(&servaddr,sizeof(servaddr));

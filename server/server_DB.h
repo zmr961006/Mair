@@ -12,6 +12,7 @@
 #include"./dystr.h"
 #include"./server_mess.h"
 #include"./server_ser.h"
+#include"./rlist.h"
 
 /*************************************数据类型*************************************/
 #define STRING  1
@@ -21,7 +22,7 @@
 #define ZLIST   5
 #define SERVER  6
 #define WATCH   7
-
+#define COMMON  8
 /**********************************************************************************/
 
 
@@ -62,9 +63,6 @@ typedef struct DataBase{                /*用户数据库*/
     int *sum_index;    /*每个数据库现在存储计数*/ 
 
 }DataBase;
-
-
-
 
 
 

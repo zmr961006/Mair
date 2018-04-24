@@ -40,7 +40,19 @@ int init_cilent(){
     orders.orders[9] = "addnode";
     orders.orders[10]= "DELNODE";
     orders.orders[11]= "delnode";
-    orders.num = 12;
+    
+    orders.orders[12]= "CLIST";
+    orders.orders[13]= "rlist";
+    orders.orders[14]= "LSET";
+    orders.orders[15]= "lset";
+    orders.orders[16]= "RDEL";
+    orders.orders[17]= "rdel";
+    orders.orders[18]= "LPUSH";
+    orders.orders[19]= "lpush";
+    orders.orders[20]= "LPOP";
+    orders.orders[21]= "lpop";
+    
+    orders.num = 22;
 
 }
 
@@ -239,7 +251,7 @@ int get_ordernum(char * order){
 
     }else if((strcmp(order,"EXIST") == 0) || (strcmp(order,"exist") == 0)){
 
-        return STRING;
+        return COMMON;
 
     }else if((strcmp(order,"DEL") == 0) || (strcmp(order,"del") == 0)){
     
@@ -257,7 +269,28 @@ int get_ordernum(char * order){
     
         return SERVER;
 
+    }else if((strcmp(order,"CLIST") == 0) || (strcmp(order,"clist") == 0)){
+
+        return LIST;
+
+    }else if((strcmp(order,"LSET") == 0) || (strcmp(order,"lset") == 0)){
+    
+        return LIST;
+
+    }else if((strcmp(order,"RDEL") == 0) || (strcmp(order,"rdel") == 0)){
+        
+        return LIST;
+
+    }else if((strcmp(order,"LPUSH") == 0) || (strcmp(order,"lpush") == 0)){
+    
+        return LIST;
+
+    }else if((strcmp(order,"LPOP") == 0) || (strcmp(order,"lpop") == 0)){
+    
+        return LIST;
+        
     }else{
+        
         //passs
     }
     

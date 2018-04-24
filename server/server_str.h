@@ -12,7 +12,7 @@
 #include"./server_mess.h"
 #include"./server_DB.h"
 #include"./server_watch.h"
-
+#include"./rlist.h"
 
 #define NOTEXIST   0       /*KV不存在*/
 #define KEXIST     1       /*KV存在*/

@@ -44,7 +44,7 @@ int init_database(){     /*初始数据库10个,每个数据库100条存储表*/
 int database_choice(Message mess,char * order,int hash){
     
     int Flag = mess.Type;
-    if(Flag == STRING){
+    if((Flag == STRING)||(Flag == COMMON)){
         if((strcmp(mess.buff_mo,"SET") == 0) || (strcmp(mess.buff_mo,"set") == 0)){
             SET(mess,0);
             return STRING;
@@ -53,7 +53,7 @@ int database_choice(Message mess,char * order,int hash){
             return STRING;
         }else if((strcmp(mess.buff_mo,"GET") == 0) || (strcmp(mess.buff_mo,"get") == 0)){
             GET(mess,0);
-	    return STRING;
+	        return STRING;
         }else if((strcmp(mess.buff_mo,"DEL") == 0) || (strcmp(mess.buff_mo,"del") == 0)){
             DEL(mess,0);
 	    return STRING;
@@ -61,8 +61,31 @@ int database_choice(Message mess,char * order,int hash){
             //pass;
         }
     }else if(Flag == INT){
+            //pass
+    }else if((Flag == LIST)||(Flag == COMMON)){
 
-    }else if(Flag == LIST){
+	    if((strcmp(mess.buff_mo,"CLIST") == 0) || (strcmp(mess.buff_mo,"clist") == 0)){
+            CLIST(mess,0);
+            return LIST;
+        }else if((strcmp(mess.buff_mo,"LSET") == 0) || (strcmp(mess.buff_mo,"lset") == 0)){
+            LSET(mess,0);
+            return LIST;
+        }else if((strcmp(mess.buff_mo,"RDEL") == 0) || (strcmp(mess.buff_mo,"RDEL") == 0)){
+            RDEL(mess,0);
+	        return LIST;
+        }else if((strcmp(mess.buff_mo,"LPUSH") == 0) || (strcmp(mess.buff_mo,"LPUSH") == 0)){
+            LPUSH(mess,0);
+            print_list(NULL);
+	        return LIST;
+        }else if((strcmp(mess.buff_mo,"LPOP") == 0) ||(strcmp(mess.buff_mo,"lpop") == 0)){
+            LPOP(mess,0);
+            return LIST;
+        }else if((strcmp(mess.buff_mo,"EXIST") == 0) || (strcmp(mess.buff_mo,"exist") == 0)){
+            EXIST(mess,0);
+            return LIST;
+        }else{
+            //pass
+        }
 
     }else if(Flag == ZLIST){
 

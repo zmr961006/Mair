@@ -9,6 +9,7 @@
 #include"./server_str.h"
 #include"./server_DB.h"
 
+
 extern Mair_DB server_DB;
 
 /*SET string*/
@@ -70,6 +71,7 @@ KeyVal * mess_to_kv(Message mess,int flag,int len){
     temp->db_id = mess.server_hash;
     temp->table_id = mess.hash % 100;
     temp->status   = ALIVE;
+    temp->Type    = mess.Type;
 
     if(mess.Type == STRING){                              /*根据数据类型创建VAL的值*/
         
@@ -77,6 +79,10 @@ KeyVal * mess_to_kv(Message mess,int flag,int len){
         strcpy(temp->Val,mess.buff_val);
 
     }else if(mess.Type == LIST){
+        RLIST * clist;
+        clist = (RLIST *)malloc(sizeof(RLIST));
+        create_list(clist,mess);
+        temp->Val = clist;
 
     }else{
 

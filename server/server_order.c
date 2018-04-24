@@ -17,8 +17,25 @@ int init_order(){
     orders.orders[3] = "del";
     orders.orders[4] = "get";
     orders.orders[5] = "set";
-    orders.num = 6;
-
+    orders.orders[6] = "EXIST";
+    orders.orders[7] = "exist";
+    orders.orders[8] = "ADDNODE";
+    orders.orders[9] = "addnode";
+    orders.orders[10]= "DELNODE";
+    orders.orders[11]= "delnode";
+    
+    orders.orders[12]= "CLIST";
+    orders.orders[13]= "rlist";
+    orders.orders[14]= "LSET";
+    orders.orders[15]= "lset";
+    orders.orders[16]= "RDEL";
+    orders.orders[17]= "rdel";
+    orders.orders[18]= "LPUSH";
+    orders.orders[19]= "lpush";
+    orders.orders[20]= "LPOP";
+    orders.orders[21]= "lpop";
+    
+    orders.num = 22;
 
 
 }

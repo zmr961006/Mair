@@ -13,14 +13,15 @@
 #include"./server.h"
 #include"./server_DB.h"
 #include"./server_mess.h"
+#include"./rlist.h"
 
 
-int print_mess(Message mess);   /*打印消息结构信息*/
+int print_mess(Message mess);    /*打印消息结构信息*/
 
-int print_kv(KeyVal * temp );   /*打印KV*/
+int print_kv(KeyVal * temp );    /*打印KV*/
 
-int print_dbnum();    /*打印数据库存储情况,返回总数*/
+int print_dbnum();               /*打印数据库存储情况,返回总数*/
 
-
+int print_list();                /*专门打印LIST 的值*/
 
 #endif

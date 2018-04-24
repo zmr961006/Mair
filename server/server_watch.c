@@ -27,8 +27,8 @@ int print_mess(Message mess){
 int print_kv(KeyVal * temp){
     
     printf("P_KV\n");
-    printf("|key|val|hash|db_index|tab_index|online|\n");
-    printf("|%s|%s|%d|%d|%d|%d|\n",temp->Key.dystr_data,temp->Val,temp->hash,temp->db_id,temp->table_id,temp->status);
+    printf("|key|val|hash|db_index|tab_index|online|TYPE|\n");
+    printf("|%s|%s|%d|%d|%d|%d|%d|\n",temp->Key.dystr_data,temp->Val,temp->hash,temp->db_id,temp->table_id,temp->status,temp->Type);
     return 0;
 
 }
@@ -56,5 +56,45 @@ int print_dbnum(){
 }
 
 
+int print_list(){
+    int sum = 0;
+    for(int i = 0;i < 10;i++){
+        for(int j = 0;j < 100;j++){
+            if(server_DB.ServerDB[i].sum_index[j] != 0){
+                int index = server_DB.ServerDB[i].sum_index[j];
+                KeyVal * temp = server_DB.ServerDB[i].DB[j];
+                 for(int k = 0;k < server_DB.ServerDB[i].sum_index[j];k++){
+                    temp = temp->next;
+                    print_kv(temp);
+                    
+                    if((temp != NULL) && (temp->Type == LIST)){
+                        printf("i want do somthing\n");
+				        int unode = ((RLIST *)(temp->Val))->use_node;
+                        for(int k = 1; k <= unode;k++){
+                            printf("Lval:%s\n",((RLIST*)(temp->Val))->data[k]);
+                        }
+                        //print_kv(temp);
+                        sum++;
+                    }
+                
+                }
+                            
+            }
+        }   
+            
+    }
+        
+
+    //printf("all Database have %d KVs\n",sum);
+    return sum;
 
 
+
+}
+
+int print_klist(RLIST  * temp){
+    
+    
+
+
+}
