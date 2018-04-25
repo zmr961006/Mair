@@ -72,6 +72,7 @@ int database_choice(Message mess,char * order,int hash){
             return LIST;
         }else if((strcmp(mess.buff_mo,"RDEL") == 0) || (strcmp(mess.buff_mo,"RDEL") == 0)){
             RDEL(mess,0);
+            print_list(NULL);
 	        return LIST;
         }else if((strcmp(mess.buff_mo,"LPUSH") == 0) || (strcmp(mess.buff_mo,"LPUSH") == 0)){
             LPUSH(mess,0);

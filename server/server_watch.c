@@ -70,8 +70,10 @@ int print_list(){
                     if((temp != NULL) && (temp->Type == LIST)){
                         printf("i want do somthing\n");
 				        int unode = ((RLIST *)(temp->Val))->use_node;
-                        for(int k = 1; k <= unode;k++){
-                            printf("Lval:%s\n",((RLIST*)(temp->Val))->data[k]);
+                        for(int k = 0; k < LISTLEN;k++){
+                            if(((RLIST*)(temp->Val))->bitmap[k] != 0){  
+                                printf("Lval:%s\n",((RLIST*)(temp->Val))->data[k]);
+                            }
                         }
                         //print_kv(temp);
                         sum++;

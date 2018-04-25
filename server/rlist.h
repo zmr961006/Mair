@@ -17,14 +17,18 @@
 
 #define LISTLEN  50
 
+//ps:没有实现判断是否LIST 满
+
+
 typedef struct rlist{
 
-    int  elem_num ;
-    char ** data  ;
-    int  free_node;
-    int  use_node ;
-    int  flag     ;
-    int  type     ;
+    int  elem_num ;        //统计一共有多少个元素
+    char ** data  ;        //数据存储
+    int  free_node;        //剩余可以使用的内容
+    short bitmap[LISTLEN]; //位图
+    int  use_node ;        //最后一个元素的下标
+    int  flag     ;        //标记
+    int  type     ;        //存储类型；预留
 
 
 }RLIST;
@@ -43,7 +47,7 @@ int RDEL(Message mess,int flag);
 //增加尾部的一个元素                LPUSH  key value
 int LPUSH(Message mess,int flag);
 
-//删除第一个元素                    LPOP   key value
+//删除尾部的一个元素                    LPOP   key value
 int LPOP(Message mess,int flag);
 
 
