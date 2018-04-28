@@ -31,7 +31,7 @@
 
 int server_start();
 
-int mess_exl(char *buf,int len);
+int mess_exl(char *buf,int len,int fd);
 
 int test_mess(Message mess);
 

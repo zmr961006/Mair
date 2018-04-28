@@ -35,22 +35,22 @@ typedef struct rlist{
 
 
 //设置链表                          LSIT KEY LEN
-int CLIST(Message mess,int flag);
+int CLIST(Message mess,int flag,int fd);
 
 //将KEY小标为INDEX的元素设置为VALUE;LSET KEY INDEX:VALE
-int LSET(Message mess,int flag);
+int LSET(Message mess,int flag,int fd);
 
 //删除LIST 中的某个元素;删除某个列表中的元素; 
                                   //LDEL KEY INDEX:VALUE
-int RDEL(Message mess,int flag);
+int RDEL(Message mess,int flag,int fd);
 
 //增加尾部的一个元素                LPUSH  key value
-int LPUSH(Message mess,int flag);
+int LPUSH(Message mess,int flag,int fd);
 
 //删除尾部的一个元素                    LPOP   key value
-int LPOP(Message mess,int flag);
+int LPOP(Message mess,int flag,int fd);
 
-
+//创建一个列表
 int create_list(RLIST * temp,Message mess);
 
 

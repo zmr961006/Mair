@@ -12,27 +12,33 @@
 extern Mair_DB  server_DB;
 
 //设置链表 LSIT KEY LEN
-int CLIST(Message mess,int flag){
+int CLIST(Message mess,int flag,int fd){
     
-    printf("IN CLIST\n");
-    if(EXIST(mess,0) == NOTEXIST){
+    //printf("IN CLIST\n");
+    int bc = 0;
+    if(EXIST(mess,0,0) == NOTEXIST){
     
         KeyVal * temp = mess_to_kv(mess,0,0);
         add_KV_DB(temp,0);
+        bc = 2;
+        server_bc(mess,NULL,bc,fd);
         FINDALL();
 
     }else{
-        
+        bc = 1;
+        server_bc(mess,NULL,bc,fd);
         printf("This KV is already EXIST\n");
     }
 
-
+    return 0;
 
 }
 
 //将KEY小标为INDEX的元素设置为VALUE; LSET KEY VALE
-int LSET(Message mess,int flag){
-     if(EXIST(mess,0) != NOTEXIST){
+int LSET(Message mess,int flag,int fd){
+    int bc = 0;
+
+     if(EXIST(mess,0,0) != NOTEXIST){
         printf("IN LPUSH\n");       
         //FINDALL();
         int table_index = mess.hash % 100;
@@ -52,6 +58,8 @@ int LSET(Message mess,int flag){
                     ((RLIST*)(temp->Val))->use_node++;
                     ((RLIST*)(temp->Val))->elem_num;
                     ((RLIST*)(temp->Val))->bitmap[((RLIST*)(temp->Val))->use_node] = 1;
+                    bc = 6;
+                    server_bc(mess,NULL,bc,fd);
                     printf("push finish\n");
                     return 0;
                 }
@@ -60,14 +68,16 @@ int LSET(Message mess,int flag){
         }
     
     }else{
-        
+        bc = 3;
+        server_bc(mess,NULL,bc,fd);
         printf("This KV is not  EXIST\n");
     }
 }
 
 //删除LIST 中的某个元素;删除某个列表中的元素; LDEL KEY VALUE
-int RDEL(Message mess,int flag){
-	 if(EXIST(mess,0) != NOTEXIST){
+int RDEL(Message mess,int flag,int fd){
+    int bc = 0;
+	 if(EXIST(mess,0,0) != NOTEXIST){
         printf("IN LPUSH\n");       
         //FINDALL();
         int table_index = mess.hash % 100;
@@ -92,6 +102,8 @@ int RDEL(Message mess,int flag){
                                     ((RLIST*)(temp->Val))->use_node--;
                                 }
                     		    ((RLIST*)(temp->Val))->bitmap[f] = 0;
+                                bc = 5;
+                                server_bc(mess,NULL,bc,fd);
                             }
                         }
                     }
@@ -103,16 +115,18 @@ int RDEL(Message mess,int flag){
         }
     
     }else{
-        
+        bc = 3;
+        server_bc(mess,NULL,bc,fd);
         printf("This KV is not  EXIST\n");
     }
     
 }
 
 //增加尾部的一个元素    LPUSH  key value
-int LPUSH(Message mess,int flag){
-
-    if(EXIST(mess,0) != NOTEXIST){
+int LPUSH(Message mess,int flag,int fd){
+    
+    int bc = 0;
+    if(EXIST(mess,0,0) != NOTEXIST){
         printf("IN LPUSH\n");       
         //FINDALL();
         int table_index = mess.hash % 100;
@@ -132,6 +146,8 @@ int LPUSH(Message mess,int flag){
                     ((RLIST*)(temp->Val))->use_node++;
                     ((RLIST*)(temp->Val))->elem_num;
                     ((RLIST*)(temp->Val))->bitmap[((RLIST*)(temp->Val))->use_node] = 1;
+                    bc = 7;
+                    server_bc(mess,NULL,bc,fd);
                     printf("push finish\n");
                     return 0;
                 }
@@ -140,15 +156,17 @@ int LPUSH(Message mess,int flag){
         }
     
     }else{
-        
+        bc = 3;
+        server_bc(mess,NULL,bc,fd);
         printf("This KV is not  EXIST\n");
     }
     
 }
 
 //删除第一个元素        LPOP   key value
-int LPOP(Message mess,int flag){
-     if(EXIST(mess,0) != NOTEXIST){
+int LPOP(Message mess,int flag,int fd){
+    int bc = 0;
+     if(EXIST(mess,0,0) != NOTEXIST){
         printf("IN LPOP\n");       
         //FINDALL();
         int table_index = mess.hash % 100;
@@ -168,6 +186,8 @@ int LPOP(Message mess,int flag){
                     ((RLIST*)(temp->Val))->use_node--;
                     ((RLIST*)(temp->Val))->bitmap[((RLIST*)(temp->Val))->use_node + 1] = 0;
                     printf("pop finish\n");
+                    bc =  8;
+                    server_bc(mess,NULL,bc,fd);
                     return 0;
                 }
             }
@@ -175,7 +195,8 @@ int LPOP(Message mess,int flag){
         }
     
     }else{
-        
+        bc = 3;
+        server_bc(mess,NULL,bc,fd);
         printf("This KV is not  EXIST\n");
     }
     

@@ -8,12 +8,14 @@ ADDNODE	opt_do.c	/^int ADDNODE(Message mess,int flag){$/;"	f
 ALIVE	message.h	20;"	d
 BUFFEXP	read_pro.h	19;"	d
 BUFFLEN	message.h	15;"	d
+COMMON	message.h	31;"	d
 DELNODE	opt_do.c	/^int DELNODE(Message mess,int flag){$/;"	f
 ENDLEN	read_pro.h	25;"	d
 HASH	message.h	27;"	d
 INT	message.h	25;"	d
 IPLEN	read_pro.h	22;"	d
 KEYLEN	message.h	17;"	d
+LIMIT	distribute.h	15;"	d
 LIST	message.h	26;"	d
 LOAD	read_pro.h	20;"	d
 Message	message.h	/^}Message;$/;"	t	typeref:struct:message
@@ -26,9 +28,11 @@ STARTLEN	read_pro.h	24;"	d
 STRING	message.h	24;"	d
 Type	message.h	/^    int  Type ;             \/*命令类型*\/$/;"	m	struct:message
 VALLEN	message.h	18;"	d
+VnetMap	distribute.c	/^netmap VnetMap;          \/*虚拟节点*\/$/;"	v
 WATCH	message.h	30;"	d
 ZLIST	message.h	28;"	d
 _CILENT_SOCK_H	cilent_sock.h	9;"	d
+_DISTRIBUTE_H	distribute.h	9;"	d
 _MESSAGE_H	message.h	9;"	d
 _OPT_DO_H	opt_do.h	9;"	d
 _ORDER_H	order.h	9;"	d
@@ -38,6 +42,7 @@ _app_nodeinmap	read_pro.c	/^int _app_nodeinmap(Message mess,netinfo * temp){$/;"
 _init_info	read_pro.c	/^int _init_info(){$/;"	f
 _send_to	opt_do.c	/^int _send_to(int fd,Message mess){$/;"	f
 add_nodeinmap	read_pro.c	/^int add_nodeinmap(char *buffer,int temp1){$/;"	f
+add_virtual_node	distribute.c	/^int add_virtual_node(){}$/;"	f
 appendnode	read_pro.c	/^int appendnode(Message mess,int flag){$/;"	f
 buf_in	opt_do.c	/^char buf_in[BUFFLEN];     \/*指令缓冲*\/$/;"	v
 buf_key	opt_do.c	/^char buf_key[KEYLEN];     \/*KEY 缓冲*\/$/;"	v
@@ -47,12 +52,16 @@ buff_key	message.h	/^    char buff_key[KEYLEN];  \/*KEY 存储*\/$/;"	m	struct:m
 buff_mo	message.h	/^    char buff_mo[ODER];     \/*命令存储*\/$/;"	m	struct:message
 buff_val	message.h	/^    char buff_val[VALLEN];  \/*VAL 存储*\/$/;"	m	struct:message
 chunk	opt_do.c	/^int chunk(char * temp1){          \/*检查命令是否合理*\/$/;"	f
+del_virtual_node	distribute.c	/^int del_virtual_node(){}$/;"	f
 delnode	read_pro.c	/^int delnode(Message mess,int flag){$/;"	f
 delserver	read_pro.c	/^int delserver(int flag){$/;"	f
 do_local	opt_do.c	/^int do_local(int Type,Message message){$/;"	f
 do_send	opt_do.c	/^int do_send(int fd){        \/*根据哈希值发送数据*\/$/;"	f
 explex	read_pro.c	/^int explex(char ** infoex,int temp){$/;"	f
-find_servernode	read_pro.c	/^int find_servernode(Message mess,int flag){$/;"	f
+find_real_node	distribute.c	/^netinfo * find_real_node(int hash){$/;"	f
+find_send_node	distribute.c	/^netinfo * find_send_node(int servernumber,int hash){$/;"	f
+find_servernode	read_pro.c	/^int find_servernode(Message mess,int flag,int index[]){$/;"	f
+find_virtual_node	distribute.c	/^netinfo * find_virtual_node(int hash){$/;"	f
 flag	message.h	/^    int  flag ;             \/*标志*\/$/;"	m	struct:message
 get_hash	opt_do.c	/^int get_hash(char *data,int len){$/;"	f
 get_ordernum	opt_do.c	/^int get_ordernum(char * order){$/;"	f
@@ -64,6 +73,7 @@ hash_start	read_pro.h	/^    int hash_start;         \/*哈希开始*\/$/;"	m	str
 info	read_pro.c	/^char **info;         \/*暂时存储配置信息*\/$/;"	v
 init_cilent	opt_do.c	/^int init_cilent(){$/;"	f
 init_info	read_pro.c	/^int init_info(char * temp1,int temp){$/;"	f
+init_virtual	distribute.c	/^int init_virtual(){}$/;"	f
 ip_char	read_pro.h	/^    char *ip_char;          \/*IP字符存储*\/$/;"	m	struct:netinfo
 ip_int	read_pro.h	/^    int ip_int;             \/*IP整形存储*\/$/;"	m	struct:netinfo
 main	cilent.c	/^int main(int argc,char **argv){$/;"	f
@@ -78,6 +88,7 @@ node_info_num	read_pro.c	/^int  node_info_num;  \/*标记有多少个IP节点,�
 node_num	read_pro.h	/^    int node_num;           \/*路由个数*\/$/;"	m	struct:netmap
 now_time	message.h	/^    char now_time[1];       \/*设置时间*\/$/;"	m	struct:message
 num	order.h	/^    int num;$/;"	m	struct:order
+oob	message.h	/^    char oob[30];           \/*外带数据返回时有用*\/$/;"	m	struct:message
 opt	opt_do.c	/^int opt(char * temp1,char *temp2,int argc){    \/*客户端数据处理流程*\/$/;"	f
 order	order.h	/^typedef struct order {$/;"	s
 order	order.h	/^}order;$/;"	t	typeref:struct:order
@@ -86,13 +97,16 @@ orders	order.h	/^    char *orders[50];$/;"	m	struct:order
 out_time	message.h	/^    char out_time[1];       \/*过期时间*\/$/;"	m	struct:message
 port_char	read_pro.h	/^    char *port_char;        \/*端口字符存储*\/$/;"	m	struct:netinfo
 port_int	read_pro.h	/^    int port_int;           \/*端口整形存储*\/$/;"	m	struct:netinfo
+print_bc	opt_do.c	/^int print_bc(Message mess){$/;"	f
 proc_profile	read_pro.c	/^int proc_profile(){$/;"	f
 read_server	read_pro.c	/^int read_server(int temp1,char *temp2){$/;"	f
 rewritefile	read_pro.c	/^int rewritefile(){$/;"	f
 server_hash	message.h	/^    int  server_hash;       \/*数据库ID*\/$/;"	m	struct:message
 server_id	opt_do.c	/^int  server_id = 0 ;      \/*数据库默认ID 为0号*\/$/;"	v
+setdelserver	read_pro.c	/^int setdelserver(int index){$/;"	f
 status	read_pro.h	/^    int status;             \/*节点状态,是否是虚拟节点*\/$/;"	m	struct:netinfo
 tail	read_pro.h	/^    netinfo *tail;          \/*表尾*\/$/;"	m	struct:netmap
 test_net	read_pro.c	/^int test_net(){$/;"	f
+virtual_off	distribute.c	/^int virtual_off = 0;    \/*默认关闭虚拟节点1:on ; 0:off*\/$/;"	v
 virtual_server	read_pro.h	/^    int virtual_server;     \/*虚拟节点对应真实节点的指向*\/$/;"	m	struct:netinfo
 write_server	read_pro.c	/^int write_server(int temp1,char *temp2){}$/;"	f

@@ -10,10 +10,11 @@
 
 #include"./server_mess.h"
 #include"./server_init.h"
+#include"./server_bc.h"
 
-int ADDNODE(Message mess,int flag);
+int ADDNODE(Message mess,int flag,int fd);
 
-int DELNODE(Message mess,int flag);
+int DELNODE(Message mess,int flag,int fd);
 
 int REWRITEFILE();
 

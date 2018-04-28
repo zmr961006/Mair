@@ -13,34 +13,38 @@
 extern Mair_DB server_DB;
 
 /*SET string*/
-int SET(Message mess,int argc){
- 
-    if(EXIST(mess,0) == NOTEXIST){             /*不存在则增加；存在则修改VAL*/
-       
+int SET(Message mess,int argc,int fd){
     
+    int bc = 0;
+    
+    if(EXIST(mess,0,fd) == NOTEXIST){             /*不存在则增加；存在则修改VAL*/
+       
         KeyVal * temp = mess_to_kv(mess,0,0);
         add_KV_DB(temp,0);
         FINDALL();               /*展示所有存在的KV*/
-
+        bc = 2;
     }else{
-
-        printf("This KV is already EXIST\n");
+        bc = 1;
+        printf("this KV is already EXIST\n");
 
     }
     
+    server_bc(mess,NULL,bc,fd);
 
 }
 
-int EXIST(Message mess,int argc){
+int EXIST(Message mess,int argc,int fd){
  
-    //printf("in EXIST\n");
+    int bc = 0;
     int data_base  = mess.server_hash;  /*数据库编号*/
     int data_table = mess.hash % 100 ;  /*存储表编号*/
 
 
     int index = server_DB.ServerDB[data_base].sum_index[data_table];  /*此表中有多少个KV*/
     KeyVal * temp = server_DB.ServerDB[data_base].DB[data_table];     /*指向目标表链*/
+    
     if(index == 0){
+    
         return NOTEXIST;
     }
     
@@ -137,9 +141,10 @@ int add_KV_DB(KeyVal * temp,int flag){
     
 }
 
-KeyVal* GET(Message mess,int argc){
-
-    if(EXIST(mess,argc) == KEXIST){
+KeyVal* GET(Message mess,int argc,int fd){
+    
+    int bc = 0;
+    if(EXIST(mess,argc,fd) == KEXIST){
         
         int table_index = mess.hash % 100;
         int db_index    = mess.server_hash;
@@ -150,6 +155,8 @@ KeyVal* GET(Message mess,int argc){
             temp = temp->next;
             if(strcmp(mess.buff_key,temp->Key.dystr_data) == 0){
                 print_kv(temp);
+                bc = 4;
+                server_bc(mess,NULL,bc,fd);
                 return temp;
             }
         }
@@ -157,6 +164,8 @@ KeyVal* GET(Message mess,int argc){
     }else{
         printf("this KV is not exist\n");
         /*不存在,返回为空，防止误操作*/
+        bc = 3;
+        server_bc(mess,NULL,bc,fd);
         return NULL;
     }
 
@@ -164,9 +173,11 @@ KeyVal* GET(Message mess,int argc){
 }
 
 
-int DEL(Message mess,int argc){
+int DEL(Message mess,int argc,int fd){
     
-    if(EXIST(mess,argc) == KEXIST){
+    int bc = 0;
+
+    if(EXIST(mess,argc,fd) == KEXIST){
         
         int table_index = mess.hash % 100 ;   /*存储表ID*/
         int db_index    = mess.server_hash;   /*数据库ID*/
@@ -177,6 +188,8 @@ int DEL(Message mess,int argc){
         while(temp->next != NULL ){
             temp = temp->next;
             if(strcmp(mess.buff_key,temp->Key.dystr_data) == 0){
+                bc = 5;
+                server_bc(mess,NULL,bc,fd);
                 printf("DEL this key\n");
                 temp->status = DEAD;
                 return 1;
@@ -206,7 +219,7 @@ KeyVal * FINDALL(){
                 printf("ServerDB[%d].DB[%d] have %d KVs\n",i,j,server_DB.ServerDB[i].sum_index[j]);
                 for(int k = 0;k < server_DB.ServerDB[i].sum_index[j];k++){
                     temp = temp->next;
-                    if(temp != NULL){
+                    if(temp != NULL && temp->status != DEAD){
                         print_kv(temp);
                         sum++;
                     }

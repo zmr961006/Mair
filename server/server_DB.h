@@ -9,6 +9,8 @@
 #define _SERVER_DB_H
 
 #include<stdio.h>
+#include<sys/types.h>
+#include<sys/socket.h>
 #include"./dystr.h"
 #include"./server_mess.h"
 #include"./server_ser.h"
@@ -78,6 +80,6 @@ typedef struct Mair_DB{          /*数据库大类*/
 
 
 int init_database();   /*初始化数据库*/
-int database_choice(Message mess,char *order,int hash);  /*选择一个对应的函数操作*/
-
+int database_choice(Message mess,char *order,int hash,int fd);  /*选择一个对应的函数操作*/
+int echo_bc(int fd);         /*返回结果*/
 #endif

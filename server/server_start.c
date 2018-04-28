@@ -115,7 +115,7 @@ int server_start()
                     printf("client[%d] closed connection\n", j);
                 }else{/*非空则处理客户端信息*/
                     //n = read(sockfd,buffer,RECEVLEN);
-                    mess_exl(buffer,RECEVLEN);
+                    mess_exl(buffer,RECEVLEN,sockfd);
                     memset(buffer,0,RECEVLEN);
                     /*for(j = 0; j<n; j++)
                         buf[j] = toupper(buf[j]);*/
@@ -133,11 +133,11 @@ int server_start()
 
 
 
-int mess_exl(char * buf,int len){
+int mess_exl(char * buf,int len,int fd){
 
     Message mess;
     memcpy((char *)&mess,buf,sizeof(mess));
-    database_choice(mess,NULL,0);             /*选择操作命令,并作出相应处理*/
+    database_choice(mess,NULL,0,fd);             /*选择操作命令,并作出相应处理*/
     //print_mess(mess);
     
 }

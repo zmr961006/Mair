@@ -42,5 +42,5 @@ int DELNODE(Message mess,int flag);                /*删除服务器节点*/
 
 int REWRITEFILE();                                 /*将更新的服务器端点和节点重新写入配置文件*/
 
-
+int print_bc(Message mess);
 #endif

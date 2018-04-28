@@ -26,7 +26,7 @@ typedef struct message{
     int  server_hash;          /*数据库ID*/
     char now_time[1];
     char out_time[1];
-    
+    char oob[30];              /*外带数据,一般作返回使用*/   
 }Message;
 
 

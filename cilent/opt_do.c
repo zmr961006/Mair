@@ -144,6 +144,7 @@ int chunk(char * temp1){          /*检查命令是否合理*/
 int do_send(int fd){        /*根据哈希值发送数据*/
 
     Message message;
+    Message bcmess;
     int hash = 0;
     int len  = strlen(buf_key);
     int vlen = strlen(buf_val);
@@ -175,6 +176,8 @@ int do_send(int fd){        /*根据哈希值发送数据*/
     do_local(message.Type,message);                   /*与服务器操作相关的预处理操作*/  
     sfd = get_socket(server_num,hash);
     write(sfd,(char *)&message,sizeof(message));
+    recv(sfd,(void *)&bcmess,sizeof(bcmess),0);         /*接受返回数据*/
+    print_bc(bcmess);
     printf("server : %d\n",server_num);
     //sleep(1);
     close(sfd);
@@ -354,4 +357,17 @@ int REWRITEFILE(){
     return number;
 }
 
+
+int print_bc(Message mess){
+    
+    if(strcmp(mess.buff_mo,"GET") == 0 || strcmp(mess.buff_mo,"get") == 0){
+        
+        printf("GET,%s\n",mess.buff_val);
+
+    }else{     
+        printf("Key:%s:%s\n",mess.buff_key,mess.oob);
+
+    }
+
+}
 

@@ -47,6 +47,7 @@ typedef struct message{
     int  server_hash;       /*数据库ID*/
     char now_time[1];       /*设置时间*/
     char out_time[1];       /*过期时间*/
+    char oob[30];           /*外带数据返回时有用*/
     
 }Message;
 

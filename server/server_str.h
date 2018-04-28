@@ -13,6 +13,7 @@
 #include"./server_DB.h"
 #include"./server_watch.h"
 #include"./rlist.h"
+#include"./server_bc.h"
 
 #define NOTEXIST   0       /*KV不存在*/
 #define KEXIST     1       /*KV存在*/
@@ -21,10 +22,10 @@
 
 /*SET 指令；字符串设置*/
 
-int SET(Message mess,int argc);
+int SET(Message mess,int argc,int fd);
 
 /*测试KV是否存在*/
-int EXIST(Message mess,int argc);
+int EXIST(Message mess,int argc,int fd);
 
 /*MESSAGE 转换为 KEYVAL*/
 KeyVal * mess_to_kv(Message mess,int flag,int len);
@@ -33,10 +34,10 @@ KeyVal * mess_to_kv(Message mess,int flag,int len);
 int add_KV_DB(KeyVal * temp,int flag);
 
 /*获取其中的一个存在KV*/
-KeyVal* GET(Message mess,int argc);
+KeyVal* GET(Message mess,int argc,int fd);
 
 /*删除某个KV */
-int DEL(Message mess,int argc);
+int DEL(Message mess,int argc,int fd);
 
 /*打印所有的KV*/
 KeyVal * FINDALL();
