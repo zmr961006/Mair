@@ -45,7 +45,7 @@ typedef struct netinfo{
     int hash_start;         /*哈希开始*/
     int hash_end;           /*哈希结束*/
     int status;             /*节点状态,是否是虚拟节点*/
-    int virtual_server;     /*虚拟节点对应真实节点的指向*/
+    int virtual_server;     /*虚拟节点对应真实节点的指向0:真实，1:虚拟*/
     struct netinfo *next;   /*链表*/
 
 }netinfo;
@@ -58,6 +58,7 @@ typedef struct netmap {
     netinfo *networkmap;    /*路由转发表*/
     netinfo *tail;          /*表尾*/
     int node_num;           /*路由个数*/
+    int version ;           /*数据路由表版本*/
 
 }netmap;
 

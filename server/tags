@@ -4,25 +4,25 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
-ADDNODE	server_ser.c	/^int ADDNODE(Message mess,int flag){$/;"	f
+ADDNODE	server_ser.c	/^int ADDNODE(Message mess,int flag,int fd){$/;"	f
 ALIVE	server_str.h	21;"	d
 BUFFEXP	server_init.h	18;"	d
 BUFFLEN	server_mess.h	11;"	d
 BUFSIZE	server_start.h	25;"	d
-CLIST	rlist.c	/^int CLIST(Message mess,int flag){$/;"	f
+CLIST	rlist.c	/^int CLIST(Message mess,int flag,int fd){$/;"	f
 COMMON	server_DB.h	27;"	d
 Code	server_DB.h	/^    int  Code;                   \/*存储编码类型*\/$/;"	m	struct:KeyVal
 DB	server_DB.h	/^    KeyVal **DB;    $/;"	m	struct:DataBase
 DB_numbers	server_DB.h	/^    int DB_numbers;$/;"	m	struct:Mair_DB
 DEAD	server_str.h	20;"	d
-DEL	server_str.c	/^int DEL(Message mess,int argc){$/;"	f
-DELNODE	server_ser.c	/^int DELNODE(Message mess,int flag){$/;"	f
+DEL	server_str.c	/^int DEL(Message mess,int argc,int fd){$/;"	f
+DELNODE	server_ser.c	/^int DELNODE(Message mess,int flag,int fd){$/;"	f
 DataBase	server_DB.h	/^typedef struct DataBase{                \/*用户数据库*\/$/;"	s
 DataBase	server_DB.h	/^}DataBase;$/;"	t	typeref:struct:DataBase
 ENDLEN	server_init.h	24;"	d
-EXIST	server_str.c	/^int EXIST(Message mess,int argc){$/;"	f
+EXIST	server_str.c	/^int EXIST(Message mess,int argc,int fd){$/;"	f
 FINDALL	server_str.c	/^KeyVal * FINDALL(){$/;"	f
-GET	server_str.c	/^KeyVal* GET(Message mess,int argc){$/;"	f
+GET	server_str.c	/^KeyVal* GET(Message mess,int argc,int fd){$/;"	f
 HASH	server_DB.h	23;"	d
 HEADNODE	server_DB.h	31;"	d
 INT	server_DB.h	21;"	d
@@ -36,9 +36,9 @@ LIMIT	server_init.h	27;"	d
 LIST	server_DB.h	22;"	d
 LISTLEN	rlist.h	18;"	d
 LOAD	server_init.h	19;"	d
-LPOP	rlist.c	/^int LPOP(Message mess,int flag){$/;"	f
-LPUSH	rlist.c	/^int LPUSH(Message mess,int flag){$/;"	f
-LSET	rlist.c	/^int LSET(Message mess,int flag){$/;"	f
+LPOP	rlist.c	/^int LPOP(Message mess,int flag,int fd){$/;"	f
+LPUSH	rlist.c	/^int LPUSH(Message mess,int flag,int fd){$/;"	f
+LSET	rlist.c	/^int LSET(Message mess,int flag,int fd){$/;"	f
 Mair_DB	server_DB.h	/^typedef struct Mair_DB{          \/*数据库大类*\/$/;"	s
 Mair_DB	server_DB.h	/^}Mair_DB;$/;"	t	typeref:struct:Mair_DB
 Message	server_mess.h	/^}Message;$/;"	t	typeref:struct:message
@@ -48,13 +48,14 @@ ODER	server_mess.h	12;"	d
 OPEN_MAX	server_start.h	27;"	d
 PORT	server_start.h	28;"	d
 PORTLEN	server_init.h	22;"	d
-RDEL	rlist.c	/^int RDEL(Message mess,int flag){$/;"	f
+RDEL	rlist.c	/^int RDEL(Message mess,int flag,int fd){$/;"	f
 RECEVLEN	server_start.h	29;"	d
 REWRITEFILE	server_ser.c	/^int REWRITEFILE(){$/;"	f
 RLIST	rlist.h	/^}RLIST;$/;"	t	typeref:struct:rlist
+SCHUNK	server_ser.c	/^int SCHUNK(Message mess,int flag,int fd){$/;"	f
 SERVER	server_DB.h	25;"	d
 SERV_PORT	server_start.h	26;"	d
-SET	server_str.c	/^int SET(Message mess,int argc){$/;"	f
+SET	server_str.c	/^int SET(Message mess,int argc,int fd){$/;"	f
 STARTLEN	server_init.h	23;"	d
 STRING	server_DB.h	20;"	d
 ServerDB	server_DB.h	/^    DataBase  ServerDB[10];      \/*数据库10个实例*\/$/;"	m	struct:Mair_DB
@@ -84,6 +85,7 @@ add_KV_DB	server_str.c	/^int add_KV_DB(KeyVal * temp,int flag){$/;"	f
 add_nodeinmap	server_init.c	/^int add_nodeinmap(char *buffer,int temp1){$/;"	f
 add_virtual_node	server_init.c	/^int add_virtual_node(){}$/;"	f
 appendnode	server_init.c	/^int appendnode(Message mess,int flag){$/;"	f
+bc_info	server_bc.c	/^char bc_info[12][30];    \/*反馈信息存储*\/$/;"	v
 bitmap	rlist.h	/^    short bitmap[LISTLEN]; \/\/位图$/;"	m	struct:rlist
 bix	dystr.h	/^    int   bix;           \/*编码类型*\/$/;"	m	struct:dystr
 buff_key	server_mess.h	/^    char buff_key[KEYLEN];     \/*KEY存储*\/$/;"	m	struct:message
@@ -147,6 +149,7 @@ node_info_num	server_init.c	/^int  node_info_num;  \/*标记有多少个IP节点
 node_num	server_init.h	/^    int node_num;$/;"	m	struct:netmap
 now_time	server_mess.h	/^    char now_time[1];$/;"	m	struct:message
 num	order.h	/^    int num;$/;"	m	struct:order
+oob	server_mess.h	/^    char oob[30];              \/*外带数据,一般作返回使用*\/   $/;"	m	struct:message
 order	order.h	/^typedef struct order {$/;"	s
 order	order.h	/^}order;$/;"	t	typeref:struct:order
 orders	order.h	/^    char *orders[6];$/;"	m	struct:order
@@ -166,6 +169,7 @@ rewritefile	server_init.c	/^int rewritefile(){$/;"	f
 rlist	rlist.h	/^typedef struct rlist{$/;"	s
 server_DB	server_DB.c	/^Mair_DB server_DB;    \/*全局数据存储系统*\/$/;"	v
 server_bc	server_bc.c	/^int server_bc(Message mess,char *info,int flag,int fd){$/;"	f
+server_bc_init	server_bc.c	/^int server_bc_init(){$/;"	f
 server_hash	server_DB.h	/^    int  server_hash;            \/*数据库ID*\/$/;"	m	struct:KeyVal
 server_hash	server_mess.h	/^    int  server_hash;          \/*数据库ID*\/$/;"	m	struct:message
 server_init	server_init.c	/^int server_init(int server_port){$/;"	f
@@ -184,6 +188,7 @@ test_net	server_init.c	/^int test_net(){$/;"	f
 this_server_port	server_init.c	/^int  this_server_port;  \/*本机的端口*\/$/;"	v
 type	rlist.h	/^    int  type     ;        \/\/存储类型；预留$/;"	m	struct:rlist
 use_node	rlist.h	/^    int  use_node ;        \/\/最后一个元素的下标$/;"	m	struct:rlist
+version	server_init.h	/^    int version;$/;"	m	struct:netmap
 virtual_off	server_init.c	/^int virtual_off = 0;    \/*默认关闭虚拟节点1:on ; 0:off*\/$/;"	v
 virtual_server	server_init.h	/^    int virtual_server;$/;"	m	struct:netinfo
 write_server	server_init.c	/^int write_server(int temp1,char *temp2){}$/;"	f

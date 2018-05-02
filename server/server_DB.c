@@ -99,7 +99,13 @@ int database_choice(Message mess,char * order,int hash,int fd){
         }else if((strcmp(mess.buff_mo,"DELNODE") == 0) || (strcmp(mess.buff_mo,"delnode") == 0)){
                 DELNODE(mess,0,fd);
                 REWRITEFILE();
-            return SERVER;
+                return SERVER;
+        }else if((strcmp(mess.buff_mo,"SCHUNK") == 0) || (strcmp(mess.buff_mo,"schunk") == 0)){
+                SCHUNK(mess,0,fd);
+                return SERVER;
+        }else if((strcmp(mess.buff_mo,"UPDATE") == 0) || (strcmp(mess.buff_mo,"update") == 0)){
+                UPDATE(mess,0,fd);
+                return SERVER;
         }else{
             //pass
         }

@@ -52,6 +52,7 @@ buff_key	message.h	/^    char buff_key[KEYLEN];  \/*KEY 存储*\/$/;"	m	struct:m
 buff_mo	message.h	/^    char buff_mo[ODER];     \/*命令存储*\/$/;"	m	struct:message
 buff_val	message.h	/^    char buff_val[VALLEN];  \/*VAL 存储*\/$/;"	m	struct:message
 chunk	opt_do.c	/^int chunk(char * temp1){          \/*检查命令是否合理*\/$/;"	f
+chunk_network	distribute.c	/^int chunk_network(Message mess,int flag){$/;"	f
 del_virtual_node	distribute.c	/^int del_virtual_node(){}$/;"	f
 delnode	read_pro.c	/^int delnode(Message mess,int flag){$/;"	f
 delserver	read_pro.c	/^int delserver(int flag){$/;"	f
@@ -63,10 +64,12 @@ find_send_node	distribute.c	/^netinfo * find_send_node(int servernumber,int hash
 find_servernode	read_pro.c	/^int find_servernode(Message mess,int flag,int index[]){$/;"	f
 find_virtual_node	distribute.c	/^netinfo * find_virtual_node(int hash){$/;"	f
 flag	message.h	/^    int  flag ;             \/*标志*\/$/;"	m	struct:message
+free_network	distribute.c	/^int free_network(int version){$/;"	f
 get_hash	opt_do.c	/^int get_hash(char *data,int len){$/;"	f
 get_ordernum	opt_do.c	/^int get_ordernum(char * order){$/;"	f
 get_server	opt_do.c	/^int get_server(int hash){$/;"	f
 get_socket	cilent_sock.c	/^int get_socket(int fd,int temp){$/;"	f
+get_socket2	cilent_sock.c	/^int get_socket2(netinfo * temp){$/;"	f
 hash	message.h	/^    int  hash ;             \/*哈希值*\/$/;"	m	struct:message
 hash_end	read_pro.h	/^    int hash_end;           \/*哈希结束*\/$/;"	m	struct:netinfo
 hash_start	read_pro.h	/^    int hash_start;         \/*哈希开始*\/$/;"	m	struct:netinfo
@@ -107,6 +110,8 @@ setdelserver	read_pro.c	/^int setdelserver(int index){$/;"	f
 status	read_pro.h	/^    int status;             \/*节点状态,是否是虚拟节点*\/$/;"	m	struct:netinfo
 tail	read_pro.h	/^    netinfo *tail;          \/*表尾*\/$/;"	m	struct:netmap
 test_net	read_pro.c	/^int test_net(){$/;"	f
+version	read_pro.h	/^    int version ;           \/*数据路由表版本*\/$/;"	m	struct:netmap
 virtual_off	distribute.c	/^int virtual_off = 0;    \/*默认关闭虚拟节点1:on ; 0:off*\/$/;"	v
-virtual_server	read_pro.h	/^    int virtual_server;     \/*虚拟节点对应真实节点的指向*\/$/;"	m	struct:netinfo
+virtual_server	read_pro.h	/^    int virtual_server;     \/*虚拟节点对应真实节点的指向0:真实，1:虚拟*\/$/;"	m	struct:netinfo
+write_all	cilent_sock.c	/^int write_all(Message mess,int flag){$/;"	f
 write_server	read_pro.c	/^int write_server(int temp1,char *temp2){}$/;"	f

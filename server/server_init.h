@@ -48,7 +48,7 @@ typedef struct netmap {
     netinfo *networkmap;
     netinfo *tail;
     int node_num;
-
+    int version;
 }netmap;
 
 int read_server(int temp1,char *temp2);

@@ -10,7 +10,7 @@
 
 #include"./read_pro.h"
 #include"./opt_do.h"
-
+#include"./cilent_sock.h"
 
 #define  LIMIT  100000         /*第一次哈希的散列区间*/
 
@@ -29,7 +29,10 @@ netinfo * find_real_node(int hash);
 
 netinfo * find_virtual_node(int hash);
 
+/*检查网络转发表是否一致*/
+int chunk_network(Message mess,int flag);
 
+int free_network(int version);
 
 
 

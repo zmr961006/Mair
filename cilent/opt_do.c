@@ -41,18 +41,20 @@ int init_cilent(){
     orders.orders[10]= "DELNODE";
     orders.orders[11]= "delnode";
     
-    orders.orders[12]= "CLIST";
-    orders.orders[13]= "rlist";
-    orders.orders[14]= "LSET";
-    orders.orders[15]= "lset";
-    orders.orders[16]= "RDEL";
-    orders.orders[17]= "rdel";
-    orders.orders[18]= "LPUSH";
-    orders.orders[19]= "lpush";
-    orders.orders[20]= "LPOP";
-    orders.orders[21]= "lpop";
-    
-    orders.num = 22;
+    orders.orders[12] = "CLIST";
+    orders.orders[13] = "rlist";
+    orders.orders[14] = "LSET";
+    orders.orders[15] = "lset";
+    orders.orders[16] = "RDEL";
+    orders.orders[17] = "rdel";
+    orders.orders[18] = "LPUSH";
+    orders.orders[19] = "lpush";
+    orders.orders[20] = "LPOP";
+    orders.orders[21] = "lpop";
+    orders.orders[22] = "SCHUNK";
+    orders.orders[23] = "schunk";
+
+    orders.num = 24;
 
 }
 
@@ -150,6 +152,7 @@ int do_send(int fd){        /*根据哈希值发送数据*/
     int vlen = strlen(buf_val);
     int sfd;
     int server_num = 0;
+    int distribute = 0;
     //hash = get_hash(buf_key,len);
     memcpy(message.buff_mo,buf_oder,ODER);
     memcpy(message.buff_key,buf_key,KEYLEN);
@@ -161,7 +164,7 @@ int do_send(int fd){        /*根据哈希值发送数据*/
         message.buff_val[vlen-1] = '\0';
         
     }
-    printf("val %s len %d\n",message.buff_val,vlen);
+    //printf("val %s len %d\n",message.buff_val,vlen);
     int klen = strlen(message.buff_key);
     hash = get_hash(message.buff_key,klen);
     //hash = get_hash(buf_key,len);
@@ -170,15 +173,24 @@ int do_send(int fd){        /*根据哈希值发送数据*/
     server_num = get_server(hash);
     message.hash = hash;
     message.flag = ALIVE;
-    message.Type = get_ordernum(buf_oder);    /*获取命令类型*/
-    message.server_hash = server_id;          /*默认在0号数据库*/
+    message.Type = get_ordernum(buf_oder);        /*获取命令类型*/
+    message.server_hash = server_id;              /*默认在0号数据库*/
     //printf("%d\n",server_num);
-    do_local(message.Type,message);                   /*与服务器操作相关的预处理操作*/  
+    distribute = do_local(message.Type,message);  /*与服务器操作相关的预处理操作*/  
+    if(distribute > 0){                           /*分布式转发需要广播到所有的服务器*/
+        write_all(message,distribute);
+        return 1;
+    }
+    if(distribute < 0){                           /*检查网络转发表是否一致*/
+        chunk_network(message,distribute);
+        //close(sfd);
+        return 1;
+    }
     sfd = get_socket(server_num,hash);
     write(sfd,(char *)&message,sizeof(message));
     recv(sfd,(void *)&bcmess,sizeof(bcmess),0);         /*接受返回数据*/
     print_bc(bcmess);
-    printf("server : %d\n",server_num);
+    //printf("server : %d\n",server_num);
     //sleep(1);
     close(sfd);
     //printf("OK,%s %s %s\n",message.buff_mo,message.buff_key,message.buff_val);
@@ -272,6 +284,10 @@ int get_ordernum(char * order){
     
         return SERVER;
 
+    }else if((strcmp(order,"SCHUNK") == 0) || (strcmp(order,"schunk") == 0)){
+    
+        return SERVER;
+
     }else if((strcmp(order,"CLIST") == 0) || (strcmp(order,"clist") == 0)){
 
         return LIST;
@@ -309,34 +325,35 @@ int do_local(int Type,Message message){
 
             ADDNODE(message,0);
             REWRITEFILE();
-            return 0;
+            return NetMap.node_num;
 
         }else if(strcmp(message.buff_mo,"DELNODE") == 0 || strcmp(message.buff_mo,"delnode") == 0){
             
             DELNODE(message,0);
             REWRITEFILE();
-            return 0;
+            return NetMap.node_num;
 
-        }else{
+        }else if(strcmp(message.buff_mo,"SCHUNK") == 0 || strcmp(message.buff_mo,"schunk") == 0){
             
+            return -1;
+            
+        }else{
             //pass
         }    
         
     }else{
         //pass
     }
+    return 0;
         
 }
 
 
 int ADDNODE(Message mess,int flag){
     printf("---------------------------------------------\n");
-    test_net();
-    printf("ADDNODE : %s : %s\n",mess.buff_key,mess.buff_val);
+    //printf("ADDNODE : %s : %s\n",mess.buff_key,mess.buff_val);
     appendnode(mess,flag);
-    test_net();
     printf("---------------------------------------------\n");
-
 }
 
 

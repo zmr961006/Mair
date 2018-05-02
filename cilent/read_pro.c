@@ -252,7 +252,8 @@ int proc_profile(){
 
 
 int appendnode(Message mess,int flag){
-    
+       
+    //printf("ADDNODE : %s : %s\n",mess.buff_key,mess.buff_val);
     if(NetMap.node_num    == 0){
         netinfo * temp    = (netinfo*)malloc(sizeof(netinfo));
         temp->next        = NULL;
@@ -276,29 +277,43 @@ int appendnode(Message mess,int flag){
 
 /*示例化netinfo 网络转发节点*/
 
+char buff[5][30];
 int _app_nodeinmap(Message mess,netinfo * temp){
     
-    char buff[5][30];
+    printf("ADDNODE : %s : %s\n",mess.buff_key,mess.buff_val);
+    //char buff[5][30];
+
+    for(int i = 0;i < 5;i++){
+        memset(buff[i],0,30);
+    }
 
     int llen = strlen(mess.buff_val);                //获取端口和范围
     int len = strlen(mess.buff_key);                 //获取IP 
 
+    //printf("keylen :%d :%s\n",len,mess.buff_key);
+    //printf("keyval :%d :%s\n",llen,mess.buff_val);
+    //for(int i = 0;i <llen;i++){
+     //   printf("%c",mess.buff_val[i]);
+    //}
+    //printf("\n");
     temp->ip_char = (char *)malloc(sizeof(char) * len);  //直接拷贝IP 内容
     memcpy(temp->ip_char,mess.buff_key,len);             
-
     
-    int j ,k = 0;
+    int j = 0;
+    int k = 0;
     for(int i = 0;i < llen ; i++){
         if(mess.buff_val[i] == ':'){
             j++;
             k = 0;
         }else{
-            
             buff[j][k] = mess.buff_val[i];
+            //memcpy(&buff[j][k],&mess.buff_val[i],1);
+            //printf("%c",buff[j][k]);
             k++;
         }
+        //printf("%s\n",buff[j]);
     }
-
+    
     int plen = strlen(buff[0]);
     temp->port_char = (char *)malloc(sizeof(char) * plen);
     memcpy(temp->port_char,buff[0],plen);
@@ -309,9 +324,13 @@ int _app_nodeinmap(Message mess,netinfo * temp){
     temp->status         =  atoi(buff[3]);
     temp->virtual_server =  atoi(buff[4]);
 
+    /*for(int i = 0;i < 5;i++){
+        printf("%s\n",buff[i]);
+    }*/
+
     printf("NODE: %d %d %d %d %d\n",temp->port_int,temp->hash_start,temp->hash_end,temp->status,temp->virtual_server);
 
-
+    printf("in\n");
     return 0;    
     
 }
