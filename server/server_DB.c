@@ -95,6 +95,7 @@ int database_choice(Message mess,char * order,int hash,int fd){
 	    if((strcmp(mess.buff_mo,"ADDNODE") == 0) || (strcmp(mess.buff_mo,"addnode") == 0)){
                 ADDNODE(mess,0,fd);
                 REWRITEFILE();
+                DATA_TRANS();
                 return SERVER;
         }else if((strcmp(mess.buff_mo,"DELNODE") == 0) || (strcmp(mess.buff_mo,"delnode") == 0)){
                 DELNODE(mess,0,fd);
@@ -124,6 +125,21 @@ int echo_bc(int fd){
     char * buf = "OK,setval";
     send(fd,buf,20,0);
 
+
+
+}
+
+/*数据迁移服务开始*/
+/*1.修改路由表，包括其中的范围*/
+/*2.根据范围的修改遍历，将相应的数据进行转发*/
+
+
+int DATA_TRANS(){
+    
+    
+    //trans_data();    
+
+    return 0;
 
 
 }
