@@ -21,6 +21,7 @@ int ADDNODE(Message mess,int flag,int fd){
     appendnode(mess,flag);
     bc = 10;
     server_bc(mess,NULL,bc,fd);
+    printf("in ADDNODE \n");
     set_hash(mess,FLAG);             /*设置更改过后的hash服务范围*/
     test_net();
     printf("---------------------------------------------\n");
@@ -144,6 +145,19 @@ int set_hash(Message mess,int FLAG){
     temp->status         =  atoi(buff[3]);
     temp->virtual_server =  atoi(buff[4]);
     
+    /*temp 设置为当前的netinfo 节点*/
+
+    netinfo * node = NetMap.networkmap;
+    while(node != NULL){
+
+        if((strcmp(node->ip_char,temp->ip_char) == 0) && (node->port_int ==  temp->port_int)){
+            temp = node;         /*temp 设置为指向链表中的节点，就可以修改链表中的数据了*/
+            break;
+            
+        }
+        node = node->next;
+    }
+
     /*FLAG = 0 则为增加节点与范围操作，当FLAG = 1 则为删除节点与合并范围操作*/
     /*增加节点就为遍历整个链表，寻找增加的范围在原节点的哪一个区间，修改相应的范围*/
     /*增加总共分为三种情况：
@@ -157,16 +171,17 @@ int set_hash(Message mess,int FLAG){
         while(index != NULL){
             if((temp->hash_start >= index->hash_start) && (temp->hash_end <= index->hash_end )){
                 /*则找到一个在区间内增加的服务节点，属于第一中情况*/
+                /*则需要修改当前找到的服务节点的服务器范围*/
+                /*只能从开始位置进行节点增加操作*/
                 
+                index->hash_start = temp->hash_end -1;
+
+                printf("add node change\n");
+                //data_trans(mess,start,end);
                 
-                
-            }else if((temp->hash_start <= index->hash_end) && (temp->hash_end >= index->hash_end)){
+            }else if((temp->hash_start < index->hash_end) && (temp->hash_end > index->hash_end)){
                 /*则找到为一个跨区增加服务器的节点，属于第二种情况*/
-            
-            
-            }else if((temp->hash_start >= index->hash_end) && (temp->hash_end >= MAXLISMIT)){
-                /*则找到超过服务器最大服务器的服务范围，则属于第三种情况*/
-            
+                /*跨范围增加节点需要修改两个节点的服务范围，分别是前一个的终止和后一个开始*/
             
             }else{
                 //pass
@@ -183,35 +198,47 @@ int set_hash(Message mess,int FLAG){
          */
 
         netinfo * index = NetMap.networkmap;
-        netinfo * next;
+        netinfo * rear;
         int ssum = 1;
+        int flag_have_rear = 0;
         while(index != NULL){
-            next = index->next;
+            
             if(NetMap.node_num == 1){
                 printf("can not del node in this system\n");
-            }else if(){
-                
-                
-                
-            }else if(){
-
-
-
+            }else if((index->hash_end + 1) == temp->hash_start){
+                /*则表示此节点是temp节点的前驱节点*/
+                /*如果没有后继节点则直接合并到前驱节点*/
+                /*Q：如何确定此节点一定没有后继节点*/
+                flag_have_rear = 1;
+                rear = index ;          /*保存当前节点的前驱节点*/
+            }else if((index->hash_start-1) == temp->hash_start){
+                /*则表示此节点是temp节点的后继节点*/
+                /*如果存在后继节点则直接进行合并操作*/
+                /*这种情况下找到节点是可以直接处理的，无需其他操作*/
+                //merge_hash_next();
+                //return 0;
+                index->hash_start =  temp->hash_start;
+            
             }else{
                 
-
-
+                //pass
+                
             }
             
             ssum++;
             index = index->next;
         }
+        if(flag_have_rear == 1){
+            
+            //merge_hash_rear();
+            //return 0;
+            rear->hash_end = temp->hash_end;
+        }
         
-    
-    
-    
     }
     
     return 0;
 
 }
+
+
