@@ -16,11 +16,11 @@
 #include<stdlib.h>
 #include"./server_mess.h"
 #include"./server_DB.h"
-
+#include"./server_str.h"
 
 #define AOF       1             /*两个标志位*/
 #define RDB       2
-#define BUFFSIZE  10000         /*一个BUFF默认存储10000条*/
+#define BUFFSIZE  10         /*一个BUFF默认存储10000条*/
 
 
 /*AOF 与 RDB 通用存储结构*/
@@ -39,8 +39,10 @@ typedef struct LOG{
 
 }LOG;
 
+
+/*日志存储结构*/
 typedef struct LOGBUFF{
-    
+
     LOG buff[BUFFSIZE];
     int sum;
     int free;
@@ -61,7 +63,7 @@ int init_log(int Type);
 int writetofile(int Type);
 
 /*将数据从文件中读入内存准备恢复数据*/
-int readfromefile(int Type);
+int readfromfile(int Type);
 
 /*写AOF接口*/
 
@@ -70,6 +72,23 @@ int w_aof(void * temp,int flag,int Type);
 /*遍历RDB接口*/
 
 int all_rdb();
+
+/*写RDB接口*/
+int w_rdb(void * temp,int flag,int Type);
+
+/*打印内存日志*/
+int watch_log();
+
+/*LOG 转换接口*/
+
+
+Message * log_to_mess(LOG * temp,int flag,int Type);
+
+
+
+KeyVal * log_to_kv(LOG * temp,int flag,int Type);
+
+
 
 
 #endif

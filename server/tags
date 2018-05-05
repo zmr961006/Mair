@@ -6,12 +6,16 @@
 !_TAG_PROGRAM_VERSION	5.8	//
 ADDNODE	server_ser.c	/^int ADDNODE(Message mess,int flag,int fd){$/;"	f
 ALIVE	server_str.h	21;"	d
+AOF	server_RDB.h	21;"	d
+AOF_RDB	server_RDB.h	/^    int  AOF_RDB;             \/*用来指示是AOF 还是RDB 模式*\/$/;"	m	struct:LOG
 BUFFEXP	server_init.h	18;"	d
 BUFFLEN	server_mess.h	11;"	d
+BUFFSIZE	server_RDB.h	23;"	d
 BUFSIZE	server_start.h	25;"	d
 CLIST	rlist.c	/^int CLIST(Message mess,int flag,int fd){$/;"	f
 COMMON	server_DB.h	27;"	d
 Code	server_DB.h	/^    int  Code;                   \/*存储编码类型*\/$/;"	m	struct:KeyVal
+DATA_TRANS	server_DB.c	/^int DATA_TRANS(){$/;"	f
 DB	server_DB.h	/^    KeyVal **DB;    $/;"	m	struct:DataBase
 DB_numbers	server_DB.h	/^    int DB_numbers;$/;"	m	struct:Mair_DB
 DEAD	server_str.h	20;"	d
@@ -36,9 +40,16 @@ LIMIT	server_init.h	27;"	d
 LIST	server_DB.h	22;"	d
 LISTLEN	rlist.h	18;"	d
 LOAD	server_init.h	19;"	d
+LOG	server_RDB.h	/^typedef struct LOG{$/;"	s
+LOG	server_RDB.h	/^}LOG;$/;"	t	typeref:struct:LOG
+LOGAOF	server_RDB.c	/^LOGBUFF LOGAOF;$/;"	v
+LOGBUFF	server_RDB.h	/^typedef struct LOGBUFF{$/;"	s
+LOGBUFF	server_RDB.h	/^}LOGBUFF;$/;"	t	typeref:struct:LOGBUFF
+LOGRDB	server_RDB.c	/^LOGBUFF LOGRDB;$/;"	v
 LPOP	rlist.c	/^int LPOP(Message mess,int flag,int fd){$/;"	f
 LPUSH	rlist.c	/^int LPUSH(Message mess,int flag,int fd){$/;"	f
 LSET	rlist.c	/^int LSET(Message mess,int flag,int fd){$/;"	f
+MAXLISMIT	server_ser.c	12;"	d	file:
 Mair_DB	server_DB.h	/^typedef struct Mair_DB{          \/*数据库大类*\/$/;"	s
 Mair_DB	server_DB.h	/^}Mair_DB;$/;"	t	typeref:struct:Mair_DB
 Message	server_mess.h	/^}Message;$/;"	t	typeref:struct:message
@@ -48,11 +59,12 @@ ODER	server_mess.h	12;"	d
 OPEN_MAX	server_start.h	27;"	d
 PORT	server_start.h	28;"	d
 PORTLEN	server_init.h	22;"	d
+RDB	server_RDB.h	22;"	d
 RDEL	rlist.c	/^int RDEL(Message mess,int flag,int fd){$/;"	f
 RECEVLEN	server_start.h	29;"	d
 REWRITEFILE	server_ser.c	/^int REWRITEFILE(){$/;"	f
 RLIST	rlist.h	/^}RLIST;$/;"	t	typeref:struct:rlist
-SCHUNK	server_ser.c	/^int SCHUNK(Message mess,int flag,int fd){$/;"	f
+SCHUNK	server_ser.c	/^int SCHUNK(Message mess,int flag,int fd){   $/;"	f
 SERVER	server_DB.h	25;"	d
 SERV_PORT	server_start.h	26;"	d
 SET	server_str.c	/^int SET(Message mess,int argc,int fd){$/;"	f
@@ -60,7 +72,9 @@ STARTLEN	server_init.h	23;"	d
 STRING	server_DB.h	20;"	d
 ServerDB	server_DB.h	/^    DataBase  ServerDB[10];      \/*数据库10个实例*\/$/;"	m	struct:Mair_DB
 Type	server_DB.h	/^    int  Type;                   \/*指令类型*\/$/;"	m	struct:KeyVal
+Type	server_RDB.h	/^    int  Type;                \/*指令类型*\/$/;"	m	struct:LOG
 Type	server_mess.h	/^    int  Type ;                \/*接受类型*\/$/;"	m	struct:message
+UPDATE	server_ser.c	/^int UPDATE(Message mess,int flag,int fd){$/;"	f
 VALLEN	server_mess.h	14;"	d
 Val	server_DB.h	/^    void *Val;                   \/*无类型存储VAL*\/$/;"	m	struct:KeyVal
 WATCH	server_DB.h	26;"	d
@@ -73,6 +87,7 @@ _SERVER_DB_H	server_DB.h	9;"	d
 _SERVER_H	server.h	9;"	d
 _SERVER_INIT_H	server_init.h	9;"	d
 _SERVER_MESS_H	server_mess.h	9;"	d
+_SERVER_RDB_H	server_RDB.h	9;"	d
 _SERVER_SER_H	server_ser.h	9;"	d
 _SERVER_START_H	server_start.h	9;"	d
 _SERVER_STR_H	server_str.h	9;"	d
@@ -88,12 +103,17 @@ appendnode	server_init.c	/^int appendnode(Message mess,int flag){$/;"	f
 bc_info	server_bc.c	/^char bc_info[12][30];    \/*反馈信息存储*\/$/;"	v
 bitmap	rlist.h	/^    short bitmap[LISTLEN]; \/\/位图$/;"	m	struct:rlist
 bix	dystr.h	/^    int   bix;           \/*编码类型*\/$/;"	m	struct:dystr
+buff	server_RDB.h	/^    LOG buff[BUFFSIZE];$/;"	m	struct:LOGBUFF
+buff_key	server_RDB.h	/^    char buff_key[512];           \/*KEY存储*\/$/;"	m	struct:LOG
 buff_key	server_mess.h	/^    char buff_key[KEYLEN];     \/*KEY存储*\/$/;"	m	struct:message
+buff_mo	server_RDB.h	/^    char buff_mo[30];            \/*指令存储*\/$/;"	m	struct:LOG
 buff_mo	server_mess.h	/^    char buff_mo[ODER];        \/*命令存储*\/$/;"	m	struct:message
+buff_val	server_RDB.h	/^    char buff_val[512];           \/*VAL存储*\/$/;"	m	struct:LOG
 buff_val	server_mess.h	/^    char buff_val[VALLEN];     \/*VALUE存储*\/$/;"	m	struct:message
 buffer	server_start.c	/^char buffer[RECEVLEN];  \/*接受数据处理缓冲区*\/$/;"	v
 create_list	rlist.c	/^int create_list(RLIST * temp,Message mess){$/;"	f
 ctime	server_DB.h	/^    char ctime[1];               \/*存在时间*\/$/;"	m	struct:KeyVal
+ctime	server_RDB.h	/^    char ctime[1];$/;"	m	struct:LOG
 data	rlist.h	/^    char ** data  ;        \/\/数据存储$/;"	m	struct:rlist
 database_choice	server_DB.c	/^int database_choice(Message mess,char * order,int hash,int fd){$/;"	f
 db_id	server_DB.h	/^    short db_id;                 \/*存储表ID*\/$/;"	m	struct:KeyVal
@@ -120,21 +140,27 @@ find_virtual_node	server_init.c	/^netinfo * find_virtual_node(int hash){$/;"	f
 flag	rlist.h	/^    int  flag     ;        \/\/标记$/;"	m	struct:rlist
 flag	server_DB.h	/^    int flag;$/;"	m	struct:DataBase
 flag	server_mess.h	/^    int  flag ;$/;"	m	struct:message
+free	server_RDB.h	/^    int free;$/;"	m	struct:LOGBUFF
 free_node	rlist.h	/^    int  free_node;        \/\/剩余可以使用的内容$/;"	m	struct:rlist
 hash	server_DB.h	/^    int  hash;                   \/*哈希值*\/$/;"	m	struct:KeyVal
+hash	server_RDB.h	/^    int  hash;                \/*KEY 的hash值*\/$/;"	m	struct:LOG
 hash	server_mess.h	/^    int  hash ;                \/*哈希值*\/$/;"	m	struct:message
 hash_end	server_init.h	/^    int hash_end;$/;"	m	struct:netinfo
+hash_flag	server_RDB.h	/^    int  hash_flag;          $/;"	m	struct:LOG
 hash_start	server_init.h	/^    int hash_start;$/;"	m	struct:netinfo
 head	server_DB.h	/^    struct KeyVal * head;    \/*本条存储链的头节点*\/$/;"	m	struct:KeyVal	typeref:struct:KeyVal::KeyVal
 info	server_init.c	/^char **info;         \/*暂时存储配置信息*\/$/;"	v
 init_database	server_DB.c	/^int init_database(){     \/*初始数据库10个,每个数据库100条存储表*\/$/;"	f
 init_info	server_init.c	/^int init_info(char * temp1,int temp){$/;"	f
+init_log	server_RDB.c	/^int init_log(int Type){$/;"	f
 init_order	server_order.c	/^int init_order(){$/;"	f
 init_virtual	server_init.c	/^int init_virtual(){}$/;"	f
 ip_char	server_init.h	/^    char *ip_char;$/;"	m	struct:netinfo
 ip_int	server_init.h	/^    int ip_int;$/;"	m	struct:netinfo
 len	dystr.h	/^    int   len;           \/*数据长度*\/$/;"	m	struct:dystr
+log_create	server_RDB.c	/^LOG * log_create(void * temp,int type,int flag){$/;"	f
 main	server.c	/^int main(int argc ,char **argv){$/;"	f
+main	test_RDB.c	/^int main(){$/;"	f
 mess_exl	server_start.c	/^int mess_exl(char * buf,int len,int fd){$/;"	f
 mess_to_kv	server_str.c	/^KeyVal * mess_to_kv(Message mess,int flag,int len){$/;"	f
 message	server_mess.h	/^typedef struct message{$/;"	s
@@ -149,6 +175,7 @@ node_info_num	server_init.c	/^int  node_info_num;  \/*标记有多少个IP节点
 node_num	server_init.h	/^    int node_num;$/;"	m	struct:netmap
 now_time	server_mess.h	/^    char now_time[1];$/;"	m	struct:message
 num	order.h	/^    int num;$/;"	m	struct:order
+oob	server_RDB.h	/^    char oob[30];                \/*外带数据*\/$/;"	m	struct:LOG
 oob	server_mess.h	/^    char oob[30];              \/*外带数据,一般作返回使用*\/   $/;"	m	struct:message
 order	order.h	/^typedef struct order {$/;"	s
 order	order.h	/^}order;$/;"	t	typeref:struct:order
@@ -165,6 +192,7 @@ print_list	server_watch.c	/^int print_list(){$/;"	f
 print_mess	server_watch.c	/^int print_mess(Message mess){$/;"	f
 proc_profile	server_init.c	/^int proc_profile(){$/;"	f
 read_server	server_init.c	/^int read_server(int temp1,char *temp2){$/;"	f
+readfromfile	server_RDB.c	/^int readfromfile(int Type){$/;"	f
 rewritefile	server_init.c	/^int rewritefile(){$/;"	f
 rlist	rlist.h	/^typedef struct rlist{$/;"	s
 server_DB	server_DB.c	/^Mair_DB server_DB;    \/*全局数据存储系统*\/$/;"	v
@@ -175,9 +203,12 @@ server_hash	server_mess.h	/^    int  server_hash;          \/*数据库ID*\/$/;"
 server_init	server_init.c	/^int server_init(int server_port){$/;"	f
 server_start	server_start.c	/^int server_start()$/;"	f
 server_to_server	server_to.c	/^int server_to_server(int cmp,char *temp){$/;"	f
+set_hash	server_ser.c	/^int set_hash(Message mess,int FLAG){$/;"	f
 setdelserver	server_init.c	/^int setdelserver(int index){$/;"	f
 status	server_DB.h	/^    short status;                \/*指示头尾*\/$/;"	m	struct:KeyVal
 status	server_init.h	/^    int status;$/;"	m	struct:netinfo
+stime	server_RDB.h	/^    char stime[1];              \/*两个暂时没用的时间表示*\/$/;"	m	struct:LOG
+sum	server_RDB.h	/^    int sum;$/;"	m	struct:LOGBUFF
 sum_index	server_DB.h	/^    int *sum_index;    \/*每个数据库现在存储计数*\/ $/;"	m	struct:DataBase
 sum_numbers	server_DB.h	/^    int sum_numbers;   \/*此数据库总数*\/$/;"	m	struct:DataBase
 table_id	server_DB.h	/^    short table_id;              \/*数据库ID*\/$/;"	m	struct:KeyVal
@@ -191,4 +222,8 @@ use_node	rlist.h	/^    int  use_node ;        \/\/最后一个元素的下标$/;
 version	server_init.h	/^    int version;$/;"	m	struct:netmap
 virtual_off	server_init.c	/^int virtual_off = 0;    \/*默认关闭虚拟节点1:on ; 0:off*\/$/;"	v
 virtual_server	server_init.h	/^    int virtual_server;$/;"	m	struct:netinfo
+w_aof	server_RDB.c	/^int w_aof(void * temp,int flag,int Type){$/;"	f
+w_rdb	server_RDB.c	/^int w_rdb(void * temp,int flag,int Type){  $/;"	f
+watch_log	server_RDB.c	/^int watch_log(int Type){$/;"	f
 write_server	server_init.c	/^int write_server(int temp1,char *temp2){}$/;"	f
+writetofile	server_RDB.c	/^int writetofile(int Type){$/;"	f
