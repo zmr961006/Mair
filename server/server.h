@@ -12,8 +12,9 @@ int server_init();
 
 int server_start();
 
-
 int server_stop();
+
+int server_info_show();
 
 
 #endif

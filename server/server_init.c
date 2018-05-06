@@ -21,7 +21,7 @@ int test_net(){
     temp = NetMap.networkmap;
     int i  = 0;
     while(temp != NULL){
-        printf("server info:\n");
+        printf("server info:\033[32monline\33[0m\n");
         printf("ip   :%s\n",temp->ip_char);
         printf("port :%s\n",temp->port_char);
         printf("port :%d\n",temp->port_int);

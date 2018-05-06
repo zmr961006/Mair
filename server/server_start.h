@@ -20,6 +20,7 @@
 #include "./server_mess.h"
 #include "./server_watch.h"
 #include "./server_str.h"
+#include "./server_RDB.h"
 
 
 #define BUFSIZE    2048

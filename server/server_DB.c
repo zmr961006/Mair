@@ -7,6 +7,7 @@
 
 #include"./server_DB.h"
 #include"./server_str.h"
+#include"./server_RDB.h"
 
 Mair_DB server_DB;    /*全局数据存储系统*/
 
@@ -107,9 +108,20 @@ int database_choice(Message mess,char * order,int hash,int fd){
         }else if((strcmp(mess.buff_mo,"UPDATE") == 0) || (strcmp(mess.buff_mo,"update") == 0)){
                 UPDATE(mess,0,fd);
                 return SERVER;
+        }else if((strcmp(mess.buff_mo,"RDB") == 0) || (strcmp(mess.buff_mo,"rdb") == 0)){
+                //RDB()
+                return SERVER;
+        }else if((strcmp(mess.buff_mo,"AOF") == 0) || (strcmp(mess.buff_mo,"aof") == 0)){
+               readfromfile(AOF);
+               return SERVER;
+        }else if((strcmp(mess.buff_mo,"SHOW") == 0) || (strcmp(mess.buff_mo,"show") == 0)){
+               FINDALL();
+               return SERVER;
+
         }else{
-            //pass
+
         }
+
     }else if(Flag == WATCH){
         
     }else{

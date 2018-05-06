@@ -35,6 +35,8 @@ LOG * log_create(void * temp,int type,int flag){
         strcpy(index->oob,mess->oob);
         index->hash = mess->hash;
         index->Type = mess->Type;
+        index->server_hash = mess->server_hash;
+        index->AOF_RDB = AOF;
         return index;
 
     }else if(type == RDB){
@@ -45,8 +47,13 @@ LOG * log_create(void * temp,int type,int flag){
         strcpy(index->buff_val,((char *)(kv->Val)));
         index->hash = kv->hash;
         index->Type = kv->Type;
-        return index;
+        index->Code = kv->Code;
+        index->table_id = kv->table_id;
+        index->db_id    = kv->db_id;
+        index->status   = kv->status;
+        index->AOF_RDB  = RDB;
 
+        return index;
     }else{
         //pass
     }
@@ -102,7 +109,8 @@ int w_aof(void * temp,int flag,int Type){
         LOGAOF.sum++;
         LOGAOF.free--;
     }
-
+    watch_log(AOF);
+    //readfromfile(AOF);
     printf("in w_aof: %d %d\n",LOGAOF.sum,LOGAOF.free);
 
 }
@@ -118,7 +126,7 @@ int w_rdb(void * temp,int flag,int Type){
         memcpy((void *)&(LOGRDB.buff[LOGRDB.sum]),obj,sizeof(LOG));
         LOGRDB.sum++;
         LOGRDB.free--;
-
+        
     }else{
         
         LOG * obj = log_create(temp,RDB,Type);
@@ -185,18 +193,65 @@ int writetofile(int Type){
 }
 
 
+/*将当前剩余的内存数据全部刷入文件中加以保存*/
+int writetofilenow(int Type){
+    
+	FILE *fp;
+
+    if(Type == RDB){
+        fp = fopen("RDB","w");
+        for(int i = 0;i < LOGRDB.sum;i++){
+            fwrite((char *)&LOGRDB.buff[i],sizeof(LOG),1,fp);
+        }
+        fclose(fp);
+        init_log(RDB);
+        return 0;
+    }else if(Type == AOF){
+        
+        if(LOGAOF.sum == 0){
+            return -1;
+        }
+
+        fp = fopen("AOF","a");
+        for(int j = 0;j < LOGAOF.sum;j++){
+            fwrite((char *)&LOGAOF.buff[j],sizeof(LOG),1,fp);
+        }
+        fclose(fp);
+        init_log(AOF);
+        return 0;
+    }
+
+    
+}
+
+
+
+
+
+
+
+
 /*从文件中读取出写入的信息*/
 int readfromfile(int Type){
+
+
+    /*读取文件之前需要将内存中的数据首先刷进文件中*/
+
+    writetofilenow(Type);
 
     FILE * fp;
     int sum = 0;
     if(Type == AOF){
         fp = fopen("AOF","r");
         LOG temp;
+        //printf("###############################1\n");
         while((fread(&temp,sizeof(LOG),1,fp) > 0)){
             sum++;
             //需要将文件中的数据重新恢复到数据存储系统中；
-            
+            Message *mess;
+            mess = log_to_mess(&temp,0,0);
+            //printf("##########################2\n");
+            print_mess2(mess);  
         }
         printf("all %d LOGS\n",sum);
         fclose(fp);
@@ -248,15 +303,23 @@ int watch_log(int Type){
 }
 
 
+/*log 转换为 mess*/
+
 Message * log_to_mess(LOG * temp,int flag,int Type){
  
     Message  * index  = (Message *)malloc(sizeof(Message));
-    //copy temp to index;
+    strcpy(index->buff_mo,temp->buff_mo);
+    strcpy(index->buff_key,temp->buff_key);
+    strcpy(index->buff_val,temp->buff_val);
+    index->hash = temp->hash;
+    index->Type = temp->Type;
+    index->server_hash = temp->server_hash;
+
     return index;
 
 }
 
-
+/*log 转换为 Kv*/
 KeyVal  * log_to_kv(LOG * temp,int flag,int Type){
     
     KeyVal * index = (KeyVal *)malloc(sizeof(Message));

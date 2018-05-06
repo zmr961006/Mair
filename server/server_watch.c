@@ -22,6 +22,16 @@ int print_mess(Message mess){
 
 }
 
+int print_mess2(Message * mess){  
+
+    printf("*******************************\n");
+    printf("|order|Key|Vale|Type|Hash|\n");
+    printf("|%s|%s|%s|%d|%d|\n",mess->buff_mo,mess->buff_key,mess->buff_val,mess->Type,mess->hash);
+    printf("*******************************\n");
+    return 0;
+}
+
+
 /*打印KV*/
 
 int print_kv(KeyVal * temp){

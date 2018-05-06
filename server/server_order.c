@@ -37,7 +37,15 @@ int init_order(){
     orders.orders[22]= "SCHUNK";
     orders.orders[23]= "schunk";
 
-    orders.num = 24;
+    orders.orders[24]= "AOF";
+    orders.orders[25]= "aof";
+    orders.orders[26]= "RDB";
+    orders.orders[27]= "rdb";
+    orders.orders[28]= "SHOW";
+    orders.orders[29]= "show";
+
+
+    orders.num = 30;
 
 
 }

@@ -53,12 +53,15 @@ int init_cilent(){
     orders.orders[21] = "lpop";
     orders.orders[22] = "SCHUNK";
     orders.orders[23] = "schunk";
-    orders.orders[24] = "RDB";
-    orders.orders[25] = "rdb";
-    orders.orders[26] = "AOF";
-    orders.orders[27] = "aof";
 
-    orders.num = 28;
+    orders.orders[24] = "AOF";
+    orders.orders[25] = "aof";
+    orders.orders[26] = "RDB";
+    orders.orders[27] = "rdb";
+    orders.orders[28] = "SHOW";
+    orders.orders[29] = "show";
+
+    orders.num = 30;
 
 }
 
@@ -157,6 +160,8 @@ int do_send(int fd){        /*根据哈希值发送数据*/
     int sfd;
     int server_num = 0;
     int distribute = 0;
+    int r1 = 0;
+    int r2 = 0;
     //hash = get_hash(buf_key,len);
     memcpy(message.buff_mo,buf_oder,ODER);
     memcpy(message.buff_key,buf_key,KEYLEN);
@@ -190,10 +195,15 @@ int do_send(int fd){        /*根据哈希值发送数据*/
         //close(sfd);
         return 1;
     }
-    if(distribute == 0){
-        
-        rdb_aof_send(message,distribute);
-        return 1;
+     
+    r1 = rdb_aof_send(message,distribute);
+    if(r1 == 1){
+        return 0;
+    }
+    
+    r2 = show_send(message,distribute);
+    if(r2 == 1){
+        return 0;
     }
 
     sfd = get_socket(server_num,hash);
@@ -326,8 +336,10 @@ int get_ordernum(char * order){
         
         return SERVER;
 
-    }else{
+    }else if((strcmp(order,"SHOW") == 0) || (strcmp(order,"show") == 0)){
         
+        return SERVER;
+    }else{
         //pass
     }
     
@@ -420,23 +432,57 @@ int print_bc(Message mess){
 /*指令为： RDB/AOF IP port*/
 int rdb_aof_send(Message mess,int flag){
     
-    
-    int sockfd;
-    struct sockaddr_in servaddr;
 
-    sockfd = socket(AF_INET,SOCK_STREAM,0);
-    bzero(&servaddr,sizeof(servaddr));
-    servaddr.sin_family = AF_INET;
-    servaddr.sin_port   = htons(atoi(mess.buff_val));
-    inet_pton(AF_INET,mess.buff_key,&servaddr.sin_addr);
-    connect(sockfd,(struct sockaddr*)&servaddr,sizeof(servaddr));
-    write(sockfd,(char *)&mess,sizeof(Message));
-    close(sockfd);
+    if(strcmp(mess.buff_mo,"AOF") == 0 || strcmp(mess.buff_mo,"aof") == 0 
+              || strcmp(mess.buff_mo,"RDB") == 0 || strcmp(mess.buff_mo,"rdb") == 0){   
+
+        int sockfd;
+        struct sockaddr_in servaddr;
+        sockfd = socket(AF_INET,SOCK_STREAM,0);
+        bzero(&servaddr,sizeof(servaddr));
+        servaddr.sin_family = AF_INET;
+        servaddr.sin_port   = htons(atoi(mess.buff_val));
+        inet_pton(AF_INET,mess.buff_key,&servaddr.sin_addr);
+        connect(sockfd,(struct sockaddr*)&servaddr,sizeof(servaddr));
+        write(sockfd,(char *)&mess,sizeof(Message));
+        close(sockfd);
+        return 1;
+
+    }else{
+        
+        return 0;
+    }
     
 
-    return 0;
 
 
 }
 
+
+int show_send(Message mess,int flag){
+    
+
+    if(strcmp(mess.buff_mo,"SHOW") == 0 || strcmp(mess.buff_mo,"show") == 0){   
+
+        int sockfd;
+        struct sockaddr_in servaddr;
+        sockfd = socket(AF_INET,SOCK_STREAM,0);
+        bzero(&servaddr,sizeof(servaddr));
+        servaddr.sin_family = AF_INET;
+        servaddr.sin_port   = htons(atoi(mess.buff_val));
+        inet_pton(AF_INET,mess.buff_key,&servaddr.sin_addr);
+        connect(sockfd,(struct sockaddr*)&servaddr,sizeof(servaddr));
+        write(sockfd,(char *)&mess,sizeof(Message));
+        close(sockfd);
+        return 1;
+
+    }else{
+        
+        return 0;
+    }
+    
+
+
+
+}
 

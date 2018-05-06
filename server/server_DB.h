@@ -15,6 +15,7 @@
 #include"./server_mess.h"
 #include"./server_ser.h"
 #include"./rlist.h"
+//#include"./server_RDB.h"
 
 /*************************************数据类型*************************************/
 #define STRING  1
@@ -43,7 +44,7 @@ typedef struct KeyVal{           /*KV实例*/
     int  Code;                   /*存储编码类型*/
     short table_id;              /*数据库ID*/
     short db_id;                 /*存储表ID*/
-    short status;                /*指示头尾*/
+    short status;                /*指示存在性*/
     char ctime[1];               /*存在时间*/
     char dtime[1];               /*删除时间*/
     struct KeyVal * next;    /*本节点的下一个节点*/

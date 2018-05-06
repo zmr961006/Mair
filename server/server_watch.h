@@ -18,6 +18,8 @@
 
 int print_mess(Message mess);    /*打印消息结构信息*/
 
+int print_mess2(Message * mess);
+
 int print_kv(KeyVal * temp );    /*打印KV*/
 
 int print_dbnum();               /*打印数据库存储情况,返回总数*/

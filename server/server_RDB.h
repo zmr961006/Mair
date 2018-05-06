@@ -20,22 +20,30 @@
 
 #define AOF       1             /*两个标志位*/
 #define RDB       2
-#define BUFFSIZE  10         /*一个BUFF默认存储10000条*/
+#define BUFFSIZE  1        /*一个BUFF默认存储10000条*/
 
 
 /*AOF 与 RDB 通用存储结构*/
 typedef struct LOG{
 
-    char buff_mo[30];            /*指令存储*/
-    char buff_key[512];           /*KEY存储*/
-    char buff_val[512];           /*VAL存储*/
-    char oob[30];                /*外带数据*/
-    int  hash;                /*KEY 的hash值*/
+/*mess:*/
+    char buff_mo[30];           /*指令存储*/
+    char buff_key[512];         /*KEY存储*/
+    char buff_val[512];         /*VAL存储*/
+    char oob[30];               /*外带数据*/
+    int  hash;                  /*KEY 的hash值*/
     int  hash_flag;          
-    int  Type;                /*指令类型*/
-    int  AOF_RDB;             /*用来指示是AOF 还是RDB 模式*/
-    char stime[1];              /*两个暂时没用的时间表示*/
+    int  server_hash;           /*数据库存储ID*/
+    int  Type;                  /*指令类型*/
+    int  AOF_RDB;               /*用来指示是AOF 还是RDB 模式*/
+    char dtime[1];              /*两个暂时没用的时间表示*/
     char ctime[1];
+/*keyval:*/
+    int Code;                   /*数据存储格式*/  
+    short table_id;             /*表ID*/
+    short db_id;                /*数据库ID*/
+    short status;               /*存在性*/
+
 
 }LOG;
 
@@ -61,6 +69,9 @@ int init_log(int Type);
 
 /*将存储内容定时刷入磁盘文件存储*/
 int writetofile(int Type);
+
+/*将存储内容刷入磁盘文件存储*/
+int writetofilenow(int Type);
 
 /*将数据从文件中读入内存准备恢复数据*/
 int readfromfile(int Type);

@@ -48,6 +48,7 @@ buf_in	opt_do.c	/^char buf_in[BUFFLEN];     \/*指令缓冲*\/$/;"	v
 buf_key	opt_do.c	/^char buf_key[KEYLEN];     \/*KEY 缓冲*\/$/;"	v
 buf_oder	opt_do.c	/^char buf_oder[ODER];      \/*命令缓冲*\/$/;"	v
 buf_val	opt_do.c	/^char buf_val[VALLEN];     \/*VAL缓冲*\/$/;"	v
+buff	read_pro.c	/^char buff[5][30];$/;"	v
 buff_key	message.h	/^    char buff_key[KEYLEN];  \/*KEY 存储*\/$/;"	m	struct:message
 buff_mo	message.h	/^    char buff_mo[ODER];     \/*命令存储*\/$/;"	m	struct:message
 buff_val	message.h	/^    char buff_val[VALLEN];  \/*VAL 存储*\/$/;"	m	struct:message
@@ -102,6 +103,7 @@ port_char	read_pro.h	/^    char *port_char;        \/*端口字符存储*\/$/;"	
 port_int	read_pro.h	/^    int port_int;           \/*端口整形存储*\/$/;"	m	struct:netinfo
 print_bc	opt_do.c	/^int print_bc(Message mess){$/;"	f
 proc_profile	read_pro.c	/^int proc_profile(){$/;"	f
+rdb_aof_send	opt_do.c	/^int rdb_aof_send(Message mess,int flag){$/;"	f
 read_server	read_pro.c	/^int read_server(int temp1,char *temp2){$/;"	f
 rewritefile	read_pro.c	/^int rewritefile(){$/;"	f
 server_hash	message.h	/^    int  server_hash;       \/*数据库ID*\/$/;"	m	struct:message

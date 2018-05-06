@@ -138,7 +138,7 @@ int mess_exl(char * buf,int len,int fd){
     Message mess;
     memcpy((char *)&mess,buf,sizeof(mess));
     database_choice(mess,NULL,0,fd);             /*选择操作命令,并作出相应处理*/
-    //print_mess(mess);
+    w_aof(&mess,0,0);
     
 }
 
@@ -151,4 +151,5 @@ int test_mess(Message mess){
         printf("close some thing\n");
     }
 }
+
 

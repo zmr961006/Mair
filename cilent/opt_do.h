@@ -44,10 +44,12 @@ int REWRITEFILE();                                 /*将更新的服务器端点
 
 int print_bc(Message mess);
 
-/*RDB 服务存储*/
+/*RDB & AOF 服务存储*/
 
 int rdb_aof_send(Message mess,int flag);
 
-/*AOF 服务存储*/
+/*展示统计所有已经存在的数据*/
+
+int show_send(Message message,int flag);
 
 #endif
