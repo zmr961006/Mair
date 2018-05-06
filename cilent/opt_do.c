@@ -53,8 +53,12 @@ int init_cilent(){
     orders.orders[21] = "lpop";
     orders.orders[22] = "SCHUNK";
     orders.orders[23] = "schunk";
+    orders.orders[24] = "RDB";
+    orders.orders[25] = "rdb";
+    orders.orders[26] = "AOF";
+    orders.orders[27] = "aof";
 
-    orders.num = 24;
+    orders.num = 28;
 
 }
 
@@ -175,7 +179,7 @@ int do_send(int fd){        /*根据哈希值发送数据*/
     message.flag = ALIVE;
     message.Type = get_ordernum(buf_oder);        /*获取命令类型*/
     message.server_hash = server_id;              /*默认在0号数据库*/
-    //printf("%d\n",server_num);
+    
     distribute = do_local(message.Type,message);  /*与服务器操作相关的预处理操作*/  
     if(distribute > 0){                           /*分布式转发需要广播到所有的服务器*/
         write_all(message,distribute);
@@ -186,6 +190,12 @@ int do_send(int fd){        /*根据哈希值发送数据*/
         //close(sfd);
         return 1;
     }
+    if(distribute == 0){
+        
+        rdb_aof_send(message,distribute);
+        return 1;
+    }
+
     sfd = get_socket(server_num,hash);
     write(sfd,(char *)&message,sizeof(message));
     recv(sfd,(void *)&bcmess,sizeof(bcmess),0);         /*接受返回数据*/
@@ -308,9 +318,17 @@ int get_ordernum(char * order){
     
         return LIST;
         
+    }else if((strcmp(order,"RDB") == 0) || (strcmp(order,"rdb") == 0)){
+        
+        return SERVER;
+    
+    }else if((strcmp(order,"AOF") == 0) || (strcmp(order,"aof") == 0)){
+        
+        return SERVER;
+
     }else{
         
-        //passs
+        //pass
     }
     
 
@@ -337,6 +355,14 @@ int do_local(int Type,Message message){
             
             return -1;
             
+        }else if(strcmp(message.buff_mo,"RDB") == 0 || strcmp(message.buff_mo,"rdb") == 0){
+            
+            return 0;
+
+        }else if(strcmp(message.buff_mo,"AOF") == 0 || strcmp(message.buff_mo,"aof") == 0){
+            
+            return 0;
+
         }else{
             //pass
         }    
@@ -387,4 +413,30 @@ int print_bc(Message mess){
     }
 
 }
+
+
+
+/*发送AOF 和 RDB 相关指令给制定的服务器*/
+/*指令为： RDB/AOF IP port*/
+int rdb_aof_send(Message mess,int flag){
+    
+    
+    int sockfd;
+    struct sockaddr_in servaddr;
+
+    sockfd = socket(AF_INET,SOCK_STREAM,0);
+    bzero(&servaddr,sizeof(servaddr));
+    servaddr.sin_family = AF_INET;
+    servaddr.sin_port   = htons(atoi(mess.buff_val));
+    inet_pton(AF_INET,mess.buff_key,&servaddr.sin_addr);
+    connect(sockfd,(struct sockaddr*)&servaddr,sizeof(servaddr));
+    write(sockfd,(char *)&mess,sizeof(Message));
+    close(sockfd);
+    
+
+    return 0;
+
+
+}
+
 

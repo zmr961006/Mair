@@ -165,18 +165,26 @@ int set_hash(Message mess,int FLAG){
      * 第二种：在节点区间中间，跨节点服务范围增加服务节点
      * 第三种：在节点区间外部扩展，在最大的服务范围内进行扩展
      */
+        
+    /*增加节点本质上我们只设置一中情况的节点增加情况，即是在一个节点的从开始位置增加节点，例如在
+     * 0～500 节点上增加0～300 节点，则在这种情况下，我们只需要找到0～500 节点，然后修改0～500节点 
+     * 的开始服务范围为 301～500 就可以了
+     */
+    
 
+    /*temp 为新增加的节点,index 为需要找到的被修改节点*/
     if(FLAG == 0){                
         netinfo * index = NetMap.networkmap;
         while(index != NULL){
-            if((temp->hash_start >= index->hash_start) && (temp->hash_end <= index->hash_end )){
+            if(temp->hash_start == index->hash_start){
                 /*则找到一个在区间内增加的服务节点，属于第一中情况*/
                 /*则需要修改当前找到的服务节点的服务器范围*/
                 /*只能从开始位置进行节点增加操作*/
                 
-                index->hash_start = temp->hash_end -1;
-
+                index->hash_start = temp->hash_end + 1;
+                
                 printf("add node change\n");
+                return 0;
                 //data_trans(mess,start,end);
                 
             }else if((temp->hash_start < index->hash_end) && (temp->hash_end > index->hash_end)){
@@ -196,11 +204,24 @@ int set_hash(Message mess,int FLAG){
          * 第二种：有前驱节点，有后继节点。
          * 第三种：有前驱节点，无后继节点。
          */
+            
+        /*删除节点的情况比较简单，直接选择删除节点就行，但是在节点修改时，需要进行较为复杂的操作*/
+        /*被删除的节点主要有两种情况，需要考虑前驱和后继节点，所以在算法的设计上，我们只需要遍历
+         *链表将这个节点的前驱和后继找到，然后统一处理就行了。
+         *当只有一个节点的时候，反馈不能删除节点就OK，当有前驱节点的时候，将被删除节点的上限直接
+         *修改为前驱节点的上限，当有后继节点的时候，则需要将自己的服务开始范围更新给后继节点。
+         *如果修改的节点范围超过整个服务范围则拒绝删除这个节点
+         */
+
+        /*index ：指向节点； rear : 前驱节点；next : 后继节点*/
+        /*temp 当前节点*/
 
         netinfo * index = NetMap.networkmap;
         netinfo * rear;
+        netinfo * next;
         int ssum = 1;
-        int flag_have_rear = 0;
+        int flag_have_rear = 0;    /*标志有无前驱节点*/
+        int flag_have_next = 0;    /*标志有无后继节点*/
         while(index != NULL){
             
             if(NetMap.node_num == 1){
@@ -211,14 +232,15 @@ int set_hash(Message mess,int FLAG){
                 /*Q：如何确定此节点一定没有后继节点*/
                 flag_have_rear = 1;
                 rear = index ;          /*保存当前节点的前驱节点*/
-            }else if((index->hash_start-1) == temp->hash_start){
+            }else if((index->hash_start-1) == temp->hash_end){
                 /*则表示此节点是temp节点的后继节点*/
                 /*如果存在后继节点则直接进行合并操作*/
                 /*这种情况下找到节点是可以直接处理的，无需其他操作*/
                 //merge_hash_next();
                 //return 0;
-                index->hash_start =  temp->hash_start;
-            
+                flag_have_next = 1;
+                next = index;
+                
             }else{
                 
                 //pass
@@ -228,13 +250,25 @@ int set_hash(Message mess,int FLAG){
             ssum++;
             index = index->next;
         }
-        if(flag_have_rear == 1){
-            
-            //merge_hash_rear();
-            //return 0;
+        if((flag_have_rear == 1) && (flag_have_next == 0)){
+            /*只有前驱节点，没有后继节点*/
             rear->hash_end = temp->hash_end;
         }
         
+
+
+        if((flag_have_rear == 1) && (flag_have_next == 1)){
+            /*既有前驱节点，又有后继节点*/
+            next->hash_start = temp->hash_start;
+            
+        }
+
+        if((flag_have_rear == 0) && (flag_have_next == 1)){
+            /*只有后继节点，没有前驱节点*/
+            next->hash_start = temp->hash_start;
+        }
+
+
     }
     
     return 0;

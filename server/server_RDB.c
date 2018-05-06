@@ -195,7 +195,7 @@ int readfromfile(int Type){
         LOG temp;
         while((fread(&temp,sizeof(LOG),1,fp) > 0)){
             sum++;
-            //printf("temp:\n");
+            //需要将文件中的数据重新恢复到数据存储系统中；
             
         }
         printf("all %d LOGS\n",sum);
@@ -205,7 +205,7 @@ int readfromfile(int Type){
         fp = fopen("RDB","r");
         LOG temp;
         while((fread(&temp,sizeof(LOG),1,fp) > 0)){
-            
+            //需要将文件中的数据重新恢复到数据存储系统中；  
             sum++;
 
         }
@@ -249,13 +249,19 @@ int watch_log(int Type){
 
 
 Message * log_to_mess(LOG * temp,int flag,int Type){
-    
+ 
+    Message  * index  = (Message *)malloc(sizeof(Message));
+    //copy temp to index;
+    return index;
 
 }
 
 
 KeyVal  * log_to_kv(LOG * temp,int flag,int Type){
     
+    KeyVal * index = (KeyVal *)malloc(sizeof(Message));
+    //copy temp to index;
+    return index;
 
 }
 
