@@ -42,6 +42,8 @@ int DEL(Message mess,int argc,int fd);
 /*打印所有的KV*/
 KeyVal * FINDALL();
 
+/*增加一个转发来的数据*/
 
+int ADD(Message mess,int argc,int fd);
 
 #endif

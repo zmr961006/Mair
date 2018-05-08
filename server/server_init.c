@@ -21,14 +21,16 @@ int test_net(){
     temp = NetMap.networkmap;
     int i  = 0;
     while(temp != NULL){
-        printf("server info:\033[32monline\33[0m\n");
-        printf("ip   :%s\n",temp->ip_char);
-        printf("port :%s\n",temp->port_char);
-        printf("port :%d\n",temp->port_int);
-        printf("start :%d\n",temp->hash_start);
-        printf("end   :%d\n",temp->hash_end);
-        printf("status : %d\n",temp->status);
-        printf("virtual_server: %d\n\n",temp->virtual_server);
+        if(temp->status != -1){  
+            printf("server info:\033[32monline\33[0m\n");
+            printf("ip   :%s\n",temp->ip_char);
+            printf("port :%s\n",temp->port_char);
+            printf("port :%d\n",temp->port_int);
+            printf("start :%d\n",temp->hash_start);
+            printf("end   :%d\n",temp->hash_end);
+            printf("status : %d\n",temp->status);
+            printf("virtual_server: %d\n\n",temp->virtual_server);
+        }
         temp = temp->next;
     }
 }
@@ -233,7 +235,7 @@ int _add_nodeinmap(char * buf,netinfo * tem){
 
     }
     tem->port_int = atoi(tem->port_char);
-
+    tem->status = 1;
 }
 
 
@@ -313,7 +315,7 @@ int _app_nodeinmap(Message mess,netinfo * temp){
     temp->status         =  atoi(buff[3]);
     temp->virtual_server =  atoi(buff[4]);
 
-    printf("NODE: %d %d %d %d %d\n",temp->port_int,temp->hash_start,temp->hash_end,temp->status,temp->virtual_server);
+    //printf("NODE: %d %d %d %d %d\n",temp->port_int,temp->hash_start,temp->hash_end,temp->status,temp->virtual_server);
 
 
     return 0;    
@@ -335,6 +337,7 @@ int delnode(Message mess,int flag){
 
     }*/
     int Flag_index[50];
+    memset(Flag_index,0,50);
     int Flag = find_servernode(mess,flag,Flag_index);
     if(Flag == 0){
         printf("can not find del this server\n ");
@@ -372,7 +375,8 @@ int find_servernode(Message mess,int flag,int index[]){
     int sum = 0;
     netinfo * temp  = NetMap.networkmap;
     int llen = strlen(mess.buff_val);
-    int j ,k = 0;
+    int j = 0; 
+    int k = 0;
     int number = 0;
     for(int i = 0;i < llen ; i++){
         if(mess.buff_val[i] == ':'){
@@ -562,7 +566,7 @@ netinfo * find_send_node(int servernumber,int hash){
 netinfo * find_real_node(int hash){
 
     netinfo * index = NetMap.networkmap;
-    while(index != NULL){
+    while((index != NULL ) && (index->status != -1)){
     
         if(hash >= index->hash_start && hash <= index->hash_end){
             

@@ -31,6 +31,8 @@
 
 #define HEADNODE 101
 
+#define LIMIT 100000
+
 /**********************************************************************************/
 
 
@@ -83,12 +85,23 @@ typedef struct Mair_DB{          /*数据库大类*/
 int init_database();   /*初始化数据库*/
 int database_choice(Message mess,char *order,int hash,int fd);  /*选择一个对应的函数操作*/
 int echo_bc(int fd);         /*返回结果*/
-
 int database_choice2(Message *mess,char *order,int hash,int fd);
 
 
-//数据迁移机制启动
-int DATA_TRANS();
+//数据迁移机制
+int DATA_TRANS(int temp);
+
+Message * kv_to_mess(KeyVal * temp,char * temp2,int temp3);
+
+int send_to_server(Message * mess,char *temp2,int temp3);
+
+int get_socket(int hash);
+
+netinfo * find_sends_node(int hash);
+
+netinfo * find_reals_node(int hash);
+
+netinfo * find_virtuals_node(int hash);
 
 
 #endif

@@ -77,7 +77,7 @@ int opt(char * temp1,char *temp2,int argc){    /*客户端数据处理流程*/
 
 
 
-    while(loop){
+    while(1){
         memset(buf_in,0,BUFFLEN);
         fflush(stdin);
         printf(">>");
@@ -87,12 +87,12 @@ int opt(char * temp1,char *temp2,int argc){    /*客户端数据处理流程*/
         flag = chunk(buf_in);
         if(flag == 0){
             printf("erro styn\n");
-            exit(0);
+            //exit(0);
         }
-        loop = do_send(argc);
-        if(loop == 0){
+        do_send(argc);
+        /*if(loop == 0){
             break;
-        }
+        }*/
     }
 
 }
@@ -362,6 +362,7 @@ int do_local(int Type,Message message){
 
             ADDNODE(message,0);
             REWRITEFILE();
+            printf("add finish\n");
             return NetMap.node_num;
 
         }else if(strcmp(message.buff_mo,"DELNODE") == 0 || strcmp(message.buff_mo,"delnode") == 0){
@@ -399,15 +400,16 @@ int ADDNODE(Message mess,int flag){
     //printf("ADDNODE : %s : %s\n",mess.buff_key,mess.buff_val);
     appendnode(mess,flag);
     printf("---------------------------------------------\n");
+    return 0;
 }
 
 
 int DELNODE(Message mess,int flag){
     
-    test_net();
+    //test_net();
     printf("DELNODE : %s: %s\n",mess.buff_key,mess.buff_val);
     delnode(mess,flag);
-    test_net();
+    //test_net();
 
 }
 

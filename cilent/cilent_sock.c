@@ -43,15 +43,18 @@ int get_socket(int fd,int temp){
 int write_all(Message mess,int flag){
     
     netinfo * temp = NetMap.networkmap;
-
-    while(temp != NULL){
-        if(temp->virtual_server == 0){   
-            int sockfd;    
+    int sockfd;
+    //printf("JIJIJIJIJIJIJ\n");
+    while(temp != NULL ){
+        if(temp->virtual_server == 0){      
             sockfd = get_socket2(temp);   
             write(sockfd,(char *)&mess,sizeof(Message));
             temp = temp->next;
+            close(sockfd);
         }
+        printf("--------\n");
     }
+    //printf("ghghghghghghgh\n");
 
     return 0;
 }

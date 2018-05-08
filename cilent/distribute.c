@@ -45,7 +45,7 @@ netinfo * find_send_node(int servernumber,int hash){
 netinfo * find_real_node(int hash){
 
     netinfo * index = NetMap.networkmap;
-    while(index != NULL){
+    while((index != NULL) && (index->status != -1)){
     
         if(hash >= index->hash_start && hash <= index->hash_end){
             

@@ -17,30 +17,34 @@ int ADDNODE(Message mess,int flag,int fd){
     int bc = 0;
     int FLAG = 0;   /*0为设置hash的增加操作*/
     printf("---------------------------------------------\n");
-    test_net();
+    //test_net();
     printf("ADDNODE : %s : %s\n",mess.buff_key,mess.buff_val);
     appendnode(mess,flag);
     bc = 10;
-    server_bc(mess,NULL,bc,fd);
+    //server_bc(mess,NULL,bc,fd);
     printf("in ADDNODE \n");
     set_hash(mess,FLAG);             /*设置更改过后的hash服务范围*/
-    test_net();
+    //test_net();
     printf("---------------------------------------------\n");
-
+    return 0;
 }
 
 
 int DELNODE(Message mess,int flag,int fd){
     int bc = 0; 
     int FLAG = 1;  /*1为设置hash的合并删除操作*/
-    test_net();
+    //test_net();
     printf("DELNODE : %s: %s\n",mess.buff_key,mess.buff_val);
+    set_hash(mess,FLAG);
     delnode(mess,flag);
+    printf("1\n");
     bc = 11;
-    server_bc(mess,NULL,bc,fd);
-    set_hash(mess,FLAG);             /*设置更改过后的hash服务范围*/
-    test_net();
-
+    //server_bc(mess,NULL,bc,fd);
+    printf("2\n");
+    //set_hash(mess,FLAG);             /*设置更改过后的hash服务范围*/
+    printf("set hash ok\n");
+    //test_net();
+    return 0;
 }
 
 int REWRITEFILE(){
@@ -231,6 +235,7 @@ int set_hash(Message mess,int FLAG){
                 /*则表示此节点是temp节点的前驱节点*/
                 /*如果没有后继节点则直接合并到前驱节点*/
                 /*Q：如何确定此节点一定没有后继节点*/
+                //printf("删除存在前驱节点的节点\n");
                 flag_have_rear = 1;
                 rear = index ;          /*保存当前节点的前驱节点*/
             }else if((index->hash_start-1) == temp->hash_end){
@@ -239,6 +244,7 @@ int set_hash(Message mess,int FLAG){
                 /*这种情况下找到节点是可以直接处理的，无需其他操作*/
                 //merge_hash_next();
                 //return 0;
+
                 flag_have_next = 1;
                 next = index;
                 
@@ -252,20 +258,20 @@ int set_hash(Message mess,int FLAG){
             index = index->next;
         }
         if((flag_have_rear == 1) && (flag_have_next == 0)){
-            /*只有前驱节点，没有后继节点*/
+            printf("只有前驱节点，没有后继节点\n");
             rear->hash_end = temp->hash_end;
         }
         
 
 
         if((flag_have_rear == 1) && (flag_have_next == 1)){
-            /*既有前驱节点，又有后继节点*/
+           printf(" /*既有前驱节点，又有后继节点*/ \n");
             next->hash_start = temp->hash_start;
             
         }
 
         if((flag_have_rear == 0) && (flag_have_next == 1)){
-            /*只有后继节点，没有前驱节点*/
+           printf("/*只有后继节点，没有前驱节点*/ \n");
             next->hash_start = temp->hash_start;
         }
 

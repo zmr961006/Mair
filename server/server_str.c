@@ -33,6 +33,27 @@ int SET(Message mess,int argc,int fd){
 
 }
 
+int ADD(Message mess,int argc,int fd){
+    
+    int bc = 0;
+    
+    if(EXIST(mess,0,fd) == NOTEXIST){             /*不存在则增加；存在则修改VAL*/
+       
+        KeyVal * temp = mess_to_kv(mess,0,0);
+        add_KV_DB(temp,0);
+        //FINDALL();               /*展示所有存在的KV*/
+        bc = 2;
+    }else{
+        bc = 1;
+        printf("this KV is already EXIST\n");
+
+    }
+    
+    //server_bc(mess,NULL,bc,fd);
+
+}
+
+
 int EXIST(Message mess,int argc,int fd){
  
     int bc = 0;

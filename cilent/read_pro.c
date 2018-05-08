@@ -237,7 +237,7 @@ int _add_nodeinmap(char * buf,netinfo * tem){
 
     }
     tem->port_int = atoi(tem->port_char);
-
+    tem->status   = 1;
 }
 
 
@@ -271,6 +271,7 @@ int appendnode(Message mess,int flag){
         _app_nodeinmap(mess,temp);
     }
 
+    return 0;
 }
 
 
@@ -350,6 +351,7 @@ int delnode(Message mess,int flag){
 
     }*/
     int Flag_index[50];
+    memset(Flag_index,0,50);
     int Flag = find_servernode(mess,flag,Flag_index);
     if(Flag == 0){
         printf("can not find del this server\n ");
@@ -483,9 +485,11 @@ int rewritefile(){
     strncat(buff,"]",1);
     fprintf(fp,"%s\n",buff);
     memset(buff,0,100);
+    
+    int tong = 0;
 
     while(temp != NULL){
-        
+        tong++;    
         index = 0;
         int len_ip = strlen(temp->ip_char);
         int len_port = strlen(temp->port_char);
@@ -536,7 +540,7 @@ int rewritefile(){
         temp = temp->next;
     }
     fclose(fp);
-
+    return tong;
 
 }
 
