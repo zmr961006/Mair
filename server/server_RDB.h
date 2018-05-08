@@ -15,7 +15,7 @@
 #include<string.h>
 #include<stdlib.h>
 #include"./server_mess.h"
-#include"./server_DB.h"
+//#include"./server_DB.h"
 #include"./server_str.h"
 
 #define AOF       1             /*两个标志位*/

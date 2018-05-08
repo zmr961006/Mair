@@ -6,6 +6,7 @@
  ************************************************************************/
 
 #include"./server_ser.h"
+//#include"./server_mess.h"
 #include<unistd.h>
 extern netmap NetMap;
 

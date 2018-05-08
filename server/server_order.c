@@ -43,9 +43,10 @@ int init_order(){
     orders.orders[27]= "rdb";
     orders.orders[28]= "SHOW";
     orders.orders[29]= "show";
+    orders.orders[30]= "SHUTDOWN";
+    orders.orders[31]= "shutdown";
 
-
-    orders.num = 30;
+    orders.num = 32;
 
 
 }

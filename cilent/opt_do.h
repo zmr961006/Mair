@@ -50,6 +50,6 @@ int rdb_aof_send(Message mess,int flag);
 
 /*展示统计所有已经存在的数据*/
 
-int show_send(Message message,int flag);
+int show_shut_send(Message message,int flag);
 
 #endif

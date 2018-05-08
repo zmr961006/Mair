@@ -7,7 +7,8 @@
 
 #include<stdio.h>
 #include"./server_RDB.h"
-
+#include"./server_DB.h"
+#include"./server_str.h"
 
 extern Mair_DB server_DB;
 
@@ -119,7 +120,6 @@ int w_rdb(void * temp,int flag,int Type){
     
     int sum = LOGRDB.sum;
     if(sum == BUFFSIZE){ 
-
         writetofile(RDB);
         init_log(RDB);
         LOG * obj = log_create(temp,RDB,Type);
@@ -173,7 +173,7 @@ int writetofile(int Type){
     FILE *fp;
 
     if(Type == RDB){
-        fp = fopen("RDB","w");
+        fp = fopen("RDB","a");
         for(int i = 0;i < LOGRDB.sum;i++){
             fwrite((char *)&LOGRDB.buff[i],sizeof(LOG),1,fp);
         }
@@ -199,13 +199,19 @@ int writetofilenow(int Type){
 	FILE *fp;
 
     if(Type == RDB){
-        fp = fopen("RDB","w");
+
+        if(LOGRDB.sum == 0){
+            return -1;
+        }
+
+        fp = fopen("RDB","a");
         for(int i = 0;i < LOGRDB.sum;i++){
             fwrite((char *)&LOGRDB.buff[i],sizeof(LOG),1,fp);
         }
         fclose(fp);
         init_log(RDB);
         return 0;
+
     }else if(Type == AOF){
         
         if(LOGAOF.sum == 0){
@@ -236,8 +242,7 @@ int readfromfile(int Type){
 
 
     /*读取文件之前需要将内存中的数据首先刷进文件中*/
-
-    writetofilenow(Type);
+    //writetofilenow(Type);
 
     FILE * fp;
     int sum = 0;
@@ -248,19 +253,37 @@ int readfromfile(int Type){
         while((fread(&temp,sizeof(LOG),1,fp) > 0)){
             sum++;
             //需要将文件中的数据重新恢复到数据存储系统中；
+            
+            /*再次拷贝数据-------------------------------*/
             Message *mess;
+            Message  messbc;
+            memset(&messbc,0,sizeof(Message));
             mess = log_to_mess(&temp,0,0);
-            //printf("##########################2\n");
-            print_mess2(mess);  
+            strcpy(messbc.buff_mo,mess->buff_mo);
+            strcpy(messbc.buff_key,mess->buff_key);
+            strcpy(messbc.buff_val,mess->buff_val);
+            strcpy(messbc.oob,mess->oob);
+            messbc.hash = mess->hash;
+            messbc.Type = mess->Type;
+            messbc.server_hash = mess->server_hash;
+    
+            //print_mess2(mess);
+            
+            database_choice(messbc,NULL,0,0);
+
         }
         printf("all %d LOGS\n",sum);
         fclose(fp);
         return 0;
+
     }else if(Type == RDB){
+
         fp = fopen("RDB","r");
         LOG temp;
         while((fread(&temp,sizeof(LOG),1,fp) > 0)){
             //需要将文件中的数据重新恢复到数据存储系统中；  
+            KeyVal * index = log_to_kv(&temp,0,RDB);
+            add_KV_DB(index,0);
             sum++;
 
         }
@@ -323,7 +346,34 @@ Message * log_to_mess(LOG * temp,int flag,int Type){
 KeyVal  * log_to_kv(LOG * temp,int flag,int Type){
     
     KeyVal * index = (KeyVal *)malloc(sizeof(Message));
-    //copy temp to index;
+    int kvType = temp->Type;
+    int llen   = strlen(temp->buff_key);
+    dystr_create3(&index->Key,temp->buff_key,llen);
+    int vlen  = strlen(temp->buff_val);
+    
+    index->hash = temp->hash;
+    index->db_id = temp->server_hash;
+    index->table_id = temp->hash % 100;
+    index->status = ALIVE;
+    index->Type   = temp->Type;
+
+    if(temp->Type == STRING){
+        
+        index->Val = (char *)malloc(sizeof(char)*vlen);
+        strcpy(index->Val,temp->buff_val);
+
+    }else if(temp->Type == LIST){
+
+        RLIST * clist;
+        clist = (RLIST *)malloc(sizeof(RLIST));
+        //crate_list(clist,temp);
+        index->Val = clist;
+
+    }else{
+
+        //pass
+    }
+
     return index;
 
 }

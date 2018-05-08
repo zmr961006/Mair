@@ -109,16 +109,25 @@ int database_choice(Message mess,char * order,int hash,int fd){
                 UPDATE(mess,0,fd);
                 return SERVER;
         }else if((strcmp(mess.buff_mo,"RDB") == 0) || (strcmp(mess.buff_mo,"rdb") == 0)){
-                //RDB()
+                all_rdb();                    /*遍历一遍内存数据库，将数据存储到文件中*/
+                writetofilenow(RDB);          /*将内存中的剩余的没有写入文件的数据，写入文件*/
                 return SERVER;
         }else if((strcmp(mess.buff_mo,"AOF") == 0) || (strcmp(mess.buff_mo,"aof") == 0)){
                readfromfile(AOF);
                return SERVER;
         }else if((strcmp(mess.buff_mo,"SHOW") == 0) || (strcmp(mess.buff_mo,"show") == 0)){
-               FINDALL();
-               return SERVER;
-
+                FINDALL();
+                return SERVER;
+        }else if((strcmp(mess.buff_mo,"BRDB") == 0) || (strcmp(mess.buff_mo,"brdb") == 0)){
+                readfromfile(RDB);            /*从文件中恢复数据*/
+                return SERVER;
+        }else if((strcmp(mess.buff_mo,"SHUTDOWN") == 0) || (strcmp(mess.buff_mo,"shutdown") == 0)){
+                readfromfile(AOF);           /*服务器结束服务时，保存内存中的数据*/
+                exit(0);
+                return SERVER;
         }else{
+            
+            //pass 
 
         }
 
@@ -155,3 +164,101 @@ int DATA_TRANS(){
 
 
 }
+
+
+/*仅仅是接口有变化，使用Message 指针接口*/
+
+/*
+int database_choice2(Message *mess,char * order,int hash,int fd){
+    
+
+
+    int Flag = mess->Type;
+    if((Flag == STRING)||(Flag == COMMON)){
+        if((strcmp(mess->buff_mo,"SET") == 0) || (strcmp(mess->buff_mo,"set") == 0)){
+            SET(mess,0,fd);
+            return STRING;
+        }else if((strcmp(mess->buff_mo,"EXIST") == 0) || (strcmp(mess->buff_mo,"exist") == 0)){
+            EXIST(mess,0,fd);
+            return STRING;
+        }else if((strcmp(mess->buff_mo,"GET") == 0) || (strcmp(mess->buff_mo,"get") == 0)){
+            GET(mess,0,fd);
+	    return STRING;
+        }else if((strcmp(mess->buff_mo,"DEL") == 0) || (strcmp(mess->buff_mo,"del") == 0)){
+            DEL(mess,0,fd);
+	    return STRING;
+        }else{
+            //pass;
+        }
+    }else if(Flag == INT){
+            //pass
+    }else if((Flag == LIST)||(Flag == COMMON)){
+
+	    if((strcmp(mess->buff_mo,"CLIST") == 0) || (strcmp(mess->buff_mo,"clist") == 0)){
+            CLIST(mess,0,fd);
+            return LIST;
+        }else if((strcmp(mess->buff_mo,"LSET") == 0) || (strcmp(mess->buff_mo,"lset") == 0)){
+            LSET(mess,0,fd);
+            return LIST;
+        }else if((strcmp(mess->buff_mo,"RDEL") == 0) || (strcmp(mess->buff_mo,"RDEL") == 0)){
+            RDEL(mess,0,fd);
+            print_list(NULL);
+	    return LIST;
+        }else if((strcmp(mess->buff_mo,"LPUSH") == 0) || (strcmp(mess->buff_mo,"LPUSH") == 0)){
+            LPUSH(mess,0,fd);
+            print_list(NULL);
+	    return LIST;
+        }else if((strcmp(mess->buff_mo,"LPOP") == 0) ||(strcmp(mess->buff_mo,"lpop") == 0)){
+            LPOP(mess,0,fd);
+            return LIST;
+        }else if((strcmp(mess->buff_mo,"EXIST") == 0) || (strcmp(mess->buff_mo,"exist") == 0)){
+            EXIST(mess,0,fd);
+            return LIST;
+        }else{
+            //pass
+        }
+
+    }else if(Flag == ZLIST){
+
+    }else if(Flag == SERVER){
+        
+	    if((strcmp(mess->buff_mo,"ADDNODE") == 0) || (strcmp(mess->buff_mo,"addnode") == 0)){
+                ADDNODE(mess,0,fd);
+                REWRITEFILE();
+                DATA_TRANS();
+                return SERVER;
+        }else if((strcmp(mess->buff_mo,"DELNODE") == 0) || (strcmp(mess->buff_mo,"delnode") == 0)){
+                DELNODE(mess,0,fd);
+                REWRITEFILE();
+                return SERVER;
+        }else if((strcmp(mess->buff_mo,"SCHUNK") == 0) || (strcmp(mess->buff_mo,"schunk") == 0)){
+                SCHUNK(mess,0,fd);
+                return SERVER;
+        }else if((strcmp(mess->buff_mo,"UPDATE") == 0) || (strcmp(mess->buff_mo,"update") == 0)){
+                UPDATE(mess,0,fd);
+                return SERVER;
+        }else if((strcmp(mess->buff_mo,"RDB") == 0) || (strcmp(mess->buff_mo,"rdb") == 0)){
+                //RDB()
+                return SERVER;
+        }else if((strcmp(mess->buff_mo,"AOF") == 0) || (strcmp(mess->buff_mo,"aof") == 0)){
+               readfromfile(AOF);
+               return SERVER;
+        }else if((strcmp(mess->buff_mo,"SHOW") == 0) || (strcmp(mess->buff_mo,"show") == 0)){
+               FINDALL();
+               return SERVER;
+
+        }else{
+
+        }
+
+    }else if(Flag == WATCH){
+        
+    }else{
+        //pass
+    }
+    
+    return 0;
+
+}
+*/
+

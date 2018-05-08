@@ -60,8 +60,12 @@ int init_cilent(){
     orders.orders[27] = "rdb";
     orders.orders[28] = "SHOW";
     orders.orders[29] = "show";
+    orders.orders[30] = "BRDB";
+    orders.orders[31] = "brdb";
+    orders.orders[32] = "shutdown";
+    orders.orders[33] = "SHUTDOWN";
 
-    orders.num = 30;
+    orders.num = 34;
 
 }
 
@@ -198,12 +202,12 @@ int do_send(int fd){        /*根据哈希值发送数据*/
      
     r1 = rdb_aof_send(message,distribute);
     if(r1 == 1){
-        return 0;
+        return 1;
     }
     
-    r2 = show_send(message,distribute);
+    r2 = show_shut_send(message,distribute);
     if(r2 == 1){
-        return 0;
+        return 1;
     }
 
     sfd = get_socket(server_num,hash);
@@ -339,8 +343,11 @@ int get_ordernum(char * order){
     }else if((strcmp(order,"SHOW") == 0) || (strcmp(order,"show") == 0)){
         
         return SERVER;
+    }else if((strcmp(order,"BRDB") == 0) || (strcmp(order,"brdb") == 0)){
+        
+        return SERVER;
     }else{
-        //pass
+        //pass ;
     }
     
 
@@ -434,7 +441,8 @@ int rdb_aof_send(Message mess,int flag){
     
 
     if(strcmp(mess.buff_mo,"AOF") == 0 || strcmp(mess.buff_mo,"aof") == 0 
-              || strcmp(mess.buff_mo,"RDB") == 0 || strcmp(mess.buff_mo,"rdb") == 0){   
+              || strcmp(mess.buff_mo,"RDB")  == 0 || strcmp(mess.buff_mo,"rdb")  == 0
+              || strcmp(mess.buff_mo,"BRDB") == 0 || strcmp(mess.buff_mo,"brdb") == 0){   
 
         int sockfd;
         struct sockaddr_in servaddr;
@@ -459,10 +467,11 @@ int rdb_aof_send(Message mess,int flag){
 }
 
 
-int show_send(Message mess,int flag){
+int show_shut_send(Message mess,int flag){
     
 
-    if(strcmp(mess.buff_mo,"SHOW") == 0 || strcmp(mess.buff_mo,"show") == 0){   
+    if(strcmp(mess.buff_mo,"SHOW") == 0 || strcmp(mess.buff_mo,"show") == 0 
+            || strcmp(mess.buff_mo,"SHUTDOWN") == 0 || strcmp(mess.buff_mo,"shutdown") == 0){   
 
         int sockfd;
         struct sockaddr_in servaddr;

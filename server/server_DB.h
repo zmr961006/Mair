@@ -84,6 +84,9 @@ int init_database();   /*初始化数据库*/
 int database_choice(Message mess,char *order,int hash,int fd);  /*选择一个对应的函数操作*/
 int echo_bc(int fd);         /*返回结果*/
 
+int database_choice2(Message *mess,char *order,int hash,int fd);
+
+
 //数据迁移机制启动
 int DATA_TRANS();
 
